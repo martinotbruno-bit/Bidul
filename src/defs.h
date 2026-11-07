@@ -50,7 +50,15 @@ typedef signed int    s16;
 #define OT_TROU    3   /* Trouillard : fuit le bruit, pousse        */
 #define OT_SOCK    4   /* chaussette : bonus a ramasser             */
 #define OT_KING    5   /* boss : le Roi du Rebond                  */
-#define OT_COUNT   6
+/* monde 2 : comportement programme dans la banque du monde (world2.c) */
+#define OT_ARMCHAIR 6  /* fauteuil grognon : fonce vers le bruit    */
+#define OT_LAMP    7   /* lampe curieuse : va voir d'ou vient le bruit */
+#define OT_DRESSER 8   /* commode paresseuse : il faut insister     */
+#define OT_CHEST   9   /* coffre gourmand : mange les biscuits      */
+#define OT_COOKIE  10  /* biscuit                                   */
+#define OT_WARDROBE 11 /* boss : Madame Armoire                     */
+#define OT_WORLD   6   /* types >= OT_WORLD : geres par la banque   */
+#define OT_COUNT   12
 
 /* drapeaux d'objet */
 #define OF_GROUND  0x01
@@ -75,6 +83,7 @@ typedef signed int    s16;
 #define A_HATCH_CLOSE 8
 #define A_WAKE        9
 #define A_REVEAL      10
+#define A_LOCK        12   /* serrure : la case devient un bloc, compteur +1 */
 #define A_HATCH_PULSE 11   /* trappe ouverte 0,8 s puis refermee */
 
 /* ---- etats du jeu ----------------------------------------------------- */

@@ -18,6 +18,8 @@
 #include "game.h"
 
 u8 tchak_fx;
+s8 tk_dir;
+u8 tk_adx, tk_ady;
 u8 tchak_count;
 
 #define SHOCK_X 40
@@ -27,7 +29,7 @@ u8 tchak_count;
 
 void tchak_fire(void)
 {
-    u8 i, t, cx, cy, ox, oy, adx, ady, v;
+    u8 i, t, cx, cy, ox, oy, adx, ady;
     s8 dir;
     cx = PIX(b_x) + 8;
     cy = PIX(b_y) + 12;
@@ -46,18 +48,28 @@ void tchak_fire(void)
         else              { adx = 0; dir = b_face ? -1 : 1; }
         ady = (oy > cy) ? oy - cy : cy - oy;
 
-        if (t == OT_TROU && adx < HEAR_X && ady < HEAR_Y) enemy_scare(i, dir);
-
-        if (adx < SHOCK_X && ady < SHOCK_Y) {
-            v = p_tchak_vx[t] + (SHOCK_X - adx);
-            if (v > 96) v = 96;
-            o_vx[i] = (dir < 0) ? -(s8)v : (s8)v;
-            o_vy[i] = -(s8)p_tchak_vy[t];
-            o_flags[i] &= ~OF_GROUND;
-            o_anim[i] = 8;
-            o_dir[i] = dir;
+        tk_dir = dir; tk_adx = adx; tk_ady = ady;
+        if (t >= OT_WORLD) {            /* reaction programmee par le monde */
+            bk_wtchak(i);
+            continue;
         }
+        if (t == OT_TROU && adx < HEAR_X && ady < HEAR_Y) enemy_scare(i, dir);
+        tchak_impulse(i);
     }
+}
+
+/* impulsion de l'onde de choc sur l'objet i (tk_dir/tk_adx/tk_ady remplis) */
+void tchak_impulse(u8 i)
+{
+    u8 v, t = o_type[i];
+    if (tk_adx >= SHOCK_X || tk_ady >= SHOCK_Y) return;
+    v = p_tchak_vx[t] + (SHOCK_X - tk_adx);
+    if (v > 96) v = 96;
+    o_vx[i] = (tk_dir < 0) ? -(s8)v : (s8)v;
+    o_vy[i] = -(s8)p_tchak_vy[t];
+    o_flags[i] &= ~OF_GROUND;
+    o_anim[i] = 8;
+    o_dir[i] = tk_dir;
 }
 
 /* onde de choc : 4 quarts de cercle qui s'eloignent */

@@ -1,12 +1,12 @@
-# TCHAK ! – Rapport de tests (version 0.3 – Monde 1)
+# TCHAK ! – Rapport de tests (version 0.4 – Mondes 1 et 2, MMC1)
 
 ## Méthode
 
 Les tests jouent réellement la ROM `build/tchak.nes` dans l'émulateur headless **cynes** : entrées manette scriptées, puis vérification de la RAM (adresses tirées de `build/tchak.labels`). Lancement : `make test` (ou `python3 tests/test_rom.py --shots` pour régénérer les captures de `docs/img/`).
 
-## Résultats : 25 / 25 réussis
+## Résultats : 34 / 34 réussis (en 9 min d'émulation)
 
-Détail brut : `docs/resultats_tests.txt`. Numérotation des salles : 1-1 à 1-8.
+Détail brut : `docs/resultats_tests.txt`. Numérotation des salles : 1-1 à 2-8.
 
 | Test | Vérifie |
 |---|---|
@@ -28,6 +28,12 @@ Détail brut : `docs/resultats_tests.txt`. Numérotation des salles : 1-1 à 1-8
 | t17 | aucune trame perdue dans la scène la plus chargée |
 | t18 | musique et bruitages |
 | t19 | **joueur qui ne comprend rien** : 6 parties de 20 s d'appuis aléatoires dans chacune des 8 salles → aucune salle résolue |
+| t30–t33 | 2-1 à 2-4 : fauteuil (le mauvais côté → gelée), lampe (TCHAK sur la plaque), commode (1 TCHAK ne suffit pas, 3 du bon côté), coffre (dosage du biscuit) ; banque MMC1 du monde 2 sélectionnée |
+| t34 | 2-5 : les trois serrures, une par humeur |
+| t35 | 2-6 : deux solutions vérifiées (commode seule / fauteuil qui la pousse) |
+| t36 | 2-7 : lampe + fauteuil d'un seul TCHAK, planche, commode |
+| t37 | 2-8 : Madame Armoire ne se bat pas seule (30 s) ; solveur : 3 lancers visés → porte → écran de fin du monde 2 |
+| t38 | Monde 2 : 4 parties de 20 s d'appuis aléatoires par salle → aucune salle résolue |
 
 ### Équilibrage du boss (mesuré)
 
@@ -58,11 +64,16 @@ Fenêtres de réussite depuis le levier de droite : on part d'un instant donné,
 | v0.3 – salle 1-2 : la balle passait au-dessus d'un puits de 2 cases | puits de 3 cases contre le mur |
 | v0.3 – salle 1-5 : impossible de passer de l'autre côté de la cuvette | deuxième échelle |
 | v0.3 – boss : la trappe restait ouverte, le Roi finissait par tomber tout seul | trappe ouverte 0,8 s seulement ; levier ajouté à droite pour la phase 3 (il vise BIDULE) |
+| v0.4 – passage au MMC1 : une banque tirait des routines cc65 absentes du moteur commun | détection automatique (make_rom.py) + `src/libforce.s` |
+| v0.4 – écran noir en entrant dans le monde 2 | index de salle non ramené à 0-7 dans l'écran de présentation |
+| v0.4 – une serrure se comptait plusieurs fois (la plaque verrouillée était « relâchée » puis redessinée) | plaque verrouillée ignorée ; animation de tuile annulée |
+| v0.4 – le fauteuil poussait la commode contre la porte sans fin | son compteur de blocage partageait un champ avec l'animation d'écrasement : variables propres en RAM de banque |
+| v0.4 – Madame Armoire se battait toute seule en 20 s (balle élastique, objets avalés en marchant) | elle n'avale que ce qu'on lui lance ; biscuits au lieu de la balle ; demi-tour quand elle est bloquée |
 
 ## Limites connues (honnêtement)
 
 - **Testé uniquement sur émulateur** (cynes ; captures visuellement contrôlées). Pas encore de test sur Mesen/FCEUX ni sur vraie console.
 - Le **son** est vérifié par l'état du moteur (flux actifs, lecture qui avance), pas à l'oreille : l'émulateur de test ne restitue pas l'audio.
 - Le test de déterminisme compare l'état de jeu, pas les minuteries musicales (l'alignement CPU/PPU à l'allumage peut les décaler d'une trame d'une instance d'émulateur à l'autre).
-- Mondes 2 à 5 non commencés ; ils demanderont le passage au mapper MMC1.
+- Mondes 3 à 5 non commencés. Le moteur commun n'a plus que ~600 octets de libre : le code des prochains mondes ira dans leur banque (comme `world2.c`).
 - Le pic de calcul dans la scène la plus chargée laisse peu de cycles libres sur 29 780 : les salles plus chargées (8 objets en mouvement) demanderont d'autres optimisations (physique en assembleur).

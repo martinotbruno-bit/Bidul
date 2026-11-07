@@ -1,7 +1,8 @@
 /* =====================================================================
- *  TCHAK ! - module 16 : gestion des menus et ecrans
- *  Ecran titre (logo anime), menu, mot de passe, presentation du monde,
- *  partie terminee, fin.
+ *  TCHAK ! - module 16 : gestion des menus (BANQUE DES MENUS, MMC1)
+ *  Ecran titre (logo anime), menu, mot de passe, partie terminee, fin de
+ *  monde. Compile dans les segments BANKCODE/BANKDATA : ce code n'existe
+ *  que dans la banque 0 et n'est appele que par la table de sauts.
  * ===================================================================== */
 #include "nes.h"
 #include "game.h"
@@ -12,55 +13,7 @@ static const u8 pal_title[32] = {
     0x11, 0x0F, 0x24, 0x30,   0x11, 0x06, 0x16, 0x30,
     0x11, 0x07, 0x17, 0x28,   0x11, 0x0F, 0x28, 0x30
 };
-static const u8 pal_dark[32] = {
-    0x0F, 0x01, 0x21, 0x30,   0x0F, 0x05, 0x15, 0x27,
-    0x0F, 0x0A, 0x1A, 0x2A,   0x0F, 0x01, 0x11, 0x21,
-    0x0F, 0x0F, 0x24, 0x30,   0x0F, 0x06, 0x16, 0x30,
-    0x0F, 0x07, 0x17, 0x28,   0x0F, 0x0F, 0x2A, 0x30
-};
-
-/* noms des mondes sur deux lignes (32 colonnes maximum) */
-static const char *const world_names[10] = {
-    "LA FABRIQUE DES CHOSES MOLLES", "",
-    "LA MAISON QUI N'EN FAIT", "QU'] SA T&TE",
-    "L'USINE DES CATASTROPHES", "",
-    "LE MONDE QUI MARCHE DE TRAVERS", "",
-    "LE GRAND BAZAR", ""
-};
-
 static u8 i_, k_;
-
-static void frame(void)
-{
-    oam_finish();
-    ppu_wait_nmi();
-    vbuf_len = 0;
-    pad_poll();
-}
-
-static u8 strlen8(const char *s)
-{
-    u8 n = 0;
-    while (s[n]) ++n;
-    return n;
-}
-
-static void put_center(u8 y, const char *s)
-{
-    put_text((u8)(16 - (strlen8(s) >> 1)), y, s);
-}
-
-static void draw_bidule(u8 x, u8 y, u8 f, u8 flip)
-{
-    const u8 *t = bidule_frames[f];
-    u8 k;
-    for (k = 0; k < 3; ++k) {
-        if (flip) { oam_spr(x, y, t[1], 0x40); oam_spr(x + 8, y, t[0], 0x40); }
-        else      { oam_spr(x, y, t[0], 0);    oam_spr(x + 8, y, t[1], 0); }
-        t += 2;
-        y += 8;
-    }
-}
 
 /* =============================================================== TITRE */
 #define LOGO_Y   40
@@ -263,51 +216,6 @@ void password_screen(void)
     }
 }
 
-/* ======================================= PRESENTATION DU MONDE / SALLE */
-void intro_screen(void)
-{
-    static u8 pw[5];
-    u8 t;
-    const Room *r = &rooms[room_idx];
-
-    ppu_off();
-    oam_clear(); oam_finish();
-    screen_clear();
-    attr_fill(0);
-    vram_adr(NT_ADR(12, 5));
-    put_text(12, 5, "MONDE");
-    vram_adr(NT_ADR(18, 5));
-    vram_put('0' + r->world);
-    put_center(8, world_names[(r->world - 1) * 2]);
-    put_center(9, world_names[(r->world - 1) * 2 + 1]);
-    put_text(11, 13, "SALLE");
-    vram_adr(NT_ADR(17, 13));
-    vram_put('0' + r->world);
-    vram_put('-');
-    vram_put('0' + r->num);
-    put_center(15, r->name);
-    put_text(10, 21, "_");
-    put_num(12, 21, lives);
-    put_text(18, 21, "@");
-    put_num(20, 21, socks);
-    password_make(pw);
-    put_text(10, 25, "CODE :");
-    put_text(17, 25, (const char *)pw);
-    pal_set(pal_dark);
-    ppu_on();
-    music_stop();
-    sfx_play(SFX_SELECT);
-
-    for (t = 0; t < 150; ++t) {
-        oam_clear();
-        draw_bidule(120, 136, (t & 32) ? BF_LOOK : BF_IDLE, (t >> 6) & 1);
-        frame();
-        if (t > 20 && (pad_new & (PAD_START | PAD_A | PAD_B))) break;
-    }
-    pal_fade_black();
-    game_state = GS_PLAY;
-}
-
 /* ===================================================== PARTIE TERMINEE */
 void gameover_screen(void)
 {
@@ -335,21 +243,28 @@ void gameover_screen(void)
     game_state = GS_TITLE;
 }
 
-/* ================================================================= FIN */
-void end_screen(void)
+/* ======================================================= FIN DE MONDE */
+static const char *const end_txt[NWORLDS * 3] = {
+    "LE ROI DU REBOND EST VAINCU.", "LA FABRIQUE DES CHOSES MOLLES", "EST SAUV[E... OU PRESQUE.",
+};
+
+void __fastcall__ end_screen(u8 world)
 {
-    u8 t = 0, hop;
+    u8 t = 0, hop, last;
+    last = (room_idx >= TOTAL_ROOMS);
     ppu_off();
     oam_clear(); oam_finish();
     screen_clear();
     attr_fill(0);
     put_center(4, "BRAVO !");
-    put_center(8, "LE ROI DU REBOND EST VAINCU.");
-    put_center(10, "LA FABRIQUE DES CHOSES MOLLES");
-    put_center(12, "EST SAUV[E... OU PRESQUE.");
+    put_center(8, end_txt[(world - 1) * 3]);
+    put_center(10, end_txt[(world - 1) * 3 + 1]);
+    put_center(12, end_txt[(world - 1) * 3 + 2]);
     put_text(9, 22, "CHAUSSETTES :");
     put_num(23, 22, socks);
-    put_center(26, "FIN DU MONDE 1");
+    put_text(10, 26, "FIN DU MONDE");
+    vram_adr(NT_ADR(23, 26));
+    vram_put('0' + world);
     pal_set(pal_title);
     ppu_on();
     music_play(MUS_ENDING);
@@ -362,5 +277,5 @@ void end_screen(void)
         if (t > 60 && (pad_new & PAD_START)) break;
     }
     pal_fade_black();
-    game_state = GS_TITLE;
+    game_state = last ? GS_TITLE : GS_INTRO;
 }

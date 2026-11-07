@@ -5,13 +5,13 @@ Vous êtes BIDULE, une créature qui ne sait pas sauter mais qui sait faire **TC
 
 ![Titre](docs/img/02_titre.png) ![Boss](docs/img/21_boss.png)
 
-## État : version 0.3 – Monde 1 complet (8 salles + boss)
+## État : version 0.4 – Mondes 1 et 2 complets (16 salles + 2 boss), cartouche MMC1
 
 Le prototype de 3 salles a validé la mécanique (§22) ; le **Monde 1 – La Fabrique des choses molles** est maintenant complet : 8 salles de difficulté croissante et le boss, le Roi du Rebond.
 
 Ce qui est programmé et testé :
 
-- ROM iNES (mapper 0, 40 Ko) : `dist/tchak_prototype.nes`
+- ROM iNES **MMC1** (128 Ko PRG + 16 Ko CHR) : `dist/tchak.nes`
 - BIDULE avec ses 13 types d'animation, le TCHAK, échelles, ressorts, convoyeurs, cibles, plaques, leviers, cuves de gelée, portes
 - Système d'objets générique (balle, caisse, chaussette) et un ennemi (le Trouillard)
 - Réactions en chaîne avec délai visible et protection contre les boucles infinies
@@ -20,11 +20,13 @@ Ce qui est programmé et testé :
 - Moteur son APU : 6 musiques originales (dont le thème du boss), 13 bruitages
 - 25 tests automatiques sous émulateur (tous réussis), dont un « joueur qui appuie au hasard » qui ne résout aucune des 8 salles
 
-Pas encore fait : les mondes 2 à 5 (32 salles, 4 boss) et le passage au mapper MMC1, nécessaire pour la suite (le Monde 1 occupe déjà 28 Ko sur 32).
+- **Monde 2 – La maison qui n'en fait qu'à sa tête** : les meubles ont des humeurs (fauteuil grognon, lampe curieuse, commode paresseuse, coffre gourmand), 8 salles, boss **Madame Armoire**
+
+Pas encore fait : les mondes 3 à 5 (24 salles, 3 boss).
 
 ## Jouer
 
-Ouvrez `dist/tchak_prototype.nes` dans un émulateur NES. Commandes : croix = marcher / échelles, **B = TCHAK**, A = levier, START = pause, SELECT = recommencer la salle. Voir le [manuel](docs/MANUEL.md).
+Ouvrez `dist/tchak.nes` dans un émulateur NES. Commandes : croix = marcher / échelles, **B = TCHAK**, A = levier, START = pause, SELECT = recommencer la salle. Voir le [manuel](docs/MANUEL.md).
 
 ## Compiler
 

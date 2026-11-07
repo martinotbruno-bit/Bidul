@@ -57,7 +57,7 @@ u8 password_check(const u8 *in)
     v ^= PW_XOR;
     r = v & 63;
     s = (v >> 6) & 63;
-    if ((u8)(v >> 12) != checksum(r, s) || r >= ROOM_COUNT || s > 40) return 0;
+    if ((u8)(v >> 12) != checksum(r, s) || r >= TOTAL_ROOMS || s > 40) return 0;
     progress_new_game();
     room_idx = r;
     socks = s;

@@ -3,6 +3,8 @@
 ;  boucle principale, cote assembleur)
 ; =====================================================================
         .export   __STARTUP__ : absolute = 1
+        .export   _bank_set, _chr_set
+        .exportzp _cur_bank
         .export   _ppu_wait_nmi, _ppu_off, _ppu_on, _pad_poll
         .export   _vram_adr, _vram_put, _vram_fill, _vram_write
         .exportzp _frame_cnt, _pad, _pad_new, _nmi_ready
@@ -24,14 +26,6 @@ OAMDMA    = $4014
 JOY1      = $4016
 
 ; ---------------------------------------------------------------------
-.segment "HEADER"
-        .byte "NES", $1A
-        .byte 2                 ; 2 x 16 Ko PRG
-        .byte 1                 ; 1 x 8 Ko CHR
-        .byte $01               ; mapper 0 (NROM), mirroring vertical
-        .byte $00
-        .res  8, 0
-
 .segment "ZEROPAGE"
 _frame_cnt: .res 1
 _pad:       .res 1
@@ -45,6 +39,7 @@ _scroll_y:  .res 1
 _pal_dirty: .res 1
 vptr:       .res 2
 _idle_cnt:  .res 2
+_cur_bank:  .res 1
 
 .segment "OAM"
 _OAM_BUF:   .res 256
@@ -96,6 +91,19 @@ reset:
 
         lda #$FF
         sta _vram_buf
+        ; --- MMC1 : PRG en mode 32 Ko, CHR en mode 8 Ko, miroir vertical
+        lda #$80
+        sta $8000               ; remise a zero du registre a decalage
+        lda #$02
+        ldx #5
+@ctl:   sta $8000
+        lsr a
+        dex
+        bne @ctl
+        lda #0
+        jsr _bank_set           ; banque 0 : menus
+        lda #0
+        jsr _chr_set
         jsr sound_init
         lda #%10001000          ; NMI on, sprites en $1000, decor en $0000
         sta _ppu_ctrl
@@ -189,6 +197,28 @@ irq:    rti
 
 ; ---------------------------------------------------------------------
 .segment "CODE"
+
+; void bank_set(u8 b) : banque PRG de 32 Ko (MMC1, registre $E000)
+;   Le moteur est identique dans toutes les banques : l'execution continue.
+_bank_set:
+        sta _cur_bank
+        asl a                   ; en mode 32 Ko le bit 0 est ignore
+        ldx #5
+@w:     sta $E000
+        lsr a
+        dex
+        bne @w
+        rts
+
+; void chr_set(u8 b) : banque CHR de 8 Ko (registre $A000)
+_chr_set:
+        asl a
+        ldx #5
+@w:     sta $A000
+        lsr a
+        dex
+        bne @w
+        rts
 
 ; void ppu_wait_nmi(void) : valide la trame et attend la VBlank suivante
 _ppu_wait_nmi:
@@ -318,5 +348,3 @@ _vram_write:
         .word reset
         .word irq
 
-.segment "CHARS"
-        .incbin "../build/tchak.chr"

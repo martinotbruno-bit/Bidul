@@ -298,7 +298,7 @@ def t16_fin_du_prototype():
     """Apres le boss (salle 1-8), l'ecran de fin du monde 1 s'affiche."""
     g = Game(); g.goto_room(7)
     g.poke("room_result", 1)
-    check(g.until(lambda: g.u8("game_state") == 8, 300), "pas d'ecran de fin")
+    check(g.until(lambda: g.u8("game_state") == 8, 300), "pas d'ecran de fin du monde 1")
     g.run(90)
     shot(g, "16_fin")
 
@@ -479,6 +479,168 @@ def t25_boss_attendre_ne_suffit_pas():
     check(g.u8("o_state", 0) == 0, "le Roi est tombe sans levier")
     check(squashed, "le Roi n'a jamais touche BIDULE immobile")
     check(g.u8("lives") == 5, "vie perdue")
+
+# ============================================================== MONDE 2
+def w2(g, n):
+    g.goto_room(7 + n)
+
+@test
+def t30_w2_1_fauteuil():
+    """2-1 : depuis la gauche le fauteuil fonce vers BIDULE et tombe dans la gelee ; depuis la droite
+    il fonce jusqu'a la porte et s'arrete sur la plaque."""
+    g = Game(); w2(g, 1); st = g.nes.save()
+    check(g.u8("cur_bank") == 2, "banque du monde 2 non selectionnee")
+    shot(g, "30_w2_fauteuil")
+    g.until(lambda: g.bx() <= 18, 200, LEFT)
+    g.until(lambda: g.u8("b_ground") and g.by() > 180, 200, DOWN)
+    g.press(B, 2, 120)
+    check(g.obj(0)["flags"] & 4 or g.obj(0)["x"] == 112, "le fauteuil aurait du tomber dans la gelee")
+    g.nes.load(st)
+    g.until(lambda: g.bx() >= 170, 200, RIGHT)
+    g.until(lambda: g.u8("b_ground") and g.by() > 180, 200, DOWN)
+    g.press(B, 2, 0)
+    check(g.until(lambda: door_open(g, 14, 9), 200), "porte fermee")
+    check(g.until(lambda: g.u8("b_state") == 3, 300, RIGHT), "sortie")
+
+@test
+def t31_w2_2_lampe():
+    """2-2 : la lampe vient la ou BIDULE fait TCHAK : il faut le faire SUR la plaque."""
+    g = Game(); w2(g, 2); st = g.nes.save()
+    g.press(B, 2, 150)
+    check(not door_open(g, 1, 9), "porte ouverte par le reflexe")
+    g.nes.load(st)
+    g.until(lambda: g.bx() <= 48, 300, LEFT)
+    g.press(B, 2, 0)
+    check(g.until(lambda: door_open(g, 1, 9), 300), "porte fermee")
+    shot(g, "31_w2_lampe")
+    check(g.until(lambda: g.u8("b_state") == 3, 300, LEFT), "sortie")
+
+@test
+def t32_w2_3_commode():
+    """2-3 : un seul TCHAK ne suffit pas ; 3 TCHAK depuis sa gauche -> elle file sur la plaque."""
+    g = Game(); w2(g, 3)
+    g.until(lambda: g.bx() <= 60, 300, LEFT)
+    g.press(B, 2, 60)
+    check(g.obj(0)["x"] == 96, "la commode a bouge au premier TCHAK")
+    g.press(B, 2, 26)
+    g.press(B, 2, 0)
+    check(g.until(lambda: door_open(g, 14, 9), 300), "porte fermee")
+    shot(g, "32_w2_commode")
+    check(g.until(lambda: g.u8("b_state") == 3, 300, RIGHT), "sortie")
+
+@test
+def t33_w2_4_coffre():
+    """2-4 : doser la poussee du biscuit pour que le coffre le mange SUR la plaque."""
+    g = Game(); w2(g, 4)
+    g.until(lambda: g.bx() <= 25, 100, LEFT)
+    g.run(1, RIGHT)
+    g.press(B, 2, 0)
+    check(g.until(lambda: door_open(g, 14, 9), 400), "porte fermee")
+    shot(g, "33_w2_coffre")
+
+@test
+def t34_w2_5_serrures():
+    """2-5 : trois serrures, une par humeur (commode, fauteuil, lampe)."""
+    g = Game(); w2(g, 5)
+    g.until(lambda: g.bx() <= 60, 100, LEFT)
+    for _ in range(3):
+        g.press(B, 2, 26)
+    g.run(150)
+    check(g.u8("lock_count") == 1, "serrure de la commode")
+    g.until(lambda: g.bx() >= 140, 200, RIGHT)
+    g.run(1, LEFT)
+    g.press(B, 2, 150)
+    check(g.u8("lock_count") == 2, "serrure du fauteuil")
+    g.until(lambda: g.bx() <= 34, 300, LEFT)
+    g.press(B, 2, 250)
+    check(g.u8("lock_count") == 3 and door_open(g, 1, 9), "serrure de la lampe / porte")
+    shot(g, "34_w2_serrures")
+    check(g.until(lambda: g.u8("b_state") == 3, 300, LEFT), "sortie")
+
+@test
+def t35_w2_6_au_choix():
+    """2-6 : deux coupables possibles : la commode (3 TCHAK) ou le fauteuil qui la pousse."""
+    for mode in ("commode", "fauteuil"):
+        g = Game(); w2(g, 6)
+        if mode == "commode":
+            g.until(lambda: g.bx() <= 120, 200, LEFT)
+            for _ in range(3):
+                g.press(B, 2, 26)
+        else:
+            g.until(lambda: g.bx() <= 150, 200, LEFT)
+            g.press(B, 2, 0)
+        check(g.until(lambda: door_open(g, 1, 9), 300), "porte fermee (%s)" % mode)
+    check(g.until(lambda: g.u8("b_state") == 3, 400, LEFT), "sortie")
+
+@test
+def t36_w2_7_grand_menage():
+    """2-7 : lampe + fauteuil d'un seul TCHAK bien place, planche (levier), puis la commode."""
+    g = Game(); w2(g, 7)
+    g.until(lambda: g.bx() <= 178, 100, LEFT)
+    g.press(B, 2, 220)
+    check(g.u8("lock_count") == 2, "lampe + fauteuil")
+    g.until(lambda: g.bx() <= 162, 100, LEFT)
+    check(g.until(lambda: g.u8("b_state") == 0 and g.by() < 110, 200, UP), "echelle")
+    g.run(3, UP)
+    g.press(A, 2, 30)
+    g.until(lambda: g.u8("b_ground") and g.by() > 180, 200, DOWN)
+    g.until(lambda: g.bx() <= 140, 100, LEFT)
+    for _ in range(3):
+        g.press(B, 2, 26)
+    check(g.until(lambda: door_open(g, 1, 9), 300), "porte fermee")
+    check(g.until(lambda: g.u8("b_state") == 3, 400, LEFT), "sortie")
+
+@test
+def t37_w2_8_madame_armoire():
+    """2-8 : Madame Armoire ne se bat pas seule (30 s) ; il faut lui LANCER des biscuits pour
+    qu'elle les recrache dans les 3 serrures."""
+    g = Game(); w2(g, 8); st0 = g.nes.save()
+    check(g.u8("boss_room") == 1, "musique de boss")
+    shot(g, "35_w2_armoire")
+    g.run(1800)
+    check(g.u8("lock_count") == 0, "elle s'est vaincue toute seule")
+    g.nes.load(st0)
+    def approach(j):
+        o = g.obj(j); k = g.obj(0)
+        tx = max(16, min(208, o["x"] - 20 if k["x"] > o["x"] else o["x"] + 20))
+        if g.bx() > tx: g.until(lambda: g.bx() <= tx, 200, LEFT)
+        else: g.until(lambda: g.bx() >= tx, 200, RIGHT)
+        g.run(1, RIGHT if k["x"] > o["x"] else LEFT)
+    for lock in range(1, 4):
+        found = False
+        for j in (1, 2):
+            st = g.nes.save(); approach(j); st2 = g.nes.save()
+            for d in range(0, 360, 6):
+                g.nes.load(st2); g.run(d); g.press(B, 2, 0)
+                if g.until(lambda: g.u8("lock_count") >= lock, 220):
+                    found = True; break
+            if found: break
+            g.nes.load(st)
+        check(found, "serrure %d introuvable" % lock)
+        g.run(60)
+    check(door_open(g, 14, 9), "porte fermee")
+    shot(g, "36_w2_armoire_vaincue")
+    check(g.until(lambda: g.u8("b_state") == 3, 500, RIGHT), "sortie")
+    check(g.until(lambda: g.u8("game_state") == 8, 400), "pas d'ecran de fin du monde 2")
+
+@test
+def t38_w2_joueur_au_hasard():
+    """Monde 2 : un joueur qui appuie au hasard (4 parties de 20 s par salle) ne resout aucune salle."""
+    import random
+    acts = [0, LEFT, RIGHT, UP, DOWN, B, A, LEFT | B, RIGHT | B, UP | A]
+    g = Game(); g.goto_room(8)
+    for room in range(8, 16):
+        if room > 8:
+            g.skip_room(room - 1)
+        st = g.nes.save()
+        for seed in range(4):
+            g.nes.load(st)
+            rnd = random.Random(seed * 13 + room)
+            for _ in range(200):
+                g.run(6, rnd.choice(acts))
+                check(g.u8("b_state") != 3 and g.u8("room_idx") == room,
+                      "salle 2-%d resolue au hasard (graine %d)" % (room - 7, seed))
+        g.nes.load(st)
 
 # =================================================================== main
 def main():

@@ -18,7 +18,8 @@ la caisse tombe et le Trouillard (reveille) fuit lui aussi vers la plaque.
 [ OK ] t17_performances - Aucune trame perdue (la logique tient dans 1/60 s) pendant une reaction en chaine.
 [ OK ] t18_son - La musique du monde joue sur 4 canaux et le TCHAK declenche son bruitage (carre 2 + bruit).
 [ OK ] t19_joueur_qui_ne_comprend_rien - Aucune salle n'est resolue par un joueur qui appuie au hasard (6 parties de 20 s par salle, 8 salles).
-[ OK ] t20_salle2_boing - Salle 1-2 : balle -> puits -> ressort -> cibles -> porte sur la corniche (+ chaussette).
+[ OK ] t20_salle2_boing - Salle 1-2 : le reflexe envoie la balle dans la gelee ; depuis la droite, balle -> puits ->
+ressort -> cibles -> porte sur la corniche, atteinte en rebondissant soi-meme.
 [ OK ] t21_salle3_tunnel - Salle 1-3 : effraye depuis le toit, le Trouillard fuit dans la gelee ; depuis sa gauche,
 il fonce dans le tunnel (trop bas pour BIDULE) et pousse la caisse sur la plaque.
 [ OK ] t22_salle5_poids_plume - Salle 1-5 : BIDULE seul sur la plaque est trop leger (indice) ; BIDULE + balle = 2 ->
@@ -28,5 +29,16 @@ l'effrayer depuis sa droite -> plaque -> porte.
 [ OK ] t24_boss_roi_du_rebond - Salle 1-8 : le Roi tombe 3 fois dans la trappe (levier au bon moment) -> porte -> fin.
 [ OK ] t25_boss_attendre_ne_suffit_pas - Salle 1-8 : sans le levier le Roi ne tombe jamais ; s'il rebondit sur BIDULE, celui-ci est
 aplati (sans perte de vie).
+[ OK ] t30_w2_1_fauteuil - 2-1 : depuis la gauche le fauteuil fonce vers BIDULE et tombe dans la gelee ; depuis la droite
+il fonce jusqu'a la porte et s'arrete sur la plaque.
+[ OK ] t31_w2_2_lampe - 2-2 : la lampe vient la ou BIDULE fait TCHAK : il faut le faire SUR la plaque.
+[ OK ] t32_w2_3_commode - 2-3 : un seul TCHAK ne suffit pas ; 3 TCHAK depuis sa gauche -> elle file sur la plaque.
+[ OK ] t33_w2_4_coffre - 2-4 : doser la poussee du biscuit pour que le coffre le mange SUR la plaque.
+[ OK ] t34_w2_5_serrures - 2-5 : trois serrures, une par humeur (commode, fauteuil, lampe).
+[ OK ] t35_w2_6_au_choix - 2-6 : deux coupables possibles : la commode (3 TCHAK) ou le fauteuil qui la pousse.
+[ OK ] t36_w2_7_grand_menage - 2-7 : lampe + fauteuil d'un seul TCHAK bien place, planche (levier), puis la commode.
+[ OK ] t37_w2_8_madame_armoire - 2-8 : Madame Armoire ne se bat pas seule (30 s) ; il faut lui LANCER des biscuits pour
+qu'elle les recrache dans les 3 serrures.
+[ OK ] t38_w2_joueur_au_hasard - Monde 2 : un joueur qui appuie au hasard (4 parties de 20 s par salle) ne resout aucune salle.
 
-25/25 tests reussis en 306.0 s
+34/34 tests reussis en 532.3 s

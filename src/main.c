@@ -30,13 +30,13 @@ static void start_room(void)
     vbuf_reset();
     room_load(room_idx);
     room_draw();
-    pal_set(pal_game);
+    pal_set(pal_world);
     oam_clear();
     oam_finish();
     ppu_on();
     vbuf_len = 0;
     last_frame = frame_cnt;
-    music_play(boss_room ? MUS_BOSS : MUS_WORLD1);
+    music_play(boss_room ? MUS_BOSS : world_music);
     hud_message(room->name);
 }
 
@@ -74,7 +74,8 @@ static void play_room(void)
         if (room_result == 1) {
             pal_fade_black();
             ++room_idx;
-            game_state = (room_idx >= ROOM_COUNT) ? GS_END : GS_INTRO;
+            /* fin d'un monde (8e salle) : ecran de fin de monde */
+            game_state = ((room_idx & 7) == 0 || room_idx >= TOTAL_ROOMS) ? GS_END : GS_INTRO;
             return;
         }
         if (room_result == 2) {
@@ -86,18 +87,32 @@ static void play_room(void)
     }
 }
 
+/* banque (et table de decors) du monde de la salle courante */
+void world_bank(void)
+{
+    u8 w = room_idx >> 3;
+    bank_set(1 + w);
+    chr_set(w);
+}
+
+static void menu_bank(void)
+{
+    bank_set(BANK_MENU);
+    chr_set(0);
+}
+
 void main(void)
 {
     game_state = GS_TITLE;
     progress_new_game();
     for (;;) {
         switch (game_state) {
-        case GS_TITLE:    title_screen();    break;
-        case GS_PASSWORD: password_screen(); break;
-        case GS_INTRO:    intro_screen();    break;
-        case GS_PLAY:     play_room();       break;
-        case GS_GAMEOVER: gameover_screen(); break;
-        case GS_END:      end_screen();      break;
+        case GS_TITLE:    menu_bank(); bk_title();    break;
+        case GS_PASSWORD: menu_bank(); bk_password(); break;
+        case GS_INTRO:    world_bank(); intro_screen(); break;
+        case GS_PLAY:     world_bank(); play_room();  break;
+        case GS_GAMEOVER: menu_bank(); bk_gameover(); break;
+        case GS_END:      menu_bank(); bk_end((u8)((room_idx - 1) >> 3) + 1); break;
         default:          game_state = GS_TITLE; break;
         }
     }

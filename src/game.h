@@ -108,11 +108,33 @@ void ev_boss(u8 on);
 extern u8 b_on_plate;
 
 /* ---- ecrans (menus.c) ------------------------------------------------- */
+/* banque des menus : appels par la table de sauts (bankhdr) */
+void bk_title(void);
+void bk_password(void);
+void bk_gameover(void);
+void __fastcall__ bk_end(u8 world);
 void title_screen(void);
 void password_screen(void);
-void intro_screen(void);
 void gameover_screen(void);
-void end_screen(void);
-extern const u8 pal_game[32];
+void __fastcall__ end_screen(u8 world);
+/* ecrans communs (screens.c) */
+void intro_screen(void);
+void frame(void);
+u8   strlen8(const char *s);
+void put_center(u8 y, const char *s);
+void draw_bidule(u8 x, u8 y, u8 f, u8 flip);
+extern const u8 pal_dark[32];
+/* banques MMC1 (crt0.s) */
+#define BANK_MENU 0
+void __fastcall__ bank_set(u8 b);
+void __fastcall__ chr_set(u8 b);
+void world_bank(void);
+void __fastcall__ bk_wupdate(u8 i);
+void __fastcall__ bk_wdraw(u8 i);
+void __fastcall__ bk_wtchak(u8 i);
+extern s8 tk_dir;
+extern u8 tk_adx, tk_ady;
+extern u8 lock_count;
+void tchak_impulse(u8 i);
 
 #endif

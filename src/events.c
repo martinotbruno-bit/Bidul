@@ -25,6 +25,7 @@ static u8 q_n;
 static u8 budget;
 static u8 hint_light;
 u8 b_on_plate;
+u8 lock_count;
 
 void events_init(void)
 {
@@ -33,6 +34,7 @@ void events_init(void)
     q_n = 0;
     budget = 16;
     hint_light = 0;
+    lock_count = 0;
     b_on_plate = 0;
 }
 
@@ -144,6 +146,15 @@ static void execute(u8 type, u8 x, u8 y)
         while (w--) map_set(x++, y, MT_EMPTY);
         sfx_play(SFX_LEVER);
         break;
+    case A_LOCK:
+        /* definitif : annule aussi une animation de tuile en cours sur la case */
+        tile_anim(x, y, MT_BLOCK, MT_BLOCK, 1);
+        map_set(x, y, MT_BLOCK);
+        sfx_play(SFX_DOOR);
+        ++lock_count;
+        ev_boss(1);
+        if (lock_count >= 3) ev_boss(0);
+        break;
     case A_HATCH_PULSE:
         while (w--) tile_anim(x++, y, MT_EMPTY, MT_HATCH, 48);
         sfx_play(SFX_LEVER);
@@ -171,6 +182,7 @@ void events_update(void)
         if (t_cool[t]) --t_cool[t];
         p = TR(t);
         if (p[0] != TK_PLATE) continue;
+        if (mt_coll[map[(p[2] << 4) | p[1]]] != C_PLATE) continue;   /* verrouillee */
         pressed = t_load[t] >= 2;
         /* indice : BIDULE seul sur une plaque */
         if (t_load[t] == 1 && b_on_plate && !hint_light) {

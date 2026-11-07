@@ -16,17 +16,11 @@ static u8 attr_sh[64];
 static u8 an_cx[4], an_cy[4], an_mt[4], an_t[4];
 static u8 msg_t;
 
-const u8 pal_game[32] = {
-    0x01, 0x0C, 0x17, 0x27,   0x01, 0x15, 0x25, 0x35,
-    0x01, 0x1A, 0x2A, 0x38,   0x01, 0x28, 0x18, 0x08,
-    0x01, 0x0F, 0x24, 0x30,   0x01, 0x06, 0x16, 0x30,
-    0x01, 0x07, 0x17, 0x28,   0x01, 0x0F, 0x2A, 0x30
-};
 
 void room_load(u8 idx)
 {
     u8 i;
-    room = &rooms[idx];
+    room = &rooms[idx & 7];
     for (i = 0; i < MAP_SIZE; ++i) map[i] = room->map[i];
     conv_dir = room->conv;
     shake = 0;
@@ -34,7 +28,7 @@ void room_load(u8 idx)
     for (i = 0; i < 4; ++i) an_t[i] = 0;
     objects_init();
     boss_room = 0;
-    for (i = 0; i < MAX_OBJ; ++i) if (o_type[i] == OT_KING) boss_room = 1;
+    for (i = 0; i < MAX_OBJ; ++i) if (o_type[i] == OT_KING || o_type[i] == OT_WARDROBE) boss_room = 1;
     events_init();
     bidule_init(room->bx, room->by);
     tchak_count = 0;

@@ -1,4 +1,4 @@
-# TCHAK ! – La Grande Catastrophe · Manuel de jeu (Monde 1)
+# TCHAK ! – La Grande Catastrophe · Manuel de jeu (Mondes 1 et 2)
 
 ![titre](img/02_titre.png)
 
@@ -42,6 +42,8 @@ Il est affiché sur l'écran de présentation de chaque salle (« CODE : »). Au
 
 Codes (sans chaussette) : 1-1 `BNFR` · 1-2 `FNFS` · 1-3 `DNFT` · 1-4 `SNFV` · 1-5 `RNFL` · 1-6 `VNFM` · 1-7 `TNFN` · 1-8 (boss) `MNFP`. Le code affiché en jeu tient aussi compte des chaussettes trouvées.
 
+Monde 2 : 2-1 `LNFG` · 2-2 `PNFH` · 2-3 `NNFJ` · 2-4 `HNFK` · 2-5 `GNFB` · 2-6 `KNFC` · 2-7 `JNFD` · 2-8 `CNFF`.
+
 ## Conseils
 
 - Si quelque chose tombe dans la gelée, ce n'est pas grave : observez, il reviendra.
@@ -50,6 +52,17 @@ Codes (sans chaussette) : 1-1 `BNFR` · 1-2 `FNFS` · 1-3 `DNFT` · 1-4 `SNFV` �
 - BIDULE est tout maigre : il ne pèse pas assez pour enfoncer une plaque tout seul.
 - Le Roi du Rebond ne se bat pas : il se piège. Observez où il retombe.
 
+## La maison qui n'en fait qu'à sa tête (Monde 2)
+
+Dans la maison, le TCHAK ne pousse pas les meubles : il les vexe, les intrigue ou les réveille.
+
+- **Le fauteuil grognon** fonce vers vous dès qu'il entend un TCHAK, jusqu'au premier obstacle. Gare à la tête !
+- **La lampe curieuse** vient voir exactement là où vous avez fait TCHAK.
+- **La commode paresseuse** fait la sourde oreille : il faut insister (trois TCHAK de suite), et elle s'en va de l'autre côté.
+- **Le coffre gourmand** ne s'intéresse qu'aux biscuits : il va les manger là où ils tombent.
+- Certaines portes ont **trois serrures** : chaque plaque ou cible ne compte qu'une fois.
+- **Madame Armoire** avale ce qu'on lui lance et le recrache par-dessus elle, vers l'arrière. Un TCHAK tout près la fait se retourner.
+
 ## Où jouer
 
-Ouvrez `dist/tchak_prototype.nes` avec un émulateur NES (Mesen, FCEUX, Nestopia…). La ROM utilise le mapper 0 (NROM-256) et pourra être gravée sur une cartouche NROM ; elle n'a pas encore été essayée sur une vraie console.
+Ouvrez `dist/tchak.nes` avec un émulateur NES (Mesen, FCEUX, Nestopia…). La ROM utilise le mapper 1 (MMC1) ; elle n'a pas encore été essayée sur une vraie console.

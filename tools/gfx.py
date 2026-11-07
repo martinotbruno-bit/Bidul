@@ -716,6 +716,280 @@ TROU_RUN2 = [
     "...11...1111....",
 ]
 
+# ============================== MONDE 2 : meubles a humeurs ==============
+ARMCHAIR = [   # fauteuil grognon (palette 1 : rouge) - endormi
+    "................",
+    "..1111111111....",
+    ".122222222221...",
+    ".123333333321...",
+    ".123111311321...",
+    ".123333333321...",
+    "11233333333211..",
+    "1221111111112211",
+    "1222222222222221",
+    "1233333333333321",
+    "1222222222222221",
+    "1211111111111121",
+    "1221........1221",
+    ".11..........11.",
+    ".1............1.",
+    "................",
+]
+ARMCHAIR_MAD = [   # fauteuil en colere (sourcils, bouche)
+    "................",
+    "..1111111111....",
+    ".122222222221...",
+    ".121333331121...",
+    ".123111311321...",
+    ".123131313321...",
+    "11233111113211..",
+    "1221333333312211",
+    "1222222222222221",
+    "1233333333333321",
+    "1222222222222221",
+    "1211111111111121",
+    "1221........1221",
+    ".11..........11.",
+    "11............11",
+    "................",
+]
+LAMP = [   # lampe curieuse (palette 3 : vert/blanc)
+    "....11111111....",
+    "...1333333331...",
+    "..133333333331..",
+    ".13333333333331.",
+    ".11111111111111.",
+    "......1331......",
+    "......1311......",
+    ".....131131.....",
+    ".....133331.....",
+    "......1221......",
+    "......1221......",
+    "......1221......",
+    "......1221......",
+    "....11222211....",
+    "...1222222221...",
+    "...1111111111...",
+]
+LAMP_WALK = [
+    "....11111111....",
+    "...1333333331...",
+    "..133333333331..",
+    ".13333333333331.",
+    ".11111111111111.",
+    "......1331......",
+    "......1131......",
+    ".....131131.....",
+    ".....133331.....",
+    "......1221......",
+    "......1221......",
+    ".....12221......",
+    "....12221.......",
+    "...12221........",
+    "..1222221111....",
+    "..1111112221....",
+]
+DRESSER = [   # commode paresseuse (palette 2 : bois)
+    "1111111111111111",
+    "1333333333333331",
+    "1222222222222221",
+    "1211111111111121",
+    "1213333333333121",
+    "1211113311111121",
+    "1211111111111121",
+    "1213333333333121",
+    "1211113311111121",
+    "1211111111111121",
+    "1213333333333121",
+    "1211113311111121",
+    "1222222222222221",
+    "1111111111111111",
+    ".11..........11.",
+    "................",
+]
+DRESSER_MAD = [
+    "1111111111111111",
+    "1333333333333331",
+    "1222222222222221",
+    "1211111111111121",
+    "1213113333113121",
+    "1211311111131121",
+    "1211111111111121",
+    "1213333333333121",
+    "1211111331111121",
+    "1211113113111121",
+    "1213333333333121",
+    "1211111111111121",
+    "1222222222222221",
+    "1111111111111111",
+    "11............11",
+    "1..............1",
+]
+CHEST = [   # coffre gourmand ferme (palette 2)
+    "................",
+    "................",
+    "...1111111111...",
+    "..122222222221..",
+    ".12333333333321.",
+    ".12222222222221.",
+    "1111111111111111",
+    "1222222112222221",
+    "1222222332222221",
+    "1222222112222221",
+    "1233333333333321",
+    "1222222222222221",
+    "1222222222222221",
+    "1111111111111111",
+    ".1............1.",
+    "................",
+]
+CHEST_OPEN = [   # bouche ouverte
+    "...1111111111...",
+    "..122222222221..",
+    ".12333333333321.",
+    ".12222222222221.",
+    "1111111111111111",
+    "1.3.3.3..3.3.3.1",
+    "1..............1",
+    "1.3.3.3..3.3.3.1",
+    "1111111111111111",
+    "1222222332222221",
+    "1233333333333321",
+    "1222222222222221",
+    "1222222222222221",
+    "1111111111111111",
+    ".1............1.",
+    "................",
+]
+COOKIE = [   # biscuit (palette 2)
+    "................",
+    "................",
+    "................",
+    "................",
+    "................",
+    ".....111111.....",
+    "...1122222211...",
+    "..122212221221..",
+    ".12222222222221.",
+    ".12122222212221.",
+    ".12222212222221.",
+    ".12222222221221.",
+    "..122122222221..",
+    "...1122222211...",
+    ".....111111.....",
+    "................",
+]
+WARDROBE_TOP = [   # Madame Armoire, moitie haute (palette 1)
+    "..111111111111..",
+    ".12222222222221.",
+    "1222222222222221",
+    "1233333333333321",
+    "1213331221333121",
+    "1213131221313121",
+    "1213331221333121",
+    "1211111221111121",
+    "1222221221222221",
+    "1222221221222221",
+    "1233221221223321",
+    "1223221221223221",
+    "1222221221222221",
+    "1222111111112221",
+    "1221333333331221",
+    "1222111111112221",
+]
+WARDROBE_BOT = [
+    "1222221221222221",
+    "1222221221222221",
+    "1222231221322221",
+    "1222221221222221",
+    "1222221221222221",
+    "1222221221222221",
+    "1222221221222221",
+    "1222221221222221",
+    "1222221221222221",
+    "1222221221222221",
+    "1222221221222221",
+    "1111111111111111",
+    "1222222222222221",
+    "1111111111111111",
+    ".11..........11.",
+    ".1............1.",
+]
+WARDROBE_OPEN = [   # portes ouvertes : elle avale
+    "1222221..1222221",
+    "1222221..1222221",
+    "12221.1..1.12221",
+    "1221..1..1..1221",
+    "121...1..1...121",
+    "121..........121",
+    "121..........121",
+    "121..........121",
+    "1221........1221",
+    "12221......12221",
+    "1222221..1222221",
+    "1111111111111111",
+    "1222222222222221",
+    "1111111111111111",
+    ".11..........11.",
+    ".1............1.",
+]
+
+# decors de la maison : papier peint, lambris, parquet
+HOUSE_EMPTY = [
+    "1...............",
+    "................",
+    "....3...........",
+    "...323..........",
+    "....3...........",
+    "................",
+    "1...............",
+    "................",
+    "1...........3...",
+    "...........323..",
+    "1...........3...",
+    "................",
+    "1...............",
+    "................",
+    "1...............",
+    "................",
+]
+HOUSE_WALL = [
+    "3333333333333333",
+    "2222222212222222",
+    "2222222212222222",
+    "2112222212222112",
+    "2222222212222222",
+    "2222222212222222",
+    "2222222212222222",
+    "1111111111111111",
+    "3333333333333333",
+    "2222122222222122",
+    "2222122222222122",
+    "2222122222222122",
+    "2222122222222122",
+    "2222122222222122",
+    "2222122222222122",
+    "1111111111111111",
+]
+HOUSE_FLOOR = [
+    "3333333333333333",
+    "2222222222222222",
+    "2222212222222122",
+    "1111111111111111",
+    "2222222222222222",
+    "2212222222212222",
+    "1111111111111111",
+    "2222222222222222",
+    "2222222122222222",
+    "1111111111111111",
+    "2222222222222222",
+    "2222122222222212",
+    "1111111111111111",
+    "2222222222222222",
+    "2222222212222222",
+    "1111111111111111",
+]
+
 # LE ROI DU REBOND (boss du monde 1) : corps (palette sprite 1) + couronne (palette 2)
 KING = [
     ".....111111.....",
@@ -835,64 +1109,73 @@ FX_DROP = ["........", "...2....", "..222...", "..232...", "..222...", "...2....
 FX_CURSOR = ["3.......", "33......", "333.....", "3333....", "333.....", "33......", "3.......", "........"]
 
 # =====================================================================
-def build():
+# Mondes : chaque monde a sa propre table de decors (CHR de 4 Ko + metatuiles).
+# Les metatuiles "communes" gardent le meme numero dans tous les mondes (le moteur
+# les connait : ressort, porte, cible...) ; leur dessin peut changer par monde.
+MT_MAX = 40
+WORLD_ART = {1: {}, 2: {"EMPTY": HOUSE_EMPTY, "BRICK": HOUSE_WALL, "GIRDER": HOUSE_FLOOR}}          # surcharges de dessin par monde : {nom: art 16x16}
+WORLD_EXTRA = {1: [], 2: []}        # metatuiles propres a un monde : (nom, car, coll, pal, art)
+
+def build_bg(world):
     bg = Bank("bg", reserved=range(0x20, 0x60))
-    sp = Bank("spr")
-    # --- police a sa place ASCII
     for ch, _ in FONT.items():
         bg.add(font_tile(ch), index=ord(ch))
     bg.add(font_tile_blank(), index=0x20)
-
-    # --- metatuiles
-    mt_rows = []
-    for name, ch, coll, pal, art in METATILES:
-        tiles = bg.add_block(art, 2, 2)
-        mt_rows.append((name, ch, coll, pal, tiles))
-
-    # --- logo (decors)
     logo = {}
     for ch in "TCHAK!":
         logo[ch] = bg.add_block(logo_letter(ch), 3, 3)
+    mt_rows = []
+    for name, ch, coll, pal, art in METATILES + WORLD_EXTRA.get(world, []):
+        art = WORLD_ART.get(world, {}).get(name, art)
+        if isinstance(art, list) and art and isinstance(art[0], str):
+            art = grid(art, 16, 16)
+        tiles = bg.add_block(art, 2, 2)
+        mt_rows.append((name, ch, coll, pal, tiles))
+    assert len(mt_rows) <= MT_MAX
+    print("monde %d : tuiles decor %d/256" % (world, 256 - len(bg.free)))
+    return bg, mt_rows, logo
 
-    # --- sprites : BIDULE
+def build():
+    sp = Bank("spr")
+    worlds = sorted(WORLD_ART)
+    bgs = {w: build_bg(w) for w in worlds}
+    logo = bgs[1][2]
+    for w in worlds:
+        assert bgs[w][2] == logo, "le logo doit avoir les memes tuiles dans tous les mondes"
+
+    # --- sprites (communs a tous les mondes)
     bid = []
     for name, rows in BIDULE_FRAMES:
         g = grid(rows, 16, 24)
         bid.append((name, sp.add_block(g, 2, 3)))
     objs = {}
-    for name, art in (("BALL", BALL), ("BALL_SQ", BALL_SQUASH), ("CRATE", CRATE), ("CRATE_HIT", CRATE_HIT),
-                      ("TROU_SLEEP", TROU_SLEEP), ("TROU_ALERT", TROU_ALERT), ("TROU_RUN1", TROU_RUN1),
-                      ("TROU_RUN2", TROU_RUN2), ("SOCK", SOCK),
-                      ("KING", KING), ("KING_SQ", KING_SQ), ("KING_HURT", KING_HURT), ("CROWN", CROWN)):
+    for name, art in OBJ_SPRITES:
         objs[name] = sp.add_block(grid([r.replace(" ", ".") for r in art], 16, 16), 2, 2)
     fx = {}
     for name, art in (("WAVE1", FX_WAVE1), ("WAVE2", FX_WAVE2), ("BANG", FX_BANG), ("ZZZ", FX_ZZZ),
                       ("STAR", FX_STAR), ("DROP", FX_DROP), ("CURSOR", FX_CURSOR)):
         fx[name] = sp.add(grid(art, 8, 8))
-    # logo en sprites (lettres qui tombent sur l'ecran titre)
     slogo = {}
     for ch in "TCHAK!":
         slogo[ch] = sp.add_block(logo_letter(ch), 3, 3)
+    print("sprites : %d/256" % (256 - len(sp.free)))
 
-    print("tuiles decor utilisees : %d/256, sprites : %d/256" % (256 - len(bg.free), 256 - len(sp.free)))
-
-    chr_data = b"".join(bg.data) + b"".join(sp.data)
-    assert len(chr_data) == 8192
     os.makedirs(os.path.join(ROOT, "build"), exist_ok=True)
-    with open(os.path.join(ROOT, "build", "tchak.chr"), "wb") as f:
-        f.write(chr_data)
+    for w in worlds:
+        chr_data = b"".join(bgs[w][0].data) + b"".join(sp.data)
+        assert len(chr_data) == 8192
+        with open(os.path.join(ROOT, "build", "chr_w%d.chr" % w), "wb") as f:
+            f.write(chr_data)
+    mt_rows = bgs[1][1]
 
     # ------------------------------------------------ en-tete C
     h = ["/* GENERE PAR tools/gfx.py - NE PAS MODIFIER A LA MAIN */",
          "#ifndef GFX_H", "#define GFX_H", ""]
-    h.append("/* metatuiles */")
+    h.append("/* metatuiles communes a tous les mondes */")
     for i, (name, ch, coll, pal, tiles) in enumerate(mt_rows):
         h.append("#define MT_%-10s %2d   /* '%s' */" % (name, i, ch or "-"))
-    h.append("#define MT_COUNT %d" % len(mt_rows))
-    h.append("")
-    h.append("/* tuiles du logo (3x3 par lettre, ordre T C H A K !) */")
-    for ch, nm in zip("TCHAK!", ("T", "C", "H", "A", "K", "BANG")):
-        h.append("#define LOGO_%s 0x%02X" % (nm, logo[ch][0]))
+    h.append("#define MT_MAX %d" % MT_MAX)
+    h.append("#define NWORLDS %d" % len(worlds))
     h.append("")
     h.append("/* metasprites de BIDULE (6 tuiles, 2x3) */")
     for i, (name, tiles) in enumerate(bid):
@@ -907,12 +1190,10 @@ def build():
     for name, t in fx.items():
         h.append("#define FX_%-8s 0x%02X" % (name, t))
     h.append("")
-    for ch, nm in zip("TCHAK!", ("T", "C", "H", "A", "K", "BANG")):
-        h.append("#define SLOGO_%s 0x%02X" % (nm, slogo[ch][0]))
-    h.append("")
-    h += ["extern const unsigned char mt_tiles[MT_COUNT][4];",
-          "extern const unsigned char mt_attr[MT_COUNT];",
-          "extern const unsigned char mt_coll[MT_COUNT];",
+    h += ["/* tables de metatuiles : en tete de la banque du monde courant */",
+          "extern const unsigned char mt_tiles[MT_MAX][4];",
+          "extern const unsigned char mt_attr[MT_MAX];",
+          "extern const unsigned char mt_coll[MT_MAX];",
           "extern const unsigned char bidule_frames[BF_COUNT][6];",
           "extern const unsigned char obj_frames[][4];",
           "extern const unsigned char logo_tiles[6][9];",
@@ -921,14 +1202,8 @@ def build():
     with open(os.path.join(ROOT, "src", "gen", "gfx.h"), "w") as f:
         f.write("\n".join(h) + "\n")
 
-    c = ["/* GENERE PAR tools/gfx.py - NE PAS MODIFIER A LA MAIN */",
+    c = ["/* GENERE PAR tools/gfx.py - NE PAS MODIFIER A LA MAIN (moteur commun) */",
          '#include "../defs.h"', '#include "gfx.h"', ""]
-    c.append("const unsigned char mt_tiles[MT_COUNT][4] = {")
-    for name, ch, coll, pal, tiles in mt_rows:
-        c.append("  {0x%02X,0x%02X,0x%02X,0x%02X}, /* %s */" % (tuple(tiles) + (name,)))
-    c.append("};")
-    c.append("const unsigned char mt_attr[MT_COUNT] = {" + ",".join(str(r[3]) for r in mt_rows) + "};")
-    c.append("const unsigned char mt_coll[MT_COUNT] = {" + ",".join(r[2] for r in mt_rows) + "};")
     c.append("const unsigned char bidule_frames[BF_COUNT][6] = {")
     for name, t in bid:
         c.append("  {" + ",".join("0x%02X" % v for v in t) + "}, /* %s */" % name)
@@ -945,15 +1220,28 @@ def build():
     for ch in "TCHAK!":
         c.append("  {" + ",".join("0x%02X" % v for v in slogo[ch]) + "},")
     c.append("};")
-    with open(os.path.join(ROOT, "src", "gen", "gfx_data.c"), "w") as f:
+    with open(os.path.join(ROOT, "src", "gen", "gfx_common.c"), "w") as f:
         f.write("\n".join(c) + "\n")
 
-    # table caractere -> metatuile pour le compilateur de salles
-    with open(os.path.join(ROOT, "build", "metatiles.txt"), "w") as f:
-        for i, (name, ch, coll, pal, tiles) in enumerate(mt_rows):
-            f.write("%d %s %s\n" % (i, name, ch if ch else "-"))
+    for w in worlds:
+        rows = bgs[w][1]
+        pad = [("-", None, "C_SOLID", 0, [0, 0, 0, 0])] * (MT_MAX - len(rows))
+        c = ["/* GENERE PAR tools/gfx.py : metatuiles du monde %d (en-tete de banque) */" % w,
+             '#include "../defs.h"', '#include "gfx.h"', '#pragma rodata-name(push, "BANKHDR")']
+        c.append("const unsigned char mt_tiles[MT_MAX][4] = {")
+        for name, ch, coll, pal, tiles in rows + pad:
+            c.append("  {0x%02X,0x%02X,0x%02X,0x%02X}, /* %s */" % (tuple(tiles) + (name,)))
+        c.append("};")
+        c.append("const unsigned char mt_attr[MT_MAX] = {" + ",".join(str(r[3]) for r in rows + pad) + "};")
+        c.append("const unsigned char mt_coll[MT_MAX] = {" + ",".join(r[2] for r in rows + pad) + "};")
+        c.append('#pragma rodata-name(pop)')
+        with open(os.path.join(ROOT, "src", "gen", "mt_w%d.c" % w), "w") as f:
+            f.write("\n".join(c) + "\n")
+        with open(os.path.join(ROOT, "build", "metatiles_w%d.txt" % w), "w") as f:
+            for i, (name, ch, coll, pal, tiles) in enumerate(rows):
+                f.write("%d %s %s\n" % (i, name, ch if ch else "-"))
 
-    preview(bg.data, sp.data, mt_rows, bid)
+    preview(bgs[1][0].data, sp.data, mt_rows, bid)
 
 def font_tile_blank():
     return [[0] * 8 for _ in range(8)]
@@ -1030,6 +1318,16 @@ def preview(bgdata, spdata, mt_rows, bid):
                         for b in range(2):
                             img.putpixel((ox * 2 + a, oy * 2 + b), c)
     img.save(os.path.join(ROOT, "build", "preview_chr.png"))
+
+
+OBJ_SPRITES = [("BALL", BALL), ("BALL_SQ", BALL_SQUASH), ("CRATE", CRATE), ("CRATE_HIT", CRATE_HIT),
+               ("TROU_SLEEP", TROU_SLEEP), ("TROU_ALERT", TROU_ALERT), ("TROU_RUN1", TROU_RUN1),
+               ("TROU_RUN2", TROU_RUN2), ("SOCK", SOCK),
+               ("KING", KING), ("KING_SQ", KING_SQ), ("KING_HURT", KING_HURT), ("CROWN", CROWN),
+               ("ARMCHAIR", ARMCHAIR), ("ARMCHAIR_MAD", ARMCHAIR_MAD), ("LAMP", LAMP), ("LAMP_WALK", LAMP_WALK),
+               ("DRESSER", DRESSER), ("DRESSER_MAD", DRESSER_MAD), ("CHEST", CHEST), ("CHEST_OPEN", CHEST_OPEN),
+               ("COOKIE", COOKIE), ("WARDROBE_TOP", WARDROBE_TOP), ("WARDROBE_BOT", WARDROBE_BOT),
+               ("WARDROBE_OPEN", WARDROBE_OPEN)]
 
 if __name__ == "__main__":
     build()

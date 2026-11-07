@@ -154,14 +154,41 @@ Progression de la difficulté : 1-1 sens de la poussée → 1-2 ressort vertical
 - **Échecs** : attendre ne sert à rien (test : 30 s sans levier, il ne tombe jamais) ; ouvrir trop tôt ou trop tard, la trappe se referme ; tomber soi-même dans la trappe ouverte.
 - **Victoire** : à la 3e chute, il reste au fond (« LE ROI EST DÉGONFLÉ ! »), sa couronne reste au bord de la cuve en scintillant, la trappe se referme et la porte s'ouvre.
 
-## 5. Plan de la suite (40 salles, 5 boss)
+## 5. Monde 2 – La maison qui n'en fait qu'à sa tête
+
+**Nouvelle règle** : le TCHAK ne pousse plus les meubles, il les fait réagir selon leur **humeur**. Toutes les réactions sont fixes et lisibles (bulles « Zz », « ! », étoiles d'agacement).
+
+| Meuble | Humeur | Réaction | Poids |
+|---|---|---|---|
+| Fauteuil grognon | colérique | entend le TCHAK (112 px) → fonce **vers** BIDULE jusqu'au premier obstacle, pousse tout, aplatit BIDULE au passage | 3 |
+| Lampe curieuse | curieuse | entend le TCHAK (128 px) → va se placer **exactement là où BIDULE a fait TCHAK** (elle peut tomber d'une étagère en chemin) | 2 |
+| Commode paresseuse | paresseuse | 1er TCHAK : une étoile ; 2e : deux étoiles ; **au 3e** (l'agacement retombe d'un cran toutes les 1,5 s), elle s'enfuit à l'opposé jusqu'au premier obstacle | 3 |
+| Coffre gourmand | gourmand | ignore le TCHAK ; marche vers le biscuit le plus proche **à son étage** et le mange là où il est (un nouveau biscuit réapparaît ensuite) | 3 |
+| Biscuit | – | objet léger, poussé par le TCHAK | 1 |
+
+**Serrures** : une plaque ou une cible marquée « serrure » ne compte qu'une fois (elle devient un bloc) ; la porte s'ouvre à la troisième.
+
+| Salle | Ce qu'il faut comprendre | Le réflexe qui échoue |
+|---|---|---|
+| 2-1 Le fauteuil grognon | il fonce **vers** le bruit : se placer derrière la plaque | descendre côté gauche : il plonge dans la gelée |
+| 2-2 La lampe curieuse | faire TCHAK **sur** la plaque pour l'y attirer | TCHAK au départ : elle vient… à côté de BIDULE |
+| 2-3 La commode qui dort | insister (3 TCHAK) **et** se placer du bon côté | un seul TCHAK : rien ; du mauvais côté : la gelée |
+| 2-4 Le coffre à biscuits | doser la poussée du biscuit pour que le coffre le mange **sur** la plaque | trop fort ou trop faible : il le mange à côté (un autre biscuit revient) |
+| 2-5 Les trois serrures | une serrure par humeur : commode, fauteuil (bloqué par un pilier), lampe | — |
+| 2-6 Un coupable au choix | plusieurs solutions : la commode seule, ou le fauteuil qui la pousse jusqu'à la plaque | TCHAK au départ : le fauteuil fonce contre le mur |
+| 2-7 Le grand ménage | un seul TCHAK bien placé attire la lampe **et** lance le fauteuil ; poser la planche **avant** de chasser la commode | ordre inversé : la commode plonge dans la gelée |
+| 2-8 **Madame Armoire** (boss) | elle n'avale que ce qu'on lui **lance** et le recrache par-dessus elle, vers l'arrière : viser les 3 serrures du plafond en choisissant le moment (un TCHAK proche la retourne) ; elle accélère à chaque serrure | attendre : elle ne fait que pousser les biscuits |
+
+Boss mesuré : avec le solveur automatique (on lance un biscuit à des moments différents), 62 % des lancers ouvrent la 1re serrure, 20 % la 2e, 15 % la 3e. Sans intervention, 0 serrure en 30 s.
+
+## 6. Plan de la suite (40 salles, 5 boss)
 
 Chaque monde reprendra la répartition du §8 (introduction, apprentissage, découverte, combinaison, intermédiaire, plusieurs solutions, complexe, boss). Le Monde 1 est terminé. Chaque nouvelle salle devra passer le test du « joueur qui ne comprend rien ». Nouvelles mécaniques prévues :
 
 | Monde | Règle du TCHAK | Nouveaux éléments prévus | Boss (énigme) |
 |---|---|---|---|
 | 1 Fabrique | pousse + rebond | **fait** (8 salles + boss) | **Roi du Rebond** : fait (voir ci-dessus) |
-| 2 Maison | effraie / vexe / réveille selon l'humeur | meubles peureux, paresseux, colériques, gourmands | **Madame Armoire** : elle avale ce qui l'approche et le recrache par une autre porte ; lui faire avaler la bonne chose au bon moment |
+| 2 Maison | réactions selon l'humeur | **fait** (8 salles + boss) | **Madame Armoire** : fait (voir ci-dessus) |
 | 3 Usine | met en marche / arrête les machines | engrenages, pistons, interrupteurs multiples, ordre des réactions | **Le Grand Dérangé** : il inverse les machines ; retourner ses propres pistons contre lui |
 | 4 Travers | inverse la gravité locale | objets qui montent, convoyeurs inversés, plafonds-planchers | **Le Roi à l'Envers** : son comportement suit la gravité de la zone où il se trouve |
 | 5 Bazar | combinaison | toutes les règles, zones de règles différentes dans une même salle | **Le Maître du Chaos** : il change les propriétés des objets ; grande énigme en plusieurs tableaux |

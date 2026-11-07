@@ -1,32 +1,40 @@
 # TCHAK ! – Document technique (architecture)
 
-Version 0.3 (Monde 1 complet). Ce document présente les choix techniques (§14, §15 et §22 du cahier des charges) et l'organisation du code.
+Version 0.4 (Mondes 1 et 2, MMC1). Ce document présente les choix techniques (§14, §15 et §22 du cahier des charges) et l'organisation du code.
 
 ## 1. Choix techniques
 
-| Sujet | Choix du prototype | Évolution prévue pour le jeu complet |
-|---|---|---|
-| Langage | **C (cc65 2.19)** pour la logique, **assembleur 6502 (ca65)** pour le démarrage, le NMI, le son et les routines critiques | Passer d'autres boucles critiques en assembleur si un monde dépasse le budget CPU |
-| Mapper | **NROM-256** (mapper 0) : 32 Ko PRG + 8 Ko CHR-ROM | **MMC1 (SNROM/SUROM)** : 128–256 Ko PRG en banques de 16 Ko (une banque par monde : salles + logique propre), CHR en banques de 4 Ko (un jeu de décors par monde) |
-| Format | iNES 1.0, miroir vertical | iNES/NES 2.0 avec MMC1 |
-| Graphismes | CHR-ROM générée à partir d'art en texte (`tools/gfx.py`) | Une table de décors par monde, logo et police dans une banque commune |
-| Sauvegarde | **Mot de passe** de 4 lettres (pas de pile) | Identique, avec 2 lettres de plus pour les chaussettes par monde |
-| Son | Moteur maison, 6 flux sur les 4 canaux APU (le DMC n'est pas utilisé) | Ajout d'échantillons DMC pour le « TCHAK » si la place le permet |
+| Sujet | Choix |
+|---|---|
+| Langage | **C (cc65 2.19)** pour la logique, **assembleur 6502 (ca65)** pour le démarrage, le NMI, le son, la commutation de banques et les routines critiques |
+| Mapper | **MMC1**, PRG en **mode 32 Ko**, CHR en mode 8 Ko, miroir vertical. ROM de 128 Ko de PRG (4 banques ; 256 Ko quand les 5 mondes seront là) + une banque CHR de 8 Ko par monde |
+| Format | iNES (mapper 1) |
+| Graphismes | CHR-ROM générée à partir d'art en texte (`tools/gfx.py`) : sprites communs, un jeu de décors par monde (mêmes numéros de métatuiles, dessins différents) |
+| Sauvegarde | **Mot de passe** de 4 lettres (salle 0-63 + chaussettes + somme de contrôle) |
+| Son | Moteur maison, 6 flux sur les 4 canaux APU |
 
-Pourquoi C + assembleur : la logique de jeu (règles, réactions, états) change beaucoup pendant la conception ; le C la rend lisible et modifiable. Tout ce qui tourne en VBlank ou à chaque sprite est en assembleur.
+### Pourquoi le mode 32 Ko du MMC1
 
-### Utilisation des ressources (prototype, mesurée)
+Le moteur fait environ 23 Ko : il ne tient pas dans la banque fixe de 16 Ko du mode MMC1 habituel. **Chaque banque de 32 Ko contient donc le même moteur, au même endroit** ($8000-$DFFF), plus une partie propre de 8 Ko ($E000-$FFF9) :
+
+| Banque | Partie propre ($E000-) |
+|---|---|
+| 0 | menus (titre, mot de passe, fin de partie, fin de monde) |
+| 1 | Monde 1 : métatuiles, 8 salles, palette |
+| 2 | Monde 2 : métatuiles, 8 salles, palette, **code des meubles à humeurs et du boss** (`world2.c`) |
+
+Changer de banque ne déplace pas le code en cours d'exécution, puisque le moteur est identique partout. Les parties propres commencent toutes par la même **table de sauts** (`bankhdr_*.s` : `bk_title`, `bk_wupdate`…), puis par les tables de décors et de salles, aux mêmes adresses dans chaque banque. Le moteur appelle donc « le code du monde courant » sans savoir quelle banque est en place. `tools/make_rom.py` lie chaque banque séparément et **vérifie octet par octet** que le moteur et les vecteurs sont identiques dans toutes les banques. Une routine de la bibliothèque cc65 utilisée par une seule banque casserait cette identité ; `src/libforce.s` les force toutes dans le moteur.
+
+### Utilisation des ressources (mesurée, version 0.4)
 
 | Ressource | Utilisé | Disponible |
 |---|---|---|
-| PRG (code + données) | ≈ 28,1 Ko | 32 Ko |
-| RAM | 56 o page zéro, 1 043 o BSS/DATA, 256 o OAM, pile C de 128 o | 2 Ko |
-| Tuiles de décor | 186 | 256 |
-| Tuiles de sprites | 164 | 256 |
-| Sprites matériels | 6 (BIDULE) + 4 par objet + 4 (onde) + 2 (émotions) ≤ 44 | 64 |
-| CPU par trame | salle au repos : ≈ 14 000 cycles libres ; pic pendant une réaction en chaîne : ≈ 3 000 cycles libres | 29 780 cycles (NTSC) |
-
-Le temps libre est mesuré par la ROM elle-même (compteur `idle_cnt` dans `ppu_wait_nmi`) et une trame en retard est comptée dans `lag_frames` ; le test `t17_performances` vérifie qu'il n'y en a aucune pendant la réaction en chaîne de la salle 1-2.
+| Moteur commun | 23 956 octets | 24 576 (dans chaque banque) |
+| Banque des menus / Monde 1 / Monde 2 | libre : 3 023 / 5 715 / 2 128 octets | 8 186 chacune |
+| RAM | moteur $0300-$073F, variables de banque $0740-$077F, pile C $0780-$07FF | 2 Ko |
+| Tuiles de décor | 186 (Monde 1), 190 (Monde 2) | 256 par monde |
+| Tuiles de sprites | 212 | 256 |
+| CPU par trame | aucune trame perdue dans les scènes testées (t17) | 29 780 cycles (NTSC) |
 
 ### Respect des contraintes NES
 
@@ -43,12 +51,14 @@ Le temps libre est mesuré par la ROM elle-même (compteur `idle_cnt` dans `ppu_
 $0000-$00FF  page zéro : registres cc65, variables NMI/manette, paramètres métasprites, son
 $0100-$01FF  pile 6502
 $0200-$02FF  copie OAM (DMA $4014 à chaque NMI)
-$0300-$077F  variables C (BSS/DATA), file VRAM (128 o), palette (32 o), carte de salle (208 o)
+$0300-$073F  variables du moteur (BSS/DATA), file VRAM (128 o), palette (32 o), carte de salle (208 o)
+$0740-$077F  variables de la banque en place (ex. : compteurs des meubles du monde 2)
 $0780-$07FF  pile logicielle cc65 (les variables locales sont statiques : option -Cl)
-$8000-$FFF9  code et données (NROM-256)
-$FFFA-$FFFF  vecteurs NMI / RESET / IRQ
-PPU $0000    tuiles de décor (police ASCII en $20-$5F)
-PPU $1000    tuiles de sprites
+$8000-$DFFF  moteur commun (identique dans toutes les banques MMC1)
+$E000-$FFF9  partie propre à la banque : table de sauts, métatuiles, salles, palette, code du monde
+$FFFA-$FFFF  vecteurs NMI / RESET / IRQ (identiques)
+PPU $0000    tuiles de décor du monde (police ASCII en $20-$5F, logo)
+PPU $1000    tuiles de sprites (communes)
 ```
 
 ## 3. Modules (§15 du cahier des charges)
@@ -70,7 +80,9 @@ PPU $1000    tuiles de sprites
 | 13 | Graphismes | `src/video.c`, `src/fast.s` (OAM, métasprites), `tools/gfx.py`, `tools/art_bidule.py` |
 | 14 | Son | `src/sound.s`, `tools/music.py` |
 | 15 | Progression | `src/progress.c` (vies, chaussettes, mot de passe) |
-| 16 | Menus | `src/menus.c` |
+| 16 | Menus | `src/menus.c` (banque 0), `src/screens.c` (présentation du monde, commune) |
+| – | Monde 2 | `src/world2.c` (banque 2) : fauteuil, lampe, commode, coffre, biscuit, Madame Armoire |
+| – | Banques | `src/bankhdr_*.s`, `cfg/mmc1.cfg`, `tools/make_rom.py`, `src/libforce.s` |
 
 ### Machine à états du jeu
 
@@ -121,9 +133,9 @@ Morceaux : thème principal (titre), Monde 1, boss, victoire, défaite, fin. Bru
 
 ```
 sudo apt-get install cc65 python3-pil   # ou : pip install pillow
-make            # -> build/tchak.nes
+make            # -> build/tchak.nes (via tools/make_rom.py)
 make test       # tests automatiques (pip install cynes pillow)
-make dist       # copie la ROM dans dist/
+make dist       # copie la ROM dans dist/tchak.nes
 ```
 
-Chaîne : `tools/gfx.py` → CHR + `src/gen/gfx.*` ; `tools/rooms.py` → `src/gen/rooms.*` ; `tools/music.py` → `src/gen/music.*` ; `cc65 -Oirs -Cl` → `ca65` → `ld65 -C cfg/nrom.cfg`. Le fichier `build/tchak.labels` sert aux tests (adresses des variables) et aux débogueurs (Mesen, FCEUX).
+Chaîne : `tools/gfx.py` → CHR + `src/gen/gfx.*` ; `tools/rooms.py` → `src/gen/rooms.*` ; `tools/music.py` → `src/gen/music.*` ; `cc65 -Ors -Cl` (code de banque : `--code-name BANKCODE --rodata-name BANKDATA --bss-name BANKBSS`) → `ca65` → `tools/make_rom.py` (une édition de liens `ld65 -C cfg/mmc1.cfg` par banque, vérification du moteur commun, en-tête iNES). Le fichier `build/tchak.labels` sert aux tests et aux débogueurs.

@@ -104,6 +104,10 @@ class Game:
 
     def skip_room(self, idx):
         self.poke("room_result", 1)
+        if (idx & 7) == 7:      # fin de monde : ecran de fin, puis START
+            self.until(lambda: self.u8("game_state") == 8, 400)
+            self.run(70)
+            self.press(START, 2, 10)
         self.wait_room(idx + 1)
 
     def goto_room(self, idx):

@@ -20,15 +20,15 @@ s8  o_dir[MAX_OBJ];
 u16 o_x[MAX_OBJ], o_y[MAX_OBJ];
 s8  o_vx[MAX_OBJ], o_vy[MAX_OBJ];
 
-/*                         -    BALLE CAISSE TROUIL. CHAUSS. ROI */
-static const u8 p_mass[OT_COUNT]   = { 0,   1,    4,     2,      0,   6 };
-static const u8 p_bounce[OT_COUNT] = { 0,   6,    0,     0,      0,   0 };   /* /8 */
-static const u8 p_fric[OT_COUNT]   = { 0,   1,    4,     4,      0,   0 };
-static const u8 p_body[OT_COUNT]   = { 0,   1,    1,     1,      0,   1 };
-static const u8 p_pal[OT_COUNT]    = { 0,   1,    2,     3,      3,   1 };
-const u8 p_weight[OT_COUNT]        = { 0,   1,    3,     2,      0,   4 };
-const u8 p_tchak_vx[OT_COUNT]      = { 0,  40,   30,    24,      0,  28 };
-const u8 p_tchak_vy[OT_COUNT]      = { 0,  56,   24,    32,      0,  16 };
+/*                     -  BALLE CAISSE TROU CHAUS ROI | FAUT LAMPE COMM COFF BISC ARM. */
+static const u8 p_mass[OT_COUNT]   = { 0, 1, 4, 2, 0, 6,   6, 2, 5, 5, 1, 8 };
+static const u8 p_bounce[OT_COUNT] = { 0, 6, 0, 0, 0, 0,   0, 0, 0, 0, 2, 0 };   /* /8 */
+static const u8 p_fric[OT_COUNT]   = { 0, 1, 4, 4, 0, 0,   4, 4, 4, 4, 3, 4 };
+static const u8 p_body[OT_COUNT]   = { 0, 1, 1, 1, 0, 1,   1, 1, 1, 1, 0, 1 };
+static const u8 p_pal[OT_COUNT]    = { 0, 1, 2, 3, 3, 1,   1, 3, 2, 2, 2, 1 };
+const u8 p_weight[OT_COUNT]        = { 0, 1, 3, 2, 0, 4,   3, 2, 3, 3, 1, 4 };
+const u8 p_tchak_vx[OT_COUNT]      = { 0,40,30,24, 0,28,   0, 0, 0, 0,36, 0 };
+const u8 p_tchak_vy[OT_COUNT]      = { 0,56,24,32, 0,16,   0, 0, 0, 0,40, 0 };
 
 static u8 bump_cool;
 
@@ -375,6 +375,7 @@ void objects_update(void)
         if (t_ != OT_SOCK) {
             if (t_ == OT_TROU) enemy_update(i_);
             else if (t_ == OT_KING) boss_update(i_);
+            else if (t_ >= OT_WORLD) bk_wupdate(i_);     /* banque du monde */
             /* objet au repos : on ne refait la physique complete que s'il
                recoit une vitesse, si son convoyeur tourne, ou 1 trame sur 8
                (pour detecter un sol qui disparait). */
@@ -417,6 +418,7 @@ static void draw_obj(u8 i)
         }
         return;
     }
+    if (t >= OT_WORLD) { bk_wdraw(i); return; }    /* banque du monde */
     a = p_pal[t];
     switch (t) {
     case OT_BALL:  f = o_anim[i] ? OF_BALL_SQ : OF_BALL; break;

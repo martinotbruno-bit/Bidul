@@ -1,0 +1,205 @@
+# =====================================================================
+#  TCHAK ! - Monde 2 : LA MAISON QUI N'EN FAIT QU'A SA TETE
+#  Meubles a humeurs (voir src/world2.c) :
+#   ARMCHAIR fonce vers BIDULE  - LAMP vient la ou BIDULE fait TCHAK
+#   DRESSER s'enfuit au 3e TCHAK - CHEST mange le biscuit (COOKIE) a son etage
+#  LOCK x y : serrure (la case devient un bloc) ; a la 3e serrure, l'action
+#  OFF du declencheur BOSS (s'il y en a un) est jouee.
+# =====================================================================
+PALETTE 07 17 27 37 07 13 23 33 07 1A 2A 38 07 21 11 01 07 0F 24 30 07 06 16 30 07 07 17 28 07 0F 2A 30
+MUSIC 6
+
+ROOM "LE FAUTEUIL GROGNON"
+WORLD 2 NUM 1
+CONV 0
+MAP
+################
+#..............#
+#..............#
+#..|.......|...#
+#..|.......|...#
+#..............#
+#H=========H...#
+#H.........H...#
+#H.........H...#
+#H.........H..D#
+#H.........H..d#
+###~~########P##
+################
+BIDULE 6 5
+OBJ ARMCHAIR 7 10
+TRIG PLATE 13 11 1 1 ON DOOR_OPEN 14 9 OFF DOOR_CLOSE 14 9
+END
+
+ROOM "LA LAMPE CURIEUSE"
+WORLD 2 NUM 2
+CONV 0
+MAP
+################
+#..............#
+#..............#
+#..|.......|...#
+#..|.......|...#
+#..............#
+#.......======.#
+#..............#
+#..............#
+#D.............#
+#d.............#
+###P############
+################
+BIDULE 13 10
+OBJ LAMP 9 5
+TRIG PLATE 3 11 1 1 ON DOOR_OPEN 1 9 OFF DOOR_CLOSE 1 9
+END
+
+ROOM "LA COMMODE QUI DORT"
+WORLD 2 NUM 3
+CONV 0
+MAP
+################
+#..............#
+#..............#
+#..|.......|...#
+#..|.......|...#
+#..............#
+#..............#
+#..............#
+#..............#
+#.............D#
+#.............d#
+#~~##########P##
+################
+BIDULE 10 10
+OBJ DRESSER 6 10
+TRIG PLATE 13 11 1 1 ON DOOR_OPEN 14 9 OFF DOOR_CLOSE 14 9
+END
+
+ROOM "LE COFFRE A BISCUITS"
+WORLD 2 NUM 4
+CONV 0
+MAP
+################
+#..............#
+#..............#
+#..|.......|...#
+#..|.......|...#
+#..............#
+#H=====........#
+#H.............#
+#H.............#
+#H............D#
+#H............d#
+###########PP###
+################
+BIDULE 3 5
+OBJ COOKIE 4 5
+OBJ CHEST 13 10
+TRIG PLATE 11 11 2 1 ON DOOR_OPEN 14 9 OFF DOOR_CLOSE 14 9
+END
+
+ROOM "LES TROIS SERRURES"
+WORLD 2 NUM 5
+CONV 0
+MAP
+################
+#..............#
+#..............#
+#..|.......|...#
+#..|.......|...#
+#..............#
+#..==========..#
+#..............#
+#..............#
+#D.............#
+#d........X....#
+##P######P#P####
+################
+BIDULE 5 10
+OBJ LAMP 8 5
+OBJ DRESSER 6 10
+OBJ ARMCHAIR 13 10
+TRIG PLATE 2 11 1 1 ON LOCK 2 11
+TRIG PLATE 9 11 1 1 ON LOCK 9 11
+TRIG PLATE 11 11 1 1 ON LOCK 11 11
+TRIG BOSS 0 0 1 1 OFF DOOR_OPEN 1 9
+END
+
+ROOM "UN COUPABLE AU CHOIX"
+WORLD 2 NUM 6
+CONV 0
+MAP
+################
+#..............#
+#..............#
+#..|.......|...#
+#..|.......|...#
+#..............#
+#........=====.#
+#..............#
+#..............#
+#D.............#
+#d.............#
+##PP############
+################
+BIDULE 13 10
+OBJ DRESSER 6 10
+OBJ ARMCHAIR 11 10
+OBJ LAMP 12 5
+TRIG PLATE 2 11 2 1 ON DOOR_OPEN 1 9 OFF DOOR_CLOSE 1 9
+END
+
+ROOM "LE GRAND M[NAGE"
+WORLD 2 NUM 7
+CONV 0
+MAP
+################
+#..............#
+#..............#
+#..|.......|...#
+#..|.......|...#
+#.........L....#
+#.........HP===#
+#.........H....#
+#.........H....#
+#D........H....#
+#d........H....#
+##P##~~#######P#
+################
+BIDULE 13 10
+OBJ LAMP 14 5
+OBJ DRESSER 7 10
+OBJ ARMCHAIR 9 10
+TRIG PLATE 11 6 1 1 ON LOCK 11 6
+TRIG PLATE 14 11 1 1 ON LOCK 14 11
+TRIG PLATE 2 11 1 1 ON LOCK 2 11
+TRIG LEVER 10 5 1 1 ON HATCH_CLOSE 5 11 2
+TRIG BOSS 0 0 1 1 OFF DOOR_OPEN 1 9
+END
+
+ROOM "MADAME ARMOIRE"
+WORLD 2 NUM 8
+CONV 0
+MAP
+################
+#..............#
+#..T....T....T.#
+#..............#
+#..|.......|...#
+#..............#
+#..............#
+#..............#
+#..............#
+#.............D#
+#.............d#
+################
+################
+BIDULE 2 10
+OBJ WARDROBE 8 10
+OBJ COOKIE 4 10
+OBJ COOKIE 12 10
+TRIG TARGET 3 2 1 1 ON LOCK 3 2
+TRIG TARGET 8 2 1 1 ON LOCK 8 2
+TRIG TARGET 13 2 1 1 ON LOCK 13 2
+TRIG BOSS 0 0 1 1 OFF DOOR_OPEN 14 9
+END
