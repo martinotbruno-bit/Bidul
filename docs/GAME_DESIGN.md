@@ -203,7 +203,28 @@ Boss mesuré : avec le solveur automatique (on lance un biscuit à des moments d
 | 3-7 La grande chaîne | trois serrures (cible, piston/caisse, Copieur) ; chaque TCHAK fait aussi basculer le Copieur | TCHAK à tort et à travers : le Copieur part dans le mauvais sens |
 | 3-8 **Le Grand Dérangé** | l'étourdir près d'un trou **quand le convoyeur y va** ; 3 chutes | rester immobile : le convoyeur vous emporte dans la gelée |
 
-## 7. Plan de la suite (40 salles, 5 boss)
+## 7. Monde 4 – Le monde qui marche de travers
+
+**Règle du monde** : la gravité des **objets** peut s'inverser (levier ou cible : action `WORLD 9`). Un objet qui « tombe vers le haut » se pose au plafond et peut y enfoncer des plaques ou toucher des cibles. BIDULE n'est pas concerné. Le TCHAK pousse toujours « loin du sol » de l'objet (vers le bas pour un objet au plafond).
+
+| Élément | Comportement |
+|---|---|
+| Ballon | tombe toujours à l'envers du reste du monde ; léger (poids 1), peu de glisse |
+| Aimant | fixe ; allumé (`WORLD n`), il attire horizontalement **toutes** les caisses de la salle, au sol comme au plafond, jusqu'à sa colonne |
+| Le Roi à l'Envers (boss) | marche vers BIDULE sur le sol ou au plafond, ne marche jamais dans un trou ; en phases 2-3 il retourne lui-même la gravité ; il ne tombe dans une cuve (du plafond ou du sol) que si la gravité s'inverse quand il est dessous / dessus |
+
+| Salle | Ce qu'il faut comprendre | Le réflexe qui échoue |
+|---|---|---|
+| 4-1 La tête en bas | placer la caisse **sous** la plaque du plafond avant d'inverser | inverser tout de suite : la caisse se colle au plafond à côté |
+| 4-2 Le ballon | inverser pour que le ballon descende, le pousser sous la cheminée, revenir à la normale | — (il est hors de portée au plafond) |
+| 4-3 L'aimant | l'aimant seul bloque la caisse contre l'obstacle : passer par le plafond | allumer l'aimant et attendre |
+| 4-4 Trois serrures à l'envers | plaque du sol, puis plaque du plafond, puis ballon : l'ordre des retournements compte | inverser trop tôt : la caisse et le ballon partent au mauvais endroit |
+| 4-5 Zigzag | deux colonnes, une au sol et une au plafond : aimant (en haut de l'échelle) + deux retournements au bon moment | retourner au hasard |
+| 4-6 Par-dessus le trou | l'aimant seul fait tomber la caisse dans la cuve : passer par le plafond | allumer l'aimant d'abord |
+| 4-7 Le grand retournement | zigzag + ballon à glisser sous la cheminée entre deux retournements + deux plaques | — |
+| 4-8 **Le Roi à l'Envers** | il vient vers vous : rester près du levier et retourner la gravité quand il passe sous le trou du plafond, ou au-dessus de celui du sol | attendre : il ne tombe jamais seul |
+
+## 8. Plan de la suite (40 salles, 5 boss)
 
 Chaque monde reprendra la répartition du §8 (introduction, apprentissage, découverte, combinaison, intermédiaire, plusieurs solutions, complexe, boss). Le Monde 1 est terminé. Chaque nouvelle salle devra passer le test du « joueur qui ne comprend rien ». Nouvelles mécaniques prévues :
 
@@ -212,5 +233,5 @@ Chaque monde reprendra la répartition du §8 (introduction, apprentissage, déc
 | 1 Fabrique | pousse + rebond | **fait** (8 salles + boss) | **Roi du Rebond** : fait (voir ci-dessus) |
 | 2 Maison | réactions selon l'humeur | **fait** (8 salles + boss) | **Madame Armoire** : fait (voir ci-dessus) |
 | 3 Usine | ordre des réactions | **fait** (8 salles + boss) | **Le Grand Dérangé** : fait (voir ci-dessus) |
-| 4 Travers | inverse la gravité locale | objets qui montent, convoyeurs inversés, plafonds-planchers | **Le Roi à l'Envers** : son comportement suit la gravité de la zone où il se trouve |
+| 4 Travers | gravité des objets inversable | **fait** (8 salles + boss) | **Le Roi à l'Envers** : fait (voir ci-dessus) |
 | 5 Bazar | combinaison | toutes les règles, zones de règles différentes dans une même salle | **Le Maître du Chaos** : il change les propriétés des objets ; grande énigme en plusieurs tableaux |

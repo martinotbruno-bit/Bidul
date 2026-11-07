@@ -18,7 +18,7 @@
         .export  sound_init, sound_update
         .export  _music_play, _music_stop, _sfx_play, _music_pause
         .export  _st_active = st_active, _st_lo = st_lo   ; (pour les tests)
-        .import  period_lo, period_hi, song_table, sfx_table
+        .import  period_lo, period_hi, song_table, sfx_table, _world_song
 
 NSTREAM = 6
 
@@ -81,22 +81,37 @@ sound_init:
 ; void music_play(unsigned char song)
 _music_play:
         inc snd_busy
-        asl a
+        cmp #$FF                ; MUS_WORLD : theme du monde en place
+        bne @std
+        lda #<_world_song       ; (en-tete de la banque du monde, adresse fixe)
+        sta sptr
+        lda #>_world_song
+        sta sptr+1
+        jmp @go
+@std:   asl a
         asl a
         asl a                   ; 8 octets par morceau (4 pointeurs)
-        tay
+        clc
+        adc #<song_table
+        sta sptr
+        lda #>song_table
+        adc #0
+        sta sptr+1
+@go:    ldy #0
         ldx #0
-@lp:    lda song_table,y
+@lp:    lda (sptr),y
         sta st_lo,x
-        lda song_table+1,y
+        iny
+        lda (sptr),y
         sta st_hi,x
+        iny
         ora st_lo,x
         beq :+
         lda #1
 :       sta st_active,x
+        sty stmp
         jsr stream_reset
-        iny
-        iny
+        ldy stmp
         inx
         cpx #4
         bne @lp

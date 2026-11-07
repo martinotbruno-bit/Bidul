@@ -139,6 +139,16 @@ SONGS = [
          " C2.2 C3.2 C2.2 C3.2 | A1.2 A2.2 B1.2 B2.2 | C2.2 C3.2 D2.2 D3.2 | E1.2 E2.2 E1.4",
   "noise": "[ k.1 N3.1 s.1 N3.1 k.1 k.1 s.1 N3.1",
  }),
+ ("WORLD4", 7, {
+  "p1": "@d2v9 e5 [ C5.2 B4.2 A#4.2 B4.2 | C5.1 E5.1 G5.2 F#5.4 | G5.2 F#5.2 F5.2 F#5.2 | G5.1 E5.1 C5.2 B4.4 |"
+        " A4.2 C5.2 E5.2 D#5.2 | D5.2 C5.2 B4.4 | C5.1 D5.1 E5.1 F#5.1 G5.2 D#5.2 | E5.6 r.2",
+  "p2": "@d1v5 e2 [ r.1 E4.1 r.1 E4.1 r.1 D#4.1 r.1 D#4.1 | r.1 E4.1 r.1 G4.1 r.1 A#4.1 r.1 A4.1 |"
+        " r.1 B4.1 r.1 B4.1 r.1 A#4.1 r.1 A#4.1 | r.1 B4.1 r.1 G4.1 r.1 F#4.1 r.1 F#4.1 |"
+        " r.1 C4.1 r.1 E4.1 r.1 G4.1 r.1 F#4.1 | r.1 F4.1 r.1 E4.1 r.1 D#4.1 r.1 D#4.1 |"
+        " r.1 E4.1 r.1 G4.1 r.1 B4.1 r.1 A4.1 | r.1 G4.1 r.1 E4.1 r.2 r.2",
+  "tri": "[ C2.4 F#1.4 | C2.4 D2.4 | E2.4 A#1.4 | E2.4 B1.4 | A1.4 E2.4 | D2.4 G1.4 | C2.4 B1.4 | C2.4 C2.4",
+  "noise": "[ k.2 N2.1 h.1 s.1 h.1 N2.2",
+ }),
 ]
 
 SFX = [
@@ -175,24 +185,28 @@ def emit_stream(lines, label, text, tempo, kind):
     else:
         lines.append("        .byte $F2")
 
+WORLD_SONGS = {1: "WORLD1", 2: "WORLD2", 3: "WORLD3", 4: "WORLD4"}
+
 def main():
     lo, hi = periods()
-    L = ["; GENERE PAR tools/music.py - NE PAS MODIFIER A LA MAIN",
+    kinds = {"p1": "pulse", "p2": "pulse", "tri": "tri", "noise": "noise"}
+    world_names = set(WORLD_SONGS.values())
+    common = [sg for sg in SONGS if sg[0] not in world_names]
+    L = ["; GENERE PAR tools/music.py - NE PAS MODIFIER A LA MAIN (moteur commun)",
          "        .export period_lo, period_hi, song_table, sfx_table",
          '.segment "RODATA"',
          "period_lo: .byte " + ",".join("$%02X" % v for v in lo),
          "period_hi: .byte " + ",".join("$%02X" % v for v in hi),
          ""]
-    kinds = {"p1": "pulse", "p2": "pulse", "tri": "tri", "noise": "noise"}
     L.append("song_table:")
-    for name, tempo, chans in SONGS:
+    for name, tempo, chans in common:
         L.append("        .word " + ",".join(("mus_%s_%s" % (name, c)) if c in chans else "0"
                                            for c in ("p1", "p2", "tri", "noise")))
     L.append("sfx_table:")
     for name, chans in SFX:
         L.append("        .word " + ",".join(("sfx_%s_%s" % (name, c)) if c in chans else "0"
                                            for c in ("p2", "noise")))
-    for name, tempo, chans in SONGS:
+    for name, tempo, chans in common:
         for c, text in chans.items():
             emit_stream(L, "mus_%s_%s" % (name, c), text, tempo, kinds[c])
     for name, chans in SFX:
@@ -200,9 +214,22 @@ def main():
             emit_stream(L, "sfx_%s_%s" % (name, c), text, 1, kinds[c])
     with open(os.path.join(ROOT, "src", "gen", "music.s"), "w") as f:
         f.write("\n".join(L) + "\n")
+    # theme de chaque monde : dans la banque du monde (pointeurs en en-tete)
+    for w, sname in WORLD_SONGS.items():
+        name, tempo, chans = next(sg for sg in SONGS if sg[0] == sname)
+        L = ["; GENERE PAR tools/music.py : theme du monde %d (banque du monde)" % w,
+             "        .export _world_song", '.segment "BANKHDR"', "_world_song:",
+             "        .word " + ",".join(("mus_%s_%s" % (name, c)) if c in chans else "0"
+                                        for c in ("p1", "p2", "tri", "noise")),
+             '.segment "BANKDATA"']
+        for c, text in chans.items():
+            emit_stream(L, "mus_%s_%s" % (name, c), text, tempo, kinds[c])
+        with open(os.path.join(ROOT, "src", "gen", "music_w%d.s" % w), "w") as f:
+            f.write("\n".join(L) + "\n")
     h = ["/* GENERE PAR tools/music.py */", "#ifndef MUSIC_H", "#define MUSIC_H"]
-    for i, (name, _, _) in enumerate(SONGS):
+    for i, (name, _, _) in enumerate(common):
         h.append("#define MUS_%s %d" % (name, i))
+    h.append("#define MUS_WORLD 255   /* theme du monde en place */")
     for i, (name, _) in enumerate(SFX):
         h.append("#define SFX_%s %d" % (name, i))
     h.append("#endif")

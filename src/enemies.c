@@ -110,7 +110,7 @@ void boss_hit(u8 i)
         o_aux[i] = 1;
         ev_boss(1);                 /* la trappe se referme... */
         ev_boss(0);                 /* ...et la porte s'ouvre */
-        hud_message(o_type[i] == OT_KING ? "LE ROI EST D[GONFL[ !" : "LE GRAND D[RANG[ EST RANG[ !");
+        hud_message(o_type[i] == OT_KING ? "LE ROI EST D[GONFL[ !" : "BOSS VAINCU !");
         music_stop();
         sfx_play(SFX_DOOR);
     } else {

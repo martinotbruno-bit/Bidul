@@ -807,6 +807,176 @@ def t48_w3_joueur_au_hasard():
                       "salle 3-%d resolue au hasard (graine %d)" % (room - 15, seed))
         g.nes.load(st)
 
+# ============================================================== MONDE 4
+def w4(g, n):
+    g.goto_room(23 + n)
+
+def lever_at(g, x):
+    if g.bx() > x: g.until(lambda: g.bx() <= x, 200, LEFT)
+    else: g.until(lambda: g.bx() >= x, 200, RIGHT)
+    g.press(A, 2, 0)
+
+def push_to(g, j, lo, hi, n=12):
+    """Pousse l'objet j a coups de TCHAK jusqu'a ce que son x soit dans [lo, hi].
+    Loin du but : TCHAK de pres (fort) ; pres du but : de plus loin (doux)."""
+    for _ in range(n):
+        cx = g.obj(j)["x"]
+        if lo <= cx <= hi:
+            return True
+        gap = (cx - hi) if cx > hi else (lo - cx)
+        d = 18 if gap > 40 else 34
+        if cx > hi:
+            if g.bx() < cx + 8: g.until(lambda: g.bx() >= cx + d, 200, RIGHT)
+            else: g.until(lambda: g.bx() <= cx + d, 200, LEFT)
+            g.run(1, LEFT)
+        else:
+            if g.bx() > cx - 8: g.until(lambda: g.bx() <= cx - d, 200, LEFT)
+            else: g.until(lambda: g.bx() >= cx - d, 200, RIGHT)
+            g.run(1, RIGHT)
+        g.press(B, 2, 60)
+    return lo <= g.obj(j)["x"] <= hi
+
+@test
+def t50_w4_1_tete_en_bas():
+    """4-1 : inverser tout de suite : la caisse tombe au plafond, a cote de la plaque ; la placer
+    d'abord sous la plaque du plafond."""
+    g = Game(); w4(g, 1); st = g.nes.save()
+    check(g.u8("cur_bank") == 4, "banque du monde 4 non selectionnee")
+    lever_at(g, 34); g.run(90)
+    check(g.u8("grav_up") == 1 and g.obj(0)["y"] == 48, "la caisse n'est pas au plafond")
+    check(not door_open(g, 14, 9), "porte ouverte par le reflexe")
+    g.nes.load(st)
+    check(push_to(g, 0, 152, 167), "caisse non placee")
+    lever_at(g, 34)
+    check(g.until(lambda: door_open(g, 14, 9), 200), "porte fermee")
+    shot(g, "50_w4_tete_en_bas")
+    check(g.until(lambda: g.u8("b_state") == 3, 400, RIGHT), "sortie")
+
+@test
+def t51_w4_2_ballon():
+    """4-2 : le ballon tombe vers le haut ; inverser, le pousser au sol sous la cheminee, revenir a la normale."""
+    g = Game(); w4(g, 2)
+    lever_at(g, 34); g.run(90)
+    check(push_to(g, 0, 177, 191), "ballon non place")
+    lever_at(g, 34)
+    check(g.until(lambda: door_open(g, 14, 9), 200), "porte fermee")
+    shot(g, "51_w4_ballon")
+    check(g.until(lambda: g.u8("b_state") == 3, 400, RIGHT), "sortie")
+
+@test
+def t52_w4_3_aimant():
+    """4-3 : l'aimant seul bloque la caisse contre l'obstacle ; inverser, puis revenir -> plaque."""
+    g = Game(); w4(g, 3)
+    lever_at(g, 66); g.run(150)
+    check(not door_open(g, 1, 9), "l'aimant seul ne doit pas suffire")
+    lever_at(g, 82); g.run(150)
+    g.press(A, 2, 60)
+    check(g.until(lambda: door_open(g, 1, 9), 100), "porte fermee")
+    check(g.until(lambda: g.u8("b_state") == 3, 300, LEFT), "sortie")
+
+@test
+def t53_w4_4_trois_serrures():
+    """4-4 : caisse sur la plaque du sol, puis sous la plaque du plafond, inverser, ballon sous la cheminee, revenir."""
+    g = Game(); w4(g, 4)
+    push_to(g, 0, 121, 135); g.run(20)
+    check(g.u8("lock_count") >= 1, "serrure du sol")
+    check(push_to(g, 0, 41, 71), "caisse sous la plaque du plafond")
+    lever_at(g, 34); g.run(80)
+    check(g.u8("lock_count") >= 2, "serrure du plafond")
+    check(push_to(g, 1, 177, 191), "ballon")
+    lever_at(g, 34)
+    check(g.until(lambda: door_open(g, 14, 9), 200), "porte fermee")
+    shot(g, "52_w4_serrures")
+    check(g.until(lambda: g.u8("b_state") == 3, 400, RIGHT), "sortie")
+
+@test
+def t54_w4_5_zigzag():
+    """4-5 : aimant + deux retournements pour contourner les colonnes du sol puis du plafond."""
+    g = Game(); w4(g, 5)
+    g.until(lambda: g.bx() >= 56, 100, RIGHT)
+    check(g.until(lambda: g.u8("b_state") == 0 and g.by() < 110, 200, UP), "echelle")
+    g.run(3, UP); g.press(A, 2, 150)
+    g.until(lambda: g.u8("b_ground") and g.by() > 180, 200, DOWN)
+    lever_at(g, 34); g.run(150)
+    check(g.obj(1)["x"] < 120 and g.obj(1)["y"] == 48, "la caisse doit buter contre la colonne du plafond")
+    lever_at(g, 34)
+    check(g.until(lambda: door_open(g, 1, 9), 250), "porte fermee")
+    shot(g, "53_w4_zigzag")
+    check(g.until(lambda: g.u8("b_state") == 3, 300, LEFT), "sortie")
+
+@test
+def t55_w4_6_par_dessus():
+    """4-6 : l'aimant seul fait tomber la caisse dans la cuve ; par le plafond, elle passe."""
+    g = Game(); w4(g, 6); st = g.nes.save()
+    lever_at(g, 34)
+    check(g.until(lambda: g.obj(1)["flags"] & 4, 250), "la caisse aurait du tomber dans la cuve")
+    g.nes.load(st)
+    lever_at(g, 50); g.run(60); lever_at(g, 34); g.run(200); lever_at(g, 50)
+    check(g.until(lambda: door_open(g, 1, 9), 150), "porte fermee")
+    check(g.until(lambda: g.u8("b_state") == 3, 300, LEFT), "sortie")
+
+@test
+def t56_w4_7_grand_retournement():
+    """4-7 : zigzag, ballon a glisser sous la cheminee entre deux retournements, deux plaques."""
+    g = Game(); w4(g, 7)
+    lever_at(g, 34); g.run(120)
+    lever_at(g, 50); g.run(150)
+    for _ in range(5):
+        bx = g.obj(2)["x"]
+        if 31 <= bx <= 49: break
+        g.until(lambda: g.bx() >= bx + 12, 100, RIGHT); g.run(1, LEFT); g.press(B, 2, 50)
+    lever_at(g, 50); g.run(150)
+    check(g.u8("lock_count") == 2, "serrures ballon + plaque du sol")
+    lever_at(g, 50)
+    check(g.until(lambda: door_open(g, 1, 9), 200), "porte fermee")
+    shot(g, "54_w4_retournement")
+    check(g.until(lambda: g.u8("b_state") == 3, 300, LEFT), "sortie")
+
+@test
+def t57_w4_8_roi_a_l_envers():
+    """4-8 : le Roi a l'Envers ne tombe pas seul ; retourner la gravite quand il passe sous le trou
+    du plafond (ou au-dessus du trou du sol)."""
+    g = Game(); w4(g, 8); st0 = g.nes.save()
+    check(g.u8("boss_room") == 1, "musique de boss")
+    shot(g, "55_w4_envers")
+    for _ in range(1500):
+        g.run(1)
+    check(g.obj(0)["state"] == 0, "il est tombe tout seul")
+    g.nes.load(st0)
+    cool = 0
+    for _ in range(12000):
+        k = g.obj(0); gu = g.u8("grav_up"); btn = 0
+        if not (k["flags"] & 4):
+            if g.bx() > 32: btn = LEFT
+            elif gu == 0 and 150 <= k["x"] <= 162 and k["flags"] & 1 and cool == 0: btn = A; cool = 40
+            elif gu == 1 and 86 <= k["x"] <= 96 and k["flags"] & 1 and cool == 0: btn = A; cool = 40
+        if cool: cool -= 1
+        g.run(1, btn)
+        if g.u8("o_aux", 0):
+            break
+    check(g.u8("o_aux", 0) == 1, "boss non vaincu")
+    check(g.until(lambda: door_open(g, 1, 9), 100), "porte fermee")
+    shot(g, "56_w4_envers_vaincu")
+
+@test
+def t58_w4_joueur_au_hasard():
+    """Monde 4 : un joueur qui appuie au hasard (4 parties de 20 s par salle) ne resout aucune salle."""
+    import random
+    acts = [0, LEFT, RIGHT, UP, DOWN, B, A, LEFT | B, RIGHT | B, UP | A]
+    g = Game(); g.goto_room(24)
+    for room in range(24, 32):
+        if room > 24:
+            g.skip_room(room - 1)
+        st = g.nes.save()
+        for seed in range(4):
+            g.nes.load(st)
+            rnd = random.Random(seed * 19 + room)
+            for _ in range(200):
+                g.run(6, rnd.choice(acts))
+                check(g.u8("b_state") != 3 and g.u8("room_idx") == room,
+                      "salle 4-%d resolue au hasard (graine %d)" % (room - 23, seed))
+        g.nes.load(st)
+
 # =================================================================== main
 def main():
     ok = 0

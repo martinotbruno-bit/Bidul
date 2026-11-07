@@ -1172,6 +1172,134 @@ FACTORY_WALL = [
     "1111111111111111",
 ]
 
+# ============================== MONDE 4 : de travers =======================
+BALLOON = [   # ballon (palette 1) : il tombe vers le haut
+    ".....111111.....",
+    "...1122222211...",
+    "..122332222221..",
+    ".12233222222221.",
+    ".12232222222221.",
+    ".12222222222221.",
+    ".12222222222221.",
+    "..122222222221..",
+    "...1222222221...",
+    "....11222211....",
+    "......1221......",
+    ".......11.......",
+    "........1.......",
+    ".......1........",
+    "........1.......",
+    ".......1........",
+]
+MAGNET = [   # aimant (palette 1), eteint
+    "................",
+    "..1111....1111..",
+    "..1331....1331..",
+    "..1331....1331..",
+    "..1221....1221..",
+    "..1221....1221..",
+    "..1221....1221..",
+    "..1221....1221..",
+    "..12211111 1221.",
+    "..122222222221..",
+    "...1222222221...",
+    "....11111111....",
+    "................",
+    "................",
+    "1111111111111111",
+    "1222222222222221",
+]
+MAGNET_ON = [
+    ".3............3.",
+    "3.1111....1111.3",
+    "..1331....1331..",
+    ".31331....13313.",
+    "..1221....1221..",
+    "3.1221....1221.3",
+    "..1221....1221..",
+    ".31221....12213.",
+    "..122111111221..",
+    "..122222222221..",
+    "...1222222221...",
+    "....11111111....",
+    "................",
+    "................",
+    "1111111111111111",
+    "1222222222222221",
+]
+ENVERS = [   # le Roi a l'Envers (palette 2) : couronne en bas, pieds en l'air
+    ".11..........11.",
+    "1331........1331",
+    ".1221......1221.",
+    "..12211111111...",
+    "..122222222221..",
+    ".12222222222221.",
+    ".12111122111121.",
+    ".12133122133121.",
+    ".12111122111121.",
+    ".12222222222221.",
+    ".12221111112221.",
+    "..122222222221..",
+    "...1111111111...",
+    "..13331331333...",
+    "..1.3..3..3..1..",
+    "..1..........1..",
+]
+ENVERS_MAD = [
+    ".11..........11.",
+    "1331........1331",
+    ".1221......1221.",
+    "..12211111111...",
+    "..122222222221..",
+    ".12211222211221.",
+    ".12133122133121.",
+    ".12111122111121.",
+    ".12222222222221.",
+    ".12211111111221.",
+    ".12213333331221.",
+    "..122222222221..",
+    "...1111111111...",
+    "..13331331333...",
+    "..1.3..3..3..1..",
+    "..1..........1..",
+]
+TRAVERS_EMPTY = [
+    "................",
+    "........3.......",
+    "................",
+    "................",
+    "..1.............",
+    "................",
+    "................",
+    "................",
+    "................",
+    "................",
+    "...........1....",
+    "................",
+    "................",
+    "....3...........",
+    "................",
+    "................",
+]
+TRAVERS_WALL = [
+    "3333333331111111",
+    "3222222231222222",
+    "3222222231222222",
+    "3222222231222222",
+    "1111111111222222",
+    "2222213333333332",
+    "2222213222222232",
+    "2222213222222232",
+    "2222213222222232",
+    "1111111111111111",
+    "3333333122222213",
+    "2222223122222213",
+    "2222223122222213",
+    "2222223122222213",
+    "2222223111111113",
+    "1111111111111111",
+]
+
 # LE ROI DU REBOND (boss du monde 1) : corps (palette sprite 1) + couronne (palette 2)
 KING = [
     ".....111111.....",
@@ -1296,8 +1424,9 @@ FX_CURSOR = ["3.......", "33......", "333.....", "3333....", "333.....", "33....
 # les connait : ressort, porte, cible...) ; leur dessin peut changer par monde.
 MT_MAX = 40
 WORLD_ART = {1: {}, 2: {"EMPTY": HOUSE_EMPTY, "BRICK": HOUSE_WALL, "GIRDER": HOUSE_FLOOR},
-             3: {"EMPTY": FACTORY_EMPTY, "BRICK": FACTORY_WALL}}          # surcharges de dessin par monde : {nom: art 16x16}
-WORLD_EXTRA = {1: [], 2: [], 3: []}        # metatuiles propres a un monde : (nom, car, coll, pal, art)
+             3: {"EMPTY": FACTORY_EMPTY, "BRICK": FACTORY_WALL},
+             4: {"EMPTY": TRAVERS_EMPTY, "BRICK": TRAVERS_WALL}}          # surcharges de dessin par monde : {nom: art 16x16}
+WORLD_EXTRA = {1: [], 2: [], 3: [], 4: []}        # metatuiles propres a un monde : (nom, car, coll, pal, art)
 
 def build_bg(world):
     bg = Bank("bg", reserved=range(0x20, 0x60))
@@ -1326,26 +1455,40 @@ def build():
     for w in worlds:
         assert bgs[w][2] == logo, "le logo doit avoir les memes tuiles dans tous les mondes"
 
-    # --- sprites (communs a tous les mondes)
-    bid = []
-    for name, rows in BIDULE_FRAMES:
-        g = grid(rows, 16, 24)
-        bid.append((name, sp.add_block(g, 2, 3)))
-    objs = {}
-    for name, art in OBJ_SPRITES:
-        objs[name] = sp.add_block(grid([r.replace(" ", ".") for r in art], 16, 16), 2, 2)
-    fx = {}
-    for name, art in (("WAVE1", FX_WAVE1), ("WAVE2", FX_WAVE2), ("BANG", FX_BANG), ("ZZZ", FX_ZZZ),
-                      ("STAR", FX_STAR), ("DROP", FX_DROP), ("CURSOR", FX_CURSOR)):
-        fx[name] = sp.add(grid(art, 8, 8))
-    slogo = {}
-    for ch in "TCHAK!":
-        slogo[ch] = sp.add_block(logo_letter(ch), 3, 3)
-    print("sprites : %d/256" % (256 - len(sp.free)))
+    # --- sprites : un jeu par monde = sprites communs (memes numeros partout)
+    #     + sprites propres au monde. (Le logo en sprites n'existe que dans le
+    #     jeu du monde 1, qui sert aussi a l'ecran titre.)
+    def sprite_bank(w):
+        sp = Bank("spr")
+        bid = [(name, sp.add_block(grid(rows, 16, 24), 2, 3)) for name, rows in BIDULE_FRAMES]
+        fx = {}
+        for name, art in (("WAVE1", FX_WAVE1), ("WAVE2", FX_WAVE2), ("BANG", FX_BANG), ("ZZZ", FX_ZZZ),
+                          ("STAR", FX_STAR), ("DROP", FX_DROP), ("CURSOR", FX_CURSOR)):
+            fx[name] = sp.add(grid(art, 8, 8))
+        objs = {}
+        for name, art, ow in OBJ_SPRITES:
+            if ow == 0:
+                objs[name] = sp.add_block(grid([r.replace(" ", ".") for r in art], 16, 16), 2, 2)
+        core = (list(bid), dict(fx), dict(objs))
+        slogo = {}
+        if w == 1:
+            for ch in "TCHAK!":
+                slogo[ch] = sp.add_block(logo_letter(ch), 3, 3)
+        for name, art, ow in OBJ_SPRITES:
+            if ow == w:
+                objs[name] = sp.add_block(grid([r.replace(" ", ".") for r in art], 16, 16), 2, 2)
+        print("monde %d : tuiles de sprites %d/256" % (w, 256 - len(sp.free)))
+        return sp, core, objs, slogo
+    sbanks = {w: sprite_bank(w) for w in worlds}
+    for w in worlds:
+        assert sbanks[w][1] == sbanks[1][1], "sprites communs differents entre mondes"
+    bid, fx, _ = sbanks[1][1]
+    slogo = sbanks[1][3]
+    of_names = [n for n, _, _ in OBJ_SPRITES]
 
     os.makedirs(os.path.join(ROOT, "build"), exist_ok=True)
     for w in worlds:
-        chr_data = b"".join(bgs[w][0].data) + b"".join(sp.data)
+        chr_data = b"".join(bgs[w][0].data) + b"".join(sbanks[w][0].data)
         assert len(chr_data) == 8192
         with open(os.path.join(ROOT, "build", "chr_w%d.chr" % w), "wb") as f:
             f.write(chr_data)
@@ -1365,9 +1508,10 @@ def build():
         h.append("#define BF_%-10s %2d" % (name, i))
     h.append("#define BF_COUNT %d" % len(bid))
     h.append("")
-    h.append("/* metasprites objets 16x16 (index dans obj_frames) */")
-    for i, name in enumerate(objs):
+    h.append("/* metasprites objets 16x16 (index dans obj_frames, table propre a chaque monde) */")
+    for i, name in enumerate(of_names):
         h.append("#define OF_%-10s %2d" % (name, i))
+    h.append("#define OF_COUNT %d" % len(of_names))
     h.append("")
     h.append("/* tuiles d'effets 8x8 */")
     for name, t in fx.items():
@@ -1378,7 +1522,7 @@ def build():
           "extern const unsigned char mt_attr[MT_MAX];",
           "extern const unsigned char mt_coll[MT_MAX];",
           "extern const unsigned char bidule_frames[BF_COUNT][6];",
-          "extern const unsigned char obj_frames[][4];",
+          "extern const unsigned char obj_frames[OF_COUNT][4];",
           "extern const unsigned char logo_tiles[6][9];",
           "extern const unsigned char slogo_tiles[6][9];",
           "", "#endif"]
@@ -1391,10 +1535,10 @@ def build():
     for name, t in bid:
         c.append("  {" + ",".join("0x%02X" % v for v in t) + "}, /* %s */" % name)
     c.append("};")
-    c.append("const unsigned char obj_frames[][4] = {")
-    for name, t in objs.items():
-        c.append("  {" + ",".join("0x%02X" % v for v in t) + "}, /* %s */" % name)
-    c.append("};")
+    with open(os.path.join(ROOT, "src", "gen", "gfx_common.c"), "w") as f:
+        f.write("\n".join(c) + "\n")
+    c = ["/* GENERE PAR tools/gfx.py : logo (banque des menus) */",
+         '#include "../defs.h"', '#include "gfx.h"', '#pragma rodata-name(push, "BANKDATA")']
     c.append("const unsigned char logo_tiles[6][9] = {")
     for ch in "TCHAK!":
         c.append("  {" + ",".join("0x%02X" % v for v in logo[ch]) + "},")
@@ -1403,7 +1547,8 @@ def build():
     for ch in "TCHAK!":
         c.append("  {" + ",".join("0x%02X" % v for v in slogo[ch]) + "},")
     c.append("};")
-    with open(os.path.join(ROOT, "src", "gen", "gfx_common.c"), "w") as f:
+    c.append('#pragma rodata-name(pop)')
+    with open(os.path.join(ROOT, "src", "gen", "logo_menu.c"), "w") as f:
         f.write("\n".join(c) + "\n")
 
     for w in worlds:
@@ -1417,6 +1562,12 @@ def build():
         c.append("};")
         c.append("const unsigned char mt_attr[MT_MAX] = {" + ",".join(str(r[3]) for r in rows + pad) + "};")
         c.append("const unsigned char mt_coll[MT_MAX] = {" + ",".join(r[2] for r in rows + pad) + "};")
+        objs = sbanks[w][2]
+        c.append("const unsigned char obj_frames[OF_COUNT][4] = {")
+        for name in of_names:
+            t = objs.get(name, [0, 0, 0, 0])
+            c.append("  {" + ",".join("0x%02X" % v for v in t) + "}, /* %s */" % name)
+        c.append("};")
         c.append('#pragma rodata-name(pop)')
         with open(os.path.join(ROOT, "src", "gen", "mt_w%d.c" % w), "w") as f:
             f.write("\n".join(c) + "\n")
@@ -1424,7 +1575,7 @@ def build():
             for i, (name, ch, coll, pal, tiles) in enumerate(rows):
                 f.write("%d %s %s\n" % (i, name, ch if ch else "-"))
 
-    preview(bgs[1][0].data, sp.data, mt_rows, bid)
+    preview(bgs[1][0].data, sbanks[1][0].data, mt_rows, bid)
 
 def font_tile_blank():
     return [[0] * 8 for _ in range(8)]
@@ -1503,16 +1654,19 @@ def preview(bgdata, spdata, mt_rows, bid):
     img.save(os.path.join(ROOT, "build", "preview_chr.png"))
 
 
-OBJ_SPRITES = [("BALL", BALL), ("BALL_SQ", BALL_SQUASH), ("CRATE", CRATE), ("CRATE_HIT", CRATE_HIT),
-               ("TROU_SLEEP", TROU_SLEEP), ("TROU_ALERT", TROU_ALERT), ("TROU_RUN1", TROU_RUN1),
-               ("TROU_RUN2", TROU_RUN2), ("SOCK", SOCK),
-               ("KING", KING), ("KING_SQ", KING_SQ), ("KING_HURT", KING_HURT), ("CROWN", CROWN),
-               ("ARMCHAIR", ARMCHAIR), ("ARMCHAIR_MAD", ARMCHAIR_MAD), ("LAMP", LAMP), ("LAMP_WALK", LAMP_WALK),
-               ("DRESSER", DRESSER), ("DRESSER_MAD", DRESSER_MAD), ("CHEST", CHEST), ("CHEST_OPEN", CHEST_OPEN),
-               ("COOKIE", COOKIE), ("WARDROBE_TOP", WARDROBE_TOP), ("WARDROBE_BOT", WARDROBE_BOT),
-               ("WARDROBE_OPEN", WARDROBE_OPEN),
-               ("PISTON", PISTON), ("PISTON_OUT", PISTON_OUT), ("COPY", COPY), ("COPY_MIR", COPY_MIR),
-               ("ROBOT", ROBOT), ("ROBOT_PAUSE", ROBOT_PAUSE), ("DERANGE", DERANGE), ("DERANGE_DIZZY", DERANGE_DIZZY)]
+# (nom, dessin, monde qui l'utilise ; 0 = tous les mondes)
+OBJ_SPRITES = [("BALL", BALL, 0), ("BALL_SQ", BALL_SQUASH, 0), ("CRATE", CRATE, 0), ("CRATE_HIT", CRATE_HIT, 0),
+               ("TROU_SLEEP", TROU_SLEEP, 1), ("TROU_ALERT", TROU_ALERT, 1), ("TROU_RUN1", TROU_RUN1, 1),
+               ("TROU_RUN2", TROU_RUN2, 1), ("SOCK", SOCK, 0),
+               ("KING", KING, 1), ("KING_SQ", KING_SQ, 1), ("KING_HURT", KING_HURT, 1), ("CROWN", CROWN, 1),
+               ("ARMCHAIR", ARMCHAIR, 2), ("ARMCHAIR_MAD", ARMCHAIR_MAD, 2), ("LAMP", LAMP, 2), ("LAMP_WALK", LAMP_WALK, 2),
+               ("DRESSER", DRESSER, 2), ("DRESSER_MAD", DRESSER_MAD, 2), ("CHEST", CHEST, 2), ("CHEST_OPEN", CHEST_OPEN, 2),
+               ("COOKIE", COOKIE, 2), ("WARDROBE_TOP", WARDROBE_TOP, 2), ("WARDROBE_BOT", WARDROBE_BOT, 2),
+               ("WARDROBE_OPEN", WARDROBE_OPEN, 2),
+               ("PISTON", PISTON, 3), ("PISTON_OUT", PISTON_OUT, 3), ("COPY", COPY, 3), ("COPY_MIR", COPY_MIR, 3),
+               ("ROBOT", ROBOT, 3), ("ROBOT_PAUSE", ROBOT_PAUSE, 3), ("DERANGE", DERANGE, 3), ("DERANGE_DIZZY", DERANGE_DIZZY, 3),
+               ("BALLOON", BALLOON, 4), ("MAGNET", MAGNET, 4), ("MAGNET_ON", MAGNET_ON, 4),
+               ("ENVERS", ENVERS, 4), ("ENVERS_MAD", ENVERS_MAD, 4)]
 
 if __name__ == "__main__":
     build()

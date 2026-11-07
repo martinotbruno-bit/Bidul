@@ -5,13 +5,13 @@ Vous êtes BIDULE, une créature qui ne sait pas sauter mais qui sait faire **TC
 
 ![Titre](docs/img/02_titre.png) ![Boss](docs/img/21_boss.png)
 
-## État : version 0.5 – Mondes 1 à 3 complets (24 salles + 3 boss), cartouche MMC1
+## État : version 0.6 – Mondes 1 à 4 complets (32 salles + 4 boss), cartouche MMC1 de 256 Ko
 
 Le prototype de 3 salles a validé la mécanique (§22) ; le **Monde 1 – La Fabrique des choses molles** est maintenant complet : 8 salles de difficulté croissante et le boss, le Roi du Rebond.
 
 Ce qui est programmé et testé :
 
-- ROM iNES **MMC1** (128 Ko PRG + 16 Ko CHR) : `dist/tchak.nes`
+- ROM iNES **MMC1** (256 Ko PRG + 32 Ko CHR) : `dist/tchak.nes`
 - BIDULE avec ses 13 types d'animation, le TCHAK, échelles, ressorts, convoyeurs, cibles, plaques, leviers, cuves de gelée, portes
 - Système d'objets générique (balle, caisse, chaussette) et un ennemi (le Trouillard)
 - Réactions en chaîne avec délai visible et protection contre les boucles infinies
@@ -24,7 +24,9 @@ Ce qui est programmé et testé :
 
 - **Monde 3 – L'usine des catastrophes** : pistons, le Copieur (qui imite BIDULE, ou fait l'inverse), le Machinal (qui déclenche tout sans le vouloir), 8 salles, boss **le Grand Dérangé**
 
-Pas encore fait : les mondes 4 et 5 (16 salles, 2 boss).
+- **Monde 4 – Le monde qui marche de travers** : la gravité des objets s'inverse (caisses au plafond, plaques et cibles au plafond), ballons qui tombent vers le haut, aimants ; 8 salles, boss **le Roi à l'Envers**
+
+Pas encore fait : le monde 5, Le Grand Bazar (8 salles, boss final).
 
 ## Jouer
 

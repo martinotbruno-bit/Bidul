@@ -136,6 +136,7 @@ void __fastcall__ bk_waction(u8 x);
 extern s8 tk_dir;
 extern u8 tk_adx, tk_ady;
 extern u8 lock_count;
+extern u8 grav_up;           /* monde a l'envers : les objets tombent vers le haut */
 void tchak_impulse(u8 i);
 
 #endif

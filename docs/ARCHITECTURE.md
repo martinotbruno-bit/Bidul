@@ -1,13 +1,13 @@
 # TCHAK ! – Document technique (architecture)
 
-Version 0.5 (Mondes 1 à 3, MMC1). Ce document présente les choix techniques (§14, §15 et §22 du cahier des charges) et l'organisation du code.
+Version 0.6 (Mondes 1 à 4, MMC1 256 Ko). Ce document présente les choix techniques (§14, §15 et §22 du cahier des charges) et l'organisation du code.
 
 ## 1. Choix techniques
 
 | Sujet | Choix |
 |---|---|
 | Langage | **C (cc65 2.19)** pour la logique, **assembleur 6502 (ca65)** pour le démarrage, le NMI, le son, la commutation de banques et les routines critiques |
-| Mapper | **MMC1**, PRG en **mode 32 Ko**, CHR en mode 8 Ko, miroir vertical. ROM de 128 Ko de PRG (4 banques ; 256 Ko quand les 5 mondes seront là) + une banque CHR de 8 Ko par monde |
+| Mapper | **MMC1**, PRG en **mode 32 Ko**, CHR en mode 8 Ko, miroir vertical. ROM de 256 Ko de PRG (8 banques : menus + un monde par banque) + une banque CHR de 8 Ko par monde |
 | Format | iNES (mapper 1) |
 | Graphismes | CHR-ROM générée à partir d'art en texte (`tools/gfx.py`) : sprites communs, un jeu de décors par monde (mêmes numéros de métatuiles, dessins différents) |
 | Sauvegarde | **Mot de passe** de 4 lettres (salle 0-63 + chaussettes + somme de contrôle) |
@@ -23,18 +23,19 @@ Le moteur fait environ 23 Ko : il ne tient pas dans la banque fixe de 16 Ko du m
 | 1 | Monde 1 : métatuiles, 8 salles, palette |
 | 2 | Monde 2 : métatuiles, 8 salles, palette, **code des meubles à humeurs et du boss** (`world2.c`) |
 | 3 | Monde 3 : métatuiles, 8 salles, palette, **pistons, Copieur, Machinal, Grand Dérangé** (`world3.c`) |
+| 4 | Monde 4 : métatuiles, 8 salles, palette, **ballons, aimants, gravité, Roi à l'Envers** (`world4.c`) |
 
-Changer de banque ne déplace pas le code en cours d'exécution, puisque le moteur est identique partout. Les parties propres commencent toutes par la même **table de sauts** (`bankhdr_*.s` : `bk_title`, `bk_wupdate`…), puis par les tables de décors et de salles, aux mêmes adresses dans chaque banque. Le moteur appelle donc « le code du monde courant » sans savoir quelle banque est en place. `tools/make_rom.py` lie chaque banque séparément et **vérifie octet par octet** que le moteur et les vecteurs sont identiques dans toutes les banques. Une routine de la bibliothèque cc65 utilisée par une seule banque casserait cette identité ; `src/libforce.s` les force toutes dans le moteur.
+Changer de banque ne déplace pas le code en cours d'exécution, puisque le moteur est identique partout. Les parties propres commencent toutes par la même **table de sauts** (`bk_title`, `bk_wupdate`, `bk_wdraw`, `bk_wtchak`, `bk_waction`), puis par les tables du monde : métatuiles, **cadres des sprites d'objets** (chaque monde a son propre jeu de sprites), salles, palette, et les **pointeurs du thème musical du monde** (la musique de chaque monde est dans sa banque). Ces tables sont aux mêmes adresses dans chaque banque. Le moteur appelle donc « le code du monde courant » sans savoir quelle banque est en place. `tools/make_rom.py` lie chaque banque séparément et **vérifie octet par octet** que le moteur et les vecteurs sont identiques dans toutes les banques. Une routine de la bibliothèque cc65 utilisée par une seule banque casserait cette identité ; `src/libforce.s` les force toutes dans le moteur.
 
 ### Utilisation des ressources (mesurée, version 0.4)
 
 | Ressource | Utilisé | Disponible |
 |---|---|---|
-| Moteur commun | 24 448 octets (**128 octets libres** : tout nouveau code ira dans les banques de monde) | 24 576 (dans chaque banque) |
+| Moteur commun | 23 734 octets (libéré : cadres de sprites, logo et thèmes musicaux passés dans les banques) | 24 576 (dans chaque banque) |
 | Banque des menus / Monde 1 / 2 / 3 | libre : 2 866 / 5 715 / 2 128 / 3 086 octets | 8 186 chacune |
 | RAM | moteur $0300-$073F, variables de banque $0740-$077F, pile C $0780-$07FF | 2 Ko |
-| Tuiles de décor | 186 / 190 / 190 | 256 par monde |
-| Tuiles de sprites | 240 (communes aux 3 mondes : il faudra des banques de sprites par monde pour la suite) | 256 |
+| Tuiles de décor | 186 / 190 / 190 / 191 | 256 par monde |
+| Tuiles de sprites | un jeu par monde : 164 / 138 / 118 / 108 (dont un socle commun : BIDULE, effets, balle, caisse, chaussette) | 256 par monde |
 | CPU par trame | aucune trame perdue dans les scènes testées (t17) | 29 780 cycles (NTSC) |
 
 ### Respect des contraintes NES
@@ -84,6 +85,7 @@ PPU $1000    tuiles de sprites (communes)
 | 16 | Menus | `src/menus.c` (banque 0), `src/screens.c` (présentation du monde, commune) |
 | – | Monde 2 | `src/world2.c` (banque 2) : fauteuil, lampe, commode, coffre, biscuit, Madame Armoire |
 | – | Monde 3 | `src/world3.c` (banque 3) : piston (action `WORLD n`), Copieur, Machinal, Grand Dérangé |
+| – | Monde 4 | `src/world4.c` (banque 4) ; gravité inversable des objets dans `src/objects.c` (`grav_up`, `OF_FLOAT`) |
 | – | Banques | `src/bankhdr_*.s`, `cfg/mmc1.cfg`, `tools/make_rom.py`, `src/libforce.s` |
 
 ### Machine à états du jeu

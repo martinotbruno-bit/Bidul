@@ -67,6 +67,7 @@ void tchak_impulse(u8 i)
     if (v > 96) v = 96;
     o_vx[i] = (tk_dir < 0) ? -(s8)v : (s8)v;
     o_vy[i] = -(s8)p_tchak_vy[t];
+    if (((o_flags[i] & OF_FLOAT) ? 1 : 0) ^ grav_up) o_vy[i] = -o_vy[i];   /* "vers le haut" relatif */
     o_flags[i] &= ~OF_GROUND;
     o_anim[i] = 8;
     o_dir[i] = tk_dir;

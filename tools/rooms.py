@@ -12,7 +12,8 @@ W, H = 16, 13
 
 OBJ_TYPES = {"BALL": 1, "CRATE": 2, "TROU": 3, "SOCK": 4, "KING": 5, "ARMCHAIR": 6,
              "LAMP": 7, "DRESSER": 8, "CHEST": 9, "COOKIE": 10, "WARDROBE": 11, "PISTON": 12,
-             "COPY": 13, "ROBOT": 14, "DERANGE": 15}
+             "COPY": 13, "ROBOT": 14, "DERANGE": 15,
+             "BALLOON": 16, "MAGNET": 17, "ENVERS": 18}
 TRIG_KINDS = {"TARGET": 1, "PLATE": 2, "LEVER": 3, "BOSS": 4}
 ACTIONS = {"NONE": 0, "DOOR_OPEN": 1, "DOOR_CLOSE": 2, "CONV_RIGHT": 3, "CONV_LEFT": 4,
            "CONV_STOP": 5, "CONV_REV": 6, "HATCH_OPEN": 7, "HATCH_CLOSE": 8, "WAKE": 9, "REVEAL": 10, "HATCH_PULSE": 11, "LOCK": 12, "WORLD": 13}
@@ -62,7 +63,7 @@ def parse(path, mts):
         elif tok[0] == "BIDULE":
             cur["bidule"] = (int(tok[1]), int(tok[2]))
         elif tok[0] == "OBJ":
-            fl = (2 if "HIDDEN" in tok else 0) | (0x10 if "LEFT" in tok else 0)
+            fl = (2 if "HIDDEN" in tok else 0) | (0x10 if "LEFT" in tok else 0) | (0x20 if "FLOAT" in tok else 0)
             cur["objs"].append((OBJ_TYPES[tok[1]], int(tok[2]), int(tok[3]), fl))
         elif tok[0] == "TRIG":
             kind = TRIG_KINDS[tok[1]]

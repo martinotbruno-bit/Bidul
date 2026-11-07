@@ -1,12 +1,12 @@
-# TCHAK ! – Rapport de tests (version 0.5 – Mondes 1 à 3, MMC1)
+# TCHAK ! – Rapport de tests (version 0.6 – Mondes 1 à 4, MMC1 256 Ko)
 
 ## Méthode
 
 Les tests jouent réellement la ROM `build/tchak.nes` dans l'émulateur headless **cynes** : entrées manette scriptées, puis vérification de la RAM (adresses tirées de `build/tchak.labels`). Lancement : `make test` (ou `python3 tests/test_rom.py --shots` pour régénérer les captures de `docs/img/`).
 
-## Résultats : 43 / 43 réussis (en 13 min d'émulation)
+## Résultats : 52 / 52 réussis (en 18 min d'émulation)
 
-Détail brut : `docs/resultats_tests.txt`. Numérotation des salles : 1-1 à 3-8.
+Détail brut : `docs/resultats_tests.txt`. Numérotation des salles : 1-1 à 4-8.
 
 | Test | Vérifie |
 |---|---|
@@ -43,6 +43,15 @@ Détail brut : `docs/resultats_tests.txt`. Numérotation des salles : 1-1 à 3-8
 | t46 | 3-7 : trois serrures |
 | t47 | 3-8 : le Grand Dérangé ne tombe pas seul (20 s) ; vaincu par une stratégie automatique |
 | t48 | Monde 3 : 4 parties de 20 s d'appuis aléatoires par salle → aucune salle résolue |
+| t50 | 4-1 : inverser tout de suite colle la caisse au plafond à côté de la plaque ; la placer d'abord ; banque MMC1 du monde 4 |
+| t51 | 4-2 : ballon poussé au sol (gravité inversée) sous la cheminée, puis retour à la normale |
+| t52 | 4-3 : l'aimant seul ne suffit pas ; par le plafond, oui |
+| t53 | 4-4 : trois serrures (plaque du sol, plaque du plafond, ballon) |
+| t54 | 4-5 : zigzag (levier de l'aimant en haut de l'échelle + deux retournements) |
+| t55 | 4-6 : l'aimant seul fait tomber la caisse dans la cuve ; par le plafond elle passe |
+| t56 | 4-7 : le grand retournement |
+| t57 | 4-8 : le Roi à l'Envers ne tombe pas seul (25 s) ; vaincu par une stratégie automatique |
+| t58 | Monde 4 : 4 parties de 20 s d'appuis aléatoires par salle → aucune salle résolue |
 
 ### Équilibrage du boss (mesuré)
 
@@ -82,12 +91,18 @@ Fenêtres de réussite depuis le levier de droite : on part d'un instant donné,
 | v0.5 – 3-3 : attendre devant la porte suffisait (le robot passe tout seul sur la plaque) | la plaque pose une passerelle temporaire sur un trou de 3 cases |
 | v0.5 – le Copieur avançait quand BIDULE poussait contre un mur | il copie le déplacement réel, pas la commande |
 | v0.5 – une cible de 2 cases comptait 2 serrures | cibles-serrures d'une seule case |
+| v0.6 – moteur commun plein | sprites d'objets, logo et thèmes musicaux déplacés dans les banques ; ROM 256 Ko |
+| v0.6 – 4-5 : résolue par le joueur au hasard (leviers collés au départ) | levier de l'aimant en haut d'une échelle (0 victoire sur 10 parties au hasard ensuite) |
+| v0.6 – 4-5 : la caisse passait sous l'obstacle du plafond en montant | obstacles en colonnes |
+| v0.6 – 4-4 : plaque du plafond trop étroite pour la précision du TCHAK (bonds de ~45 px) | plaque de 2 cases |
+| v0.6 – boss 4-8 : BIDULE devait traverser un trou pour atteindre un levier | un seul levier, trous du sol et du plafond décalés |
 
 ## Limites connues (honnêtement)
 
 - **Testé uniquement sur émulateur** (cynes ; captures visuellement contrôlées). Pas encore de test sur Mesen/FCEUX ni sur vraie console.
 - Le **son** est vérifié par l'état du moteur (flux actifs, lecture qui avance), pas à l'oreille : l'émulateur de test ne restitue pas l'audio.
 - Le test de déterminisme compare l'état de jeu, pas les minuteries musicales (l'alignement CPU/PPU à l'allumage peut les décaler d'une trame d'une instance d'émulateur à l'autre).
-- Mondes 4 et 5 non commencés. Le moteur commun n'a plus que 128 octets libres et les tuiles de sprites 16 : la suite demandera des banques de sprites par monde (CHR) et le passage à 256 Ko de PRG.
+- Monde 5 non commencé (la ROM a déjà la place : banque 5 libre).
+- Le message de victoire du boss du Monde 3 est devenu un « BOSS VAINCU ! » générique (place libérée dans le moteur).
 - Le boss 3-8 est exigeant : rester immobile fait perdre toutes ses vies en environ 25 s (le convoyeur emporte BIDULE).
 - Le pic de calcul dans la scène la plus chargée laisse peu de cycles libres sur 29 780 : les salles plus chargées (8 objets en mouvement) demanderont d'autres optimisations (physique en assembleur).

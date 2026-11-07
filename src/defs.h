@@ -62,9 +62,14 @@ typedef signed int    s16;
 #define OT_COPY    13  /* le Copieur : imite les pas de BIDULE (TCHAK : miroir) */
 #define OT_ROBOT   14  /* le Machinal : patrouille ; TCHAK : pause puis demi-tour */
 #define OT_DERANGE 15  /* boss : le Grand Derange                   */
+/* monde 4 : banque du monde 4 (world4.c) */
+#define OT_BALLOON 16  /* ballon : tombe vers le haut               */
+#define OT_MAGNET  17  /* aimant : attire les caisses (action WORLD) */
+#define OT_ENVERS  18  /* boss : le Roi a l'Envers                  */
 #define OT_WORLD   6   /* types >= OT_WORLD : geres par la banque   */
-#define OT_COUNT   16
+#define OT_COUNT   19
 #define OF_LEFT    0x10   /* (donnees de salle) objet tourne vers la gauche */
+#define OF_FLOAT   0x20   /* objet qui tombe vers le haut (ballon) */
 
 /* drapeaux d'objet */
 #define OF_GROUND  0x01

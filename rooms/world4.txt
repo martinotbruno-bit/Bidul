@@ -1,0 +1,208 @@
+# =====================================================================
+#  TCHAK ! - Monde 4 : LE MONDE QUI MARCHE DE TRAVERS  (voir src/world4.c)
+#   WORLD n : n = numero d'un AIMANT (allume/eteint) ; n = 9 : la gravite
+#   des objets s'inverse. BALLOON tombe toujours a l'envers du monde.
+#   Une plaque ou une cible au PLAFOND marche avec un objet qui y "tombe".
+# =====================================================================
+PALETTE 03 13 23 33 03 06 16 36 03 1A 2A 3A 03 28 18 08 03 0F 24 30 03 06 16 30 03 07 17 28 03 0F 2A 30
+MUSIC 8
+
+ROOM "LA T&TE EN BAS"
+WORLD 4 NUM 1
+CONV 0
+MAP
+##########P#####
+#..............#
+#..............#
+#..|.......|...#
+#..|.......|...#
+#..............#
+#..............#
+#..............#
+#..............#
+#.............D#
+#.L...........d#
+################
+################
+BIDULE 3 10
+OBJ CRATE 5 10
+TRIG LEVER 2 10 1 1 ON WORLD 9
+TRIG PLATE 10 0 1 1 ON DOOR_OPEN 14 9
+END
+
+ROOM "LE BALLON"
+WORLD 4 NUM 2
+CONV 0
+MAP
+###########TT###
+###########..###
+###########..###
+#..............#
+#..|...........#
+#..............#
+#..............#
+#..............#
+#..............#
+#.............D#
+#.L...........d#
+################
+################
+BIDULE 4 10
+OBJ BALLOON 4 3 FLOAT
+TRIG LEVER 2 10 1 1 ON WORLD 9
+TRIG TARGET 11 0 2 1 ON DOOR_OPEN 14 9
+END
+
+ROOM "L'AIMANT"
+WORLD 4 NUM 3
+CONV 0
+MAP
+################
+#..............#
+#..............#
+#..|.......|...#
+#..|.......|...#
+#..............#
+#..............#
+#..............#
+#..............#
+#D.............#
+#d..LL...X.....#
+############P###
+################
+BIDULE 3 10
+OBJ MAGNET 13 10
+OBJ CRATE 6 10
+TRIG LEVER 4 10 1 1 ON WORLD 0
+TRIG LEVER 5 10 1 1 ON WORLD 9
+TRIG PLATE 12 11 1 1 ON DOOR_OPEN 1 9
+END
+
+ROOM "TROIS SERRURES ] L'ENVERS"
+WORLD 4 NUM 4
+CONV 0
+MAP
+################
+###########TT###
+###PP######..###
+#..............#
+#..|.......|...#
+#..............#
+#..............#
+#..............#
+#..............#
+#.............D#
+#.L...........d#
+########P#######
+################
+BIDULE 3 10
+OBJ CRATE 6 10
+OBJ BALLOON 9 3 FLOAT
+TRIG LEVER 2 10 1 1 ON WORLD 9
+TRIG PLATE 8 11 1 1 ON LOCK 8 11
+TRIG PLATE 3 2 2 1 ON LOCK 3 2
+TRIG TARGET 11 1 2 1 ON LOCK 11 1
+TRIG BOSS 0 0 1 1 OFF DOOR_OPEN 14 9
+END
+
+ROOM "ZIGZAG"
+WORLD 4 NUM 5
+CONV 0
+MAP
+################
+#.......X......#
+#.......X......#
+#..|....X..|...#
+#..|....X......#
+#...L...X......#
+#...H..........#
+#...HX.........#
+#...HX.........#
+#D..HX.........#
+#dL.HX.........#
+###########P####
+################
+BIDULE 3 10
+OBJ MAGNET 12 10
+OBJ CRATE 3 10
+TRIG LEVER 4 5 1 1 ON WORLD 0
+TRIG LEVER 2 10 1 1 ON WORLD 9
+TRIG PLATE 11 11 1 1 ON DOOR_OPEN 1 9
+END
+
+ROOM "PAR-DESSUS LE TROU"
+WORLD 4 NUM 6
+CONV 0
+MAP
+################
+#..............#
+#..............#
+#..|.......|...#
+#..|.......|...#
+#..............#
+#..............#
+#..............#
+#..............#
+#D.............#
+#dLL...........#
+#######~~##P####
+################
+BIDULE 3 10
+OBJ MAGNET 12 10
+OBJ CRATE 5 10
+TRIG LEVER 2 10 1 1 ON WORLD 0
+TRIG LEVER 3 10 1 1 ON WORLD 9
+TRIG PLATE 11 11 1 1 ON DOOR_OPEN 1 9
+END
+
+ROOM "LE GRAND RETOURNEMENT"
+WORLD 4 NUM 7
+CONV 0
+MAP
+##TT############
+##..########P###
+#.......X......#
+#.......X......#
+#..|....X..|...#
+#.......X......#
+#.......X......#
+#....X.........#
+#....X.........#
+#D...X.........#
+#dLL.X.........#
+############P###
+################
+BIDULE 4 10
+OBJ MAGNET 13 10
+OBJ CRATE 3 10
+OBJ BALLOON 4 2 FLOAT
+TRIG LEVER 2 10 1 1 ON WORLD 0
+TRIG LEVER 3 10 1 1 ON WORLD 9
+TRIG PLATE 12 11 1 1 ON LOCK 12 11
+TRIG PLATE 12 1 1 1 ON LOCK 12 1
+TRIG TARGET 2 0 2 1 ON LOCK 2 0
+TRIG BOSS 0 0 1 1 OFF DOOR_OPEN 1 9
+END
+
+ROOM "LE ROI ] L'ENVERS"
+WORLD 4 NUM 8
+CONV 0
+MAP
+#########~~#####
+#..............#
+#..............#
+#..|.......|...#
+#..|.......|...#
+#..............#
+#..............#
+#..............#
+#..............#
+#D.............#
+#dL............#
+#####~~#########
+################
+BIDULE 3 10
+OBJ ENVERS 12 10
+TRIG LEVER 2 10 1 1 ON WORLD 9
+TRIG BOSS 0 0 1 1 OFF DOOR_OPEN 1 9
+END

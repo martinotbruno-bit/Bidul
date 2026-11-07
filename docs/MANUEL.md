@@ -1,4 +1,4 @@
-# TCHAK ! – La Grande Catastrophe · Manuel de jeu (Mondes 1 à 3)
+# TCHAK ! – La Grande Catastrophe · Manuel de jeu (Mondes 1 à 4)
 
 ![titre](img/02_titre.png)
 
@@ -46,6 +46,8 @@ Monde 2 : 2-1 `LNFG` · 2-2 `PNFH` · 2-3 `NNFJ` · 2-4 `HNFK` · 2-5 `GNFB` · 
 
 Monde 3 : 3-1 `BNDR` · 3-2 `FNDS` · 3-3 `DNDT` · 3-4 `SNDV` · 3-5 `RNDL` · 3-6 `VNDM` · 3-7 `TNDN` · 3-8 `MNDP`.
 
+Monde 4 : 4-1 `LNDG` · 4-2 `PNDH` · 4-3 `NNDJ` · 4-4 `HNDK` · 4-5 `GNDB` · 4-6 `KNDC` · 4-7 `JNDD` · 4-8 `CNDF`.
+
 ## Conseils
 
 - Si quelque chose tombe dans la gelée, ce n'est pas grave : observez, il reviendra.
@@ -71,6 +73,13 @@ Dans la maison, le TCHAK ne pousse pas les meubles : il les vexe, les intrigue o
 - **Le Copieur** fait exactement les mêmes pas que vous (s'il est bloqué, il reste bloqué). Un TCHAK le fait passer en **miroir** : il fait l'inverse. Et inversement.
 - **Le Machinal** patrouille et appuie sur tout ce qu'il croise. Un TCHAK le fige un moment, puis il repart dans l'autre sens.
 - **Le Grand Dérangé** inverse les convoyeurs quand ça lui chante et ne tombe jamais tout seul. Étourdi par un TCHAK, il se laisse emporter… Attention à ne pas vous laisser emporter vous-même !
+
+## Le monde qui marche de travers (Monde 4)
+
+- Certains leviers **retournent la gravité des objets** : les caisses tombent au plafond (et peuvent y enfoncer des plaques). BIDULE, lui, garde les pieds sur terre.
+- **Le ballon** tombe toujours à l'envers du reste du monde. Un TCHAK l'éloigne de son « sol ».
+- **L'aimant**, une fois allumé, attire les caisses vers lui, au sol comme au plafond. Quand un obstacle bloque la route en bas, il est peut-être libre en haut…
+- **Le Roi à l'Envers** marche vers vous, au sol ou au plafond, et ne met jamais le pied dans un trou. Retournez la gravité au bon moment !
 
 ## Où jouer
 

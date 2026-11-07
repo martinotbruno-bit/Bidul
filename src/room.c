@@ -11,6 +11,7 @@ const Room *room;
 s8 conv_dir;
 u8 shake;
 u8 hit_cx, hit_cy;
+u8 grav_up;
 
 static u8 attr_sh[64];
 static u8 an_cx[4], an_cy[4], an_mt[4], an_t[4];
@@ -23,12 +24,13 @@ void room_load(u8 idx)
     room = &rooms[idx & 7];
     for (i = 0; i < MAP_SIZE; ++i) map[i] = room->map[i];
     conv_dir = room->conv;
+    grav_up = 0;
     shake = 0;
     msg_t = 0;
     for (i = 0; i < 4; ++i) an_t[i] = 0;
     objects_init();
     boss_room = 0;
-    for (i = 0; i < MAX_OBJ; ++i) if (o_type[i] == OT_KING || o_type[i] == OT_WARDROBE || o_type[i] == OT_DERANGE) boss_room = 1;
+    for (i = 0; i < MAX_OBJ; ++i) if (o_type[i] == OT_KING || o_type[i] == OT_WARDROBE || o_type[i] == OT_DERANGE || o_type[i] == OT_ENVERS) boss_room = 1;
     events_init();
     bidule_init(room->bx, room->by);
     tchak_count = 0;

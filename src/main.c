@@ -36,7 +36,7 @@ static void start_room(void)
     ppu_on();
     vbuf_len = 0;
     last_frame = frame_cnt;
-    music_play(boss_room ? MUS_BOSS : world_music);
+    music_play(boss_room ? MUS_BOSS : MUS_WORLD);
     hud_message(room->name);
 }
 

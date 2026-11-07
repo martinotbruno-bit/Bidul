@@ -20,15 +20,15 @@ s8  o_dir[MAX_OBJ];
 u16 o_x[MAX_OBJ], o_y[MAX_OBJ];
 s8  o_vx[MAX_OBJ], o_vy[MAX_OBJ];
 
-/*                     -  BALLE CAISSE TROU CHAUS ROI | FAUT LAMPE COMM COFF BISC ARM. | PIST COPI ROBO DERA */
-static const u8 p_mass[OT_COUNT]   = { 0, 1, 4, 2, 0, 6,   6, 2, 5, 5, 1, 8,   9, 2, 3, 6 };
-static const u8 p_bounce[OT_COUNT] = { 0, 6, 0, 0, 0, 0,   0, 0, 0, 0, 2, 0,   0, 0, 0, 0 };   /* /8 */
-static const u8 p_fric[OT_COUNT]   = { 0, 1, 4, 4, 0, 0,   4, 4, 4, 4, 3, 4,   4, 4, 4, 0 };
-static const u8 p_body[OT_COUNT]   = { 0, 1, 1, 1, 0, 1,   1, 1, 1, 1, 0, 1,   1, 1, 1, 1 };
-static const u8 p_pal[OT_COUNT]    = { 0, 1, 2, 3, 3, 1,   1, 3, 2, 2, 2, 1,   2, 3, 3, 1 };
-const u8 p_weight[OT_COUNT]        = { 0, 1, 3, 2, 0, 4,   3, 2, 3, 3, 1, 4,   0, 2, 2, 4 };
-const u8 p_tchak_vx[OT_COUNT]      = { 0,40,30,24, 0,28,   0, 0, 0, 0,36, 0,   0, 0, 0, 0 };
-const u8 p_tchak_vy[OT_COUNT]      = { 0,56,24,32, 0,16,   0, 0, 0, 0,40, 0,   0, 0, 0, 0 };
+/*                     -  BALLE CAISSE TROU CHAUS ROI | FAUT LAMPE COMM COFF BISC ARM. | PIST COPI ROBO DERA | BALL AIMA ENVE */
+static const u8 p_mass[OT_COUNT]   = { 0, 1, 4, 2, 0, 6,   6, 2, 5, 5, 1, 8,   9, 2, 3, 6,   1, 9, 6 };
+static const u8 p_bounce[OT_COUNT] = { 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 1, 0, 0 };   /* /8 */
+static const u8 p_fric[OT_COUNT]   = { 0, 1, 4, 4, 0, 0, 4, 4, 4, 4, 3, 4, 4, 4, 4, 0, 4, 4, 0 };
+static const u8 p_body[OT_COUNT]   = { 0, 1, 1, 1, 0, 1,   1, 1, 1, 1, 0, 1,   1, 1, 1, 1,   1, 1, 1 };
+static const u8 p_pal[OT_COUNT]    = { 0, 1, 2, 3, 3, 1,   1, 3, 2, 2, 2, 1,   2, 3, 3, 1,   1, 1, 2 };
+const u8 p_weight[OT_COUNT]        = { 0, 1, 3, 2, 0, 4,   3, 2, 3, 3, 1, 4,   0, 2, 2, 4,   1, 0, 4 };
+const u8 p_tchak_vx[OT_COUNT]      = { 0, 40, 30, 24, 0, 28, 0, 0, 0, 0, 36, 0, 0, 0, 0, 0, 6, 0, 0 };
+const u8 p_tchak_vy[OT_COUNT]      = { 0,56,24,32, 0,16,   0, 0, 0, 0,40, 0,   0, 0, 0, 0,   40, 0, 0 };
 
 static u8 bump_cool;
 
@@ -80,7 +80,7 @@ void objects_init(void)
 /* objet tombe dans la gelee (ou sorti de l'ecran) : reapparait plus tard */
 void obj_kill(u8 i)
 {
-    if (o_type[i] == OT_KING || o_type[i] == OT_DERANGE) { boss_hit(i); return; }
+    if (o_type[i] == OT_KING || o_type[i] == OT_DERANGE || o_type[i] == OT_ENVERS) { boss_hit(i); return; }
     o_flags[i] |= OF_DEAD;
     o_timer[i] = 90;
     o_vx[i] = o_vy[i] = 0;
@@ -93,12 +93,12 @@ static void obj_respawn(u8 i)
     o_x[i] = SUB(o_home_x[i]);
     o_y[i] = SUB(o_home_y[i]);
     o_vx[i] = o_vy[i] = 0;
-    if (o_type[i] != OT_KING && o_type[i] != OT_DERANGE) o_state[i] = TS_SLEEP;   /* un boss garde sa phase */
+    if (o_type[i] != OT_KING && o_type[i] < OT_DERANGE) o_state[i] = TS_SLEEP;   /* un boss garde sa phase */
 }
 
 /* ------------------------------------------------------------------ */
 /* variables de travail (statiques : plus rapide sur 6502)              */
-static u8 i_, t_, px_, py_, e_, c1_, c2_, cc_, hy_;
+static u8 i_, t_, px_, py_, e_, c1_, c2_, cc_, hy_, up_;
 static s8 vx_, vy_, push_;
 static s16 mv_;
 static u16 nx_, ny_;
@@ -106,7 +106,10 @@ static u16 nx_, ny_;
 static void phys(void)
 {
     vy_ = o_vy[i_];
-    if (vy_ < MAX_FALL) vy_ += GRAV;
+    /* gravite : vers le bas, ou vers le haut (objet flottant XOR monde inverse) */
+    up_ = ((o_flags[i_] & OF_FLOAT) ? 1 : 0) ^ grav_up;
+    if (up_) { if (vy_ > -MAX_FALL) vy_ -= GRAV; }
+    else if (vy_ < MAX_FALL) vy_ += GRAV;
     vx_ = o_vx[i_];
     push_ = 0;
     if (o_gnd[i_] == C_CONV) push_ = conv_dir * CONV_SPEED;
@@ -175,18 +178,28 @@ static void phys(void)
             }
         }
     } else {
-        e_ = py_;
+        e_ = py_ - up_;                  /* objet "tombant vers le haut" : sonde 1 px au-dessus */
         c1_ = coll_at((u8)(px_ + 1), e_);
         c2_ = coll_at((u8)(px_ + 14), e_);
         if (OBJ_SOLID(c1_) || OBJ_SOLID(c2_)) {
             ny_ = SUB((e_ & 0xF0) + 16);
             cc_ = coll_at((u8)(px_ + 8), e_);
+            hit_cx = (u8)(px_ + 8) >> 4;
+            hit_cy = (u8)(e_ - PLAY_TOP) >> 4;
             if (cc_ == C_TARGET || c1_ == C_TARGET || c2_ == C_TARGET) {
-                if (vy_ <= -12)
-                    ev_target_hit((u8)(px_ + 8) >> 4, (u8)(e_ - PLAY_TOP) >> 4);
+                if (vy_ <= -12) ev_target_hit(hit_cx, hit_cy);
             }
             if (vy_ <= -24) bump(0);
-            vy_ = p_bounce[t_] ? -s8_scale(vy_, 4) : 0;
+            if (up_) {
+                /* il se pose au plafond (plaques au plafond comprises) */
+                if (cc_ == C_PLATE) ev_plate_load(hit_cx, hit_cy, p_weight[t_]);
+                o_gcx[i_] = hit_cx;
+                o_gcy[i_] = hit_cy;
+                o_flags[i_] |= OF_GROUND;
+                o_gnd[i_] = cc_;
+                vy_ = (p_bounce[t_] && vy_ <= -BOUNCE_MIN) ? -s8_scale(vy_, p_bounce[t_]) : 0;
+            } else
+                vy_ = p_bounce[t_] ? -s8_scale(vy_, 4) : 0;
         }
     }
     o_y[i_] = ny_;
@@ -366,7 +379,7 @@ void objects_update(void)
         t_ = o_type[i_];
         if (t_ == OT_NONE) continue;
         if (o_flags[i_] & OF_DEAD) {
-            if (o_aux[i_] && (t_ == OT_KING || t_ == OT_DERANGE)) continue;   /* boss vaincu */
+            if (o_aux[i_] && (t_ == OT_KING || t_ >= OT_DERANGE)) continue;   /* boss vaincu */
             if (--o_timer[i_] == 0) obj_respawn(i_);
             continue;
         }

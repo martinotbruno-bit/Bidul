@@ -49,5 +49,16 @@ qu'elle les recrache dans les 3 serrures.
 [ OK ] t46_w3_7_grande_chaine - 3-7 : trois serrures (cible, piston/caisse, Copieur) ; chaque TCHAK fait aussi basculer le Copieur.
 [ OK ] t47_w3_8_grand_derange - 3-8 : le Grand Derange ne tombe jamais seul ; l'etourdir pres du trou quand le convoyeur y va.
 [ OK ] t48_w3_joueur_au_hasard - Monde 3 : un joueur qui appuie au hasard (4 parties de 20 s par salle) ne resout aucune salle.
+[ OK ] t50_w4_1_tete_en_bas - 4-1 : inverser tout de suite : la caisse tombe au plafond, a cote de la plaque ; la placer
+d'abord sous la plaque du plafond.
+[ OK ] t51_w4_2_ballon - 4-2 : le ballon tombe vers le haut ; inverser, le pousser au sol sous la cheminee, revenir a la normale.
+[ OK ] t52_w4_3_aimant - 4-3 : l'aimant seul bloque la caisse contre l'obstacle ; inverser, puis revenir -> plaque.
+[ OK ] t53_w4_4_trois_serrures - 4-4 : caisse sur la plaque du sol, puis sous la plaque du plafond, inverser, ballon sous la cheminee, revenir.
+[ OK ] t54_w4_5_zigzag - 4-5 : aimant + deux retournements pour contourner les colonnes du sol puis du plafond.
+[ OK ] t55_w4_6_par_dessus - 4-6 : l'aimant seul fait tomber la caisse dans la cuve ; par le plafond, elle passe.
+[ OK ] t56_w4_7_grand_retournement - 4-7 : zigzag, ballon a glisser sous la cheminee entre deux retournements, deux plaques.
+[ OK ] t57_w4_8_roi_a_l_envers - 4-8 : le Roi a l'Envers ne tombe pas seul ; retourner la gravite quand il passe sous le trou
+du plafond (ou au-dessus du trou du sol).
+[ OK ] t58_w4_joueur_au_hasard - Monde 4 : un joueur qui appuie au hasard (4 parties de 20 s par salle) ne resout aucune salle.
 
-43/43 tests reussis en 802.1 s
+52/52 tests reussis en 1080.4 s
