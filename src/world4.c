@@ -23,7 +23,7 @@ static u8 px, py;
 static u8 w_best[MAX_OBJ], w_stall[MAX_OBJ];
 static u8 env_clock;
 
-static const u8 env_speed[3]  = { 12, 16, 20 };
+static const u8 env_speed[3]  = { 14, 22, 28 };
 static const u8 env_period[3] = { 255, 220, 160 };   /* il retourne la gravite */
 
 static void flip_gravity(void)

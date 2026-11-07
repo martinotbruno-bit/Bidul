@@ -96,7 +96,7 @@ typedef signed int    s16;
 #define A_REVEAL      10
 #define A_WORLD       13   /* action propre au monde (banque) : parametre x */
 #define A_LOCK        12   /* serrure : la case devient un bloc, compteur +1 */
-#define A_HATCH_PULSE 11   /* trappe ouverte 0,8 s puis refermee */
+#define A_HATCH_PULSE 11   /* trappe ouverte 1,3 s puis refermee */
 
 /* ---- etats du jeu ----------------------------------------------------- */
 #define GS_TITLE     0

@@ -159,7 +159,7 @@ static void execute(u8 type, u8 x, u8 y)
         if (lock_count >= 3) ev_boss(0);
         break;
     case A_HATCH_PULSE:
-        while (w--) tile_anim(x++, y, MT_EMPTY, MT_HATCH, 48);
+        while (w--) tile_anim(x++, y, MT_EMPTY, MT_HATCH, 80);
         sfx_play(SFX_LEVER);
         break;
     case A_HATCH_CLOSE:

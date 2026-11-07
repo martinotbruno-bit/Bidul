@@ -105,33 +105,8 @@ TRIG TARGET 11 1 2 1 ON LOCK 11 1
 TRIG BOSS 0 0 1 1 OFF DOOR_OPEN 14 9
 END
 
-ROOM "ZIGZAG"
-WORLD 4 NUM 5
-CONV 0
-MAP
-################
-#.......X......#
-#.......X......#
-#..|....X..|...#
-#..|....X......#
-#...L...X......#
-#...H..........#
-#...HX.........#
-#...HX.........#
-#D..HX.........#
-#dL.HX.........#
-###########P####
-################
-BIDULE 3 10
-OBJ MAGNET 12 10
-OBJ CRATE 3 10
-TRIG LEVER 4 5 1 1 ON WORLD 0
-TRIG LEVER 2 10 1 1 ON WORLD 9
-TRIG PLATE 11 11 1 1 ON DOOR_OPEN 1 9
-END
-
 ROOM "PAR-DESSUS LE TROU"
-WORLD 4 NUM 6
+WORLD 4 NUM 5
 CONV 0
 MAP
 ################
@@ -152,6 +127,31 @@ OBJ MAGNET 12 10
 OBJ CRATE 5 10
 TRIG LEVER 2 10 1 1 ON WORLD 0
 TRIG LEVER 3 10 1 1 ON WORLD 9
+TRIG PLATE 11 11 1 1 ON DOOR_OPEN 1 9
+END
+
+ROOM "ZIGZAG"
+WORLD 4 NUM 6
+CONV 0
+MAP
+################
+#.......X......#
+#.......X......#
+#..|....X..|...#
+#..|....X......#
+#...L...X......#
+#...H..........#
+#...HX.........#
+#...HX.........#
+#D..HX.........#
+#dL.HX.........#
+###########P####
+################
+BIDULE 3 10
+OBJ MAGNET 12 10
+OBJ CRATE 3 10
+TRIG LEVER 4 5 1 1 ON WORLD 0
+TRIG LEVER 2 10 1 1 ON WORLD 9
 TRIG PLATE 11 11 1 1 ON DOOR_OPEN 1 9
 END
 

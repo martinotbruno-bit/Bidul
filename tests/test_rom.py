@@ -727,23 +727,30 @@ def t44_w3_5_copie_conforme():
 
 @test
 def t45_w3_6_deux_facons():
-    """3-6 : deux solutions : le piston (levier en haut de l'echelle) ou pousser la caisse soi-meme."""
+    """3-6 : un trou de 3 cases ; la caisse passe par le piston (levier) ou par la passerelle
+    (Machinal fige sur sa plaque) ; dans les deux cas il faut figer le robot pour sortir."""
+    def freeze(g):
+        g.until(lambda: 180 <= g.obj(2)["x"] <= 186 and g.s8("o_vx", 2) > 0, 900)
+        g.press(B, 2, 20)
+        return g.u8("map", 11 * 16 + 3) == 17
     g = Game(); w3(g, 6); st = g.nes.save()
     g.until(lambda: g.bx() <= 170, 100, LEFT)
     g.until(lambda: g.u8("b_state") == 0 and g.by() < 110, 200, UP); g.run(3, UP)
     g.press(A, 2, 120)
     check(door_open(g, 1, 9), "solution piston")
     g.until(lambda: g.u8("b_ground") and g.by() > 180, 200, DOWN)
-    check(g.until(lambda: g.u8("b_state") == 3, 600, LEFT), "sortie")
+    g.until(lambda: g.bx() >= 150, 100, RIGHT)
+    check(freeze(g), "passerelle")
+    check(g.until(lambda: g.u8("b_state") == 3, 250, LEFT), "sortie (solution piston)")
     g.nes.load(st)
-    for _ in range(5):
+    g.until(lambda: g.bx() <= 130, 100, LEFT)
+    check(freeze(g), "passerelle (solution 2)")
+    for _ in range(3):
         cx = g.obj(0)["x"]
-        if g.bx() < cx + 10: g.until(lambda: g.bx() >= cx + 12, 200, RIGHT)
-        else: g.until(lambda: g.bx() <= cx + 16, 200, LEFT)
-        g.run(1, LEFT); g.press(B, 2, 40)
+        g.until(lambda: g.bx() <= cx + 16, 100, LEFT); g.run(1, LEFT); g.press(B, 2, 30)
         if door_open(g, 1, 9):
             break
-    check(door_open(g, 1, 9), "solution TCHAK")
+    check(door_open(g, 1, 9), "solution passerelle")
 
 @test
 def t46_w3_7_grande_chaine():
@@ -891,8 +898,8 @@ def t53_w4_4_trois_serrures():
 
 @test
 def t54_w4_5_zigzag():
-    """4-5 : aimant + deux retournements pour contourner les colonnes du sol puis du plafond."""
-    g = Game(); w4(g, 5)
+    """4-6 : aimant + deux retournements pour contourner les colonnes du sol puis du plafond."""
+    g = Game(); w4(g, 6)
     g.until(lambda: g.bx() >= 56, 100, RIGHT)
     check(g.until(lambda: g.u8("b_state") == 0 and g.by() < 110, 200, UP), "echelle")
     g.run(3, UP); g.press(A, 2, 150)
@@ -906,8 +913,8 @@ def t54_w4_5_zigzag():
 
 @test
 def t55_w4_6_par_dessus():
-    """4-6 : l'aimant seul fait tomber la caisse dans la cuve ; par le plafond, elle passe."""
-    g = Game(); w4(g, 6); st = g.nes.save()
+    """4-5 : l'aimant seul fait tomber la caisse dans la cuve ; par le plafond, elle passe."""
+    g = Game(); w4(g, 5); st = g.nes.save()
     lever_at(g, 34)
     check(g.until(lambda: g.obj(1)["flags"] & 4, 250), "la caisse aurait du tomber dans la cuve")
     g.nes.load(st)

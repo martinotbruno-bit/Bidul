@@ -255,6 +255,7 @@ void __fastcall__ end_screen(u8 world)
 {
     u8 t = 0, hop, last;
     last = (room_idx >= TOTAL_ROOMS);
+    if (lives < 5) lives = 5;          /* nouveau monde : BIDULE repart avec 5 vies */
     ppu_off();
     oam_clear(); oam_finish();
     screen_clear();
