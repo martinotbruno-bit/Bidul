@@ -1300,6 +1300,80 @@ TRAVERS_WALL = [
     "1111111111111111",
 ]
 
+# ============================== MONDE 5 : le Grand Bazar ===================
+MASTER = [   # le Maitre du Chaos (palette 3), chapeau pointu, baguette
+    "......1.........",
+    ".....131........",
+    "....13331.......",
+    "...1322231......",
+    "..133333331.....",
+    ".1111111111..3..",
+    "..1222222221.1..",
+    "..1231223121.1..",
+    "..1222222221.1..",
+    "..1221111221.1..",
+    "...12222221.11..",
+    "..112222221111..",
+    ".12222222222221.",
+    ".12223322332221.",
+    "..122222222221..",
+    "...1111111111...",
+]
+MASTER_CAST = [
+    "......1.......3.",
+    ".....131....3.3.",
+    "....13331....3..",
+    "...1322231..1...",
+    "..133333331.1...",
+    ".1111111111.1...",
+    "..1222222221.1..",
+    "..1213223131.1..",
+    "..1222222221.1..",
+    "..1221331221.1..",
+    "...12211221.11..",
+    "..112222221111..",
+    ".12222222222221.",
+    ".12223322332221.",
+    "..122222222221..",
+    "...1111111111...",
+]
+BAZAR_EMPTY = [
+    "1.......3.......",
+    "................",
+    "................",
+    "....1...........",
+    "................",
+    "............3...",
+    "................",
+    "................",
+    "3.......1.......",
+    "................",
+    "................",
+    "............1...",
+    "................",
+    "....3...........",
+    "................",
+    "................",
+]
+BAZAR_WALL = [
+    "3333333312222222",
+    "3222222312222222",
+    "3222222312222222",
+    "3222222312222222",
+    "3222222312222222",
+    "3222222312222222",
+    "3222222312222222",
+    "1111111111111111",
+    "2222222233333333",
+    "2222222232222221",
+    "2222222232222221",
+    "2222222232222221",
+    "2222222232222221",
+    "2222222232222221",
+    "2222222232222221",
+    "1111111111111111",
+]
+
 # LE ROI DU REBOND (boss du monde 1) : corps (palette sprite 1) + couronne (palette 2)
 KING = [
     ".....111111.....",
@@ -1425,8 +1499,9 @@ FX_CURSOR = ["3.......", "33......", "333.....", "3333....", "333.....", "33....
 MT_MAX = 40
 WORLD_ART = {1: {}, 2: {"EMPTY": HOUSE_EMPTY, "BRICK": HOUSE_WALL, "GIRDER": HOUSE_FLOOR},
              3: {"EMPTY": FACTORY_EMPTY, "BRICK": FACTORY_WALL},
-             4: {"EMPTY": TRAVERS_EMPTY, "BRICK": TRAVERS_WALL}}          # surcharges de dessin par monde : {nom: art 16x16}
-WORLD_EXTRA = {1: [], 2: [], 3: [], 4: []}        # metatuiles propres a un monde : (nom, car, coll, pal, art)
+             4: {"EMPTY": TRAVERS_EMPTY, "BRICK": TRAVERS_WALL},
+             5: {"EMPTY": BAZAR_EMPTY, "BRICK": BAZAR_WALL, "GIRDER": HOUSE_FLOOR}}          # surcharges de dessin par monde : {nom: art 16x16}
+WORLD_EXTRA = {1: [], 2: [], 3: [], 4: [], 5: []}        # metatuiles propres a un monde : (nom, car, coll, pal, art)
 
 def build_bg(world):
     bg = Bank("bg", reserved=range(0x20, 0x60))
@@ -1475,7 +1550,9 @@ def build():
             for ch in "TCHAK!":
                 slogo[ch] = sp.add_block(logo_letter(ch), 3, 3)
         for name, art, ow in OBJ_SPRITES:
-            if ow == w:
+            if ow == w or ow in WORLD_ALSO.get(w, ()):
+                if ow == 1 and w != 1 and name in ("KING", "KING_SQ", "KING_HURT", "CROWN"):
+                    continue
                 objs[name] = sp.add_block(grid([r.replace(" ", ".") for r in art], 16, 16), 2, 2)
         print("monde %d : tuiles de sprites %d/256" % (w, 256 - len(sp.free)))
         return sp, core, objs, slogo
@@ -1666,7 +1743,10 @@ OBJ_SPRITES = [("BALL", BALL, 0), ("BALL_SQ", BALL_SQUASH, 0), ("CRATE", CRATE, 
                ("PISTON", PISTON, 3), ("PISTON_OUT", PISTON_OUT, 3), ("COPY", COPY, 3), ("COPY_MIR", COPY_MIR, 3),
                ("ROBOT", ROBOT, 3), ("ROBOT_PAUSE", ROBOT_PAUSE, 3), ("DERANGE", DERANGE, 3), ("DERANGE_DIZZY", DERANGE_DIZZY, 3),
                ("BALLOON", BALLOON, 4), ("MAGNET", MAGNET, 4), ("MAGNET_ON", MAGNET_ON, 4),
-               ("ENVERS", ENVERS, 4), ("ENVERS_MAD", ENVERS_MAD, 4)]
+               ("ENVERS", ENVERS, 4), ("ENVERS_MAD", ENVERS_MAD, 4),
+               ("MASTER", MASTER, 5), ("MASTER_CAST", MASTER_CAST, 5)]
+# le monde 5 reutilise les sprites des mondes 1 a 4 (le Grand Bazar melange tout)
+WORLD_ALSO = {5: (1, 2, 3, 4)}
 
 if __name__ == "__main__":
     build()

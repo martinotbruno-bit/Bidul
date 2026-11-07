@@ -13,11 +13,11 @@ W, H = 16, 13
 OBJ_TYPES = {"BALL": 1, "CRATE": 2, "TROU": 3, "SOCK": 4, "KING": 5, "ARMCHAIR": 6,
              "LAMP": 7, "DRESSER": 8, "CHEST": 9, "COOKIE": 10, "WARDROBE": 11, "PISTON": 12,
              "COPY": 13, "ROBOT": 14, "DERANGE": 15,
-             "BALLOON": 16, "MAGNET": 17, "ENVERS": 18}
+             "BALLOON": 16, "MAGNET": 17, "ENVERS": 18, "MASTER": 19}
 TRIG_KINDS = {"TARGET": 1, "PLATE": 2, "LEVER": 3, "BOSS": 4}
 ACTIONS = {"NONE": 0, "DOOR_OPEN": 1, "DOOR_CLOSE": 2, "CONV_RIGHT": 3, "CONV_LEFT": 4,
-           "CONV_STOP": 5, "CONV_REV": 6, "HATCH_OPEN": 7, "HATCH_CLOSE": 8, "WAKE": 9, "REVEAL": 10, "HATCH_PULSE": 11, "LOCK": 12, "WORLD": 13}
-ACT_ARGS = {"DOOR_OPEN": 2, "DOOR_CLOSE": 2, "HATCH_OPEN": 3, "HATCH_CLOSE": 3, "HATCH_PULSE": 3, "LOCK": 2, "WORLD": 1, "WAKE": 1, "REVEAL": 1}
+           "CONV_STOP": 5, "CONV_REV": 6, "HATCH_OPEN": 7, "HATCH_CLOSE": 8, "WAKE": 9, "REVEAL": 10, "HATCH_PULSE": 11, "LOCK": 12, "WORLD": 13, "LOCKW": 12}
+ACT_ARGS = {"DOOR_OPEN": 2, "DOOR_CLOSE": 2, "HATCH_OPEN": 3, "HATCH_CLOSE": 3, "HATCH_PULSE": 3, "LOCK": 2, "WORLD": 1, "LOCKW": 3, "WAKE": 1, "REVEAL": 1}
 
 def load_metatiles(world):
     table = {}
@@ -73,7 +73,7 @@ def parse(path, mts):
                 which = tok[i]; act = tok[i + 1]; i += 2
                 n = ACT_ARGS.get(act, 0)
                 args = [int(v) & 0xFF for v in tok[i:i + n]]; i += n
-                if act.startswith("HATCH"):          # x y largeur -> y | (largeur-1) << 4
+                if act.startswith("HATCH") or act == "LOCKW":   # x y largeur -> y | (largeur-1) << 4
                     args = [args[0], args[1] | ((args[2] - 1) << 4)]
                 args += [0] * (2 - len(args))
                 (on if which == "ON" else off).append([ACTIONS[act]] + args)
@@ -110,12 +110,22 @@ def check(r, mts, path):
 def main():
     files = sorted(glob.glob(os.path.join(ROOT, "rooms", "world*.txt")))
     total = 0
+    worlds_seen = set()
     for path in files:
-        world = int(os.path.basename(path)[5:-4])
+        base = os.path.basename(path)[5:-4]           # "1", "2"... ou "5a" / "5b"
+        world = int(base.rstrip("ab"))
+        half = base[-1] if base[-1] in "ab" else ""
+        worlds_seen.add(world)
         GLOBAL.clear()
         mts = load_metatiles(world)
         rooms = parse(path, mts)
-        assert 1 <= len(rooms) <= 8, path
+        assert 1 <= len(rooms) <= (4 if half else 8), path
+        # place de chaque salle dans la table de 8 de la banque
+        if half == "b":                               # salles 5..8 : places 4..7
+            slots = [0, 0, 0, 0] + list(range(len(rooms)))
+        else:
+            slots = [k if k < len(rooms) else 0 for k in range(8)]
+        slots += [0] * (8 - len(slots))
         pal = GLOBAL.get("palette")
         assert pal and len(pal) == 32, "%s : PALETTE (32 couleurs) manquante" % path
         c = ["/* GENERE PAR tools/rooms.py : salles du monde %d - NE PAS MODIFIER */" % world,
@@ -138,7 +148,7 @@ def main():
         c.append('#pragma rodata-name(push, "BANKHDR")')
         c.append("const Room rooms[8] = {")
         for k in range(8):
-            n = k if k < len(rooms) else 0
+            n = slots[k]
             r = rooms[n]
             bx, by = r["bidule"]
             c.append("  { map%d, name%d, %d, %d, %d, obj%d, %d, trig%d, %d, %d, %d }," % (
@@ -149,10 +159,10 @@ def main():
         c.append("const u8 world_music = %d;" % GLOBAL.get("music", 1))
         c.append("const u8 world_rooms = %d;" % len(rooms))
         c.append('#pragma rodata-name(pop)')
-        with open(os.path.join(ROOT, "src", "gen", "rooms_w%d.c" % world), "w") as f:
+        with open(os.path.join(ROOT, "src", "gen", "rooms_w%s.c" % base), "w") as f:
             f.write("\n".join(c) + "\n")
-        total += 1
-        print("monde %d : %d salles compilees" % (world, len(rooms)))
+        print("monde %s : %d salles compilees" % (base, len(rooms)))
+    total = len(worlds_seen)
     with open(os.path.join(ROOT, "src", "gen", "rooms.h"), "w") as f:
         f.write("/* GENERE PAR tools/rooms.py */\n#ifndef ROOMS_H\n#define ROOMS_H\n"
                 "#define WORLDS_DONE %d\n#define TOTAL_ROOMS (WORLDS_DONE * 8)\n"

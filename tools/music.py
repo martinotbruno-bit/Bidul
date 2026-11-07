@@ -149,6 +149,16 @@ SONGS = [
   "tri": "[ C2.4 F#1.4 | C2.4 D2.4 | E2.4 A#1.4 | E2.4 B1.4 | A1.4 E2.4 | D2.4 G1.4 | C2.4 B1.4 | C2.4 C2.4",
   "noise": "[ k.2 N2.1 h.1 s.1 h.1 N2.2",
  }),
+ ("WORLD5", 6, {
+  "p1": "@d2v10 e4 [ G5.2 r.1 G5.1 E5.2 C5.2 | D5.1 F5.1 A5.2 F#5.4 | E5.2 r.1 E5.1 C5.2 A4.2 | B4.1 D5.1 F5.2 E5.4 |"
+        " C6.2 B5.1 A5.1 G5.2 F5.2 | E5.1 D5.1 C5.2 D5.4 | G4.1 A4.1 B4.1 C5.1 D5.1 E5.1 F5.1 F#5.1 | G5.6 r.2",
+  "p2": "@d1v6 e2 [ r.2 E4.1 G4.1 r.2 E4.1 G4.1 | r.2 F4.1 A4.1 r.2 D4.1 A4.1 | r.2 C4.1 E4.1 r.2 C4.1 E4.1 |"
+        " r.2 D4.1 G4.1 r.2 C4.1 G4.1 | r.2 E4.1 A4.1 r.2 F4.1 A4.1 | r.2 C4.1 G4.1 r.2 B3.1 F4.1 |"
+        " r.2 D4.1 G4.1 r.2 D4.1 A4.1 | r.2 B3.1 D4.1 r.2 r.2",
+  "tri": "[ C2.2 C3.2 G1.2 G2.2 | D2.2 D3.2 D2.2 A1.2 | A1.2 A2.2 E2.2 E1.2 | G1.2 G2.2 C2.2 C3.2 |"
+         " F1.2 F2.2 F1.2 A1.2 | C2.2 G1.2 G2.2 B1.2 | G1.2 A1.2 B1.2 D2.2 | G1.2 G2.2 G1.4",
+  "noise": "[ k.1 h.1 s.1 N2.1 k.1 k.1 s.1 h.1",
+ }),
 ]
 
 SFX = [
@@ -185,7 +195,7 @@ def emit_stream(lines, label, text, tempo, kind):
     else:
         lines.append("        .byte $F2")
 
-WORLD_SONGS = {1: "WORLD1", 2: "WORLD2", 3: "WORLD3", 4: "WORLD4"}
+WORLD_SONGS = {1: "WORLD1", 2: "WORLD2", 3: "WORLD3", 4: "WORLD4", 5: "WORLD5"}
 
 def main():
     lo, hi = periods()
