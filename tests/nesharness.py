@@ -105,3 +105,9 @@ class Game:
     def skip_room(self, idx):
         self.poke("room_result", 1)
         self.wait_room(idx + 1)
+
+    def goto_room(self, idx):
+        """Demarre une partie et saute directement a la salle idx."""
+        self.boot_to_room1()
+        for r in range(idx):
+            self.skip_room(r)

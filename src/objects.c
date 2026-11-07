@@ -20,15 +20,15 @@ s8  o_dir[MAX_OBJ];
 u16 o_x[MAX_OBJ], o_y[MAX_OBJ];
 s8  o_vx[MAX_OBJ], o_vy[MAX_OBJ];
 
-/*                         -    BALLE CAISSE TROUIL. CHAUSS. */
-static const u8 p_mass[OT_COUNT]   = { 0,   1,    4,     2,      0 };
-static const u8 p_bounce[OT_COUNT] = { 0,   6,    0,     0,      0 };   /* /8 */
-static const u8 p_fric[OT_COUNT]   = { 0,   1,    4,     4,      0 };
-static const u8 p_body[OT_COUNT]   = { 0,   1,    1,     1,      0 };
-static const u8 p_pal[OT_COUNT]    = { 0,   1,    2,     3,      3 };
-const u8 p_weight[OT_COUNT]        = { 0,   1,    3,     2,      0 };
-const u8 p_tchak_vx[OT_COUNT]      = { 0,  40,   30,    24,      0 };
-const u8 p_tchak_vy[OT_COUNT]      = { 0,  56,   24,    32,      0 };
+/*                         -    BALLE CAISSE TROUIL. CHAUSS. ROI */
+static const u8 p_mass[OT_COUNT]   = { 0,   1,    4,     2,      0,   6 };
+static const u8 p_bounce[OT_COUNT] = { 0,   6,    0,     0,      0,   0 };   /* /8 */
+static const u8 p_fric[OT_COUNT]   = { 0,   1,    4,     4,      0,   0 };
+static const u8 p_body[OT_COUNT]   = { 0,   1,    1,     1,      0,   1 };
+static const u8 p_pal[OT_COUNT]    = { 0,   1,    2,     3,      3,   1 };
+const u8 p_weight[OT_COUNT]        = { 0,   1,    3,     2,      0,   4 };
+const u8 p_tchak_vx[OT_COUNT]      = { 0,  40,   30,    24,      0,  28 };
+const u8 p_tchak_vy[OT_COUNT]      = { 0,  56,   24,    32,      0,  16 };
 
 static u8 bump_cool;
 
@@ -80,6 +80,7 @@ void objects_init(void)
 /* objet tombe dans la gelee (ou sorti de l'ecran) : reapparait plus tard */
 void obj_kill(u8 i)
 {
+    if (o_type[i] == OT_KING) { boss_hit(i); return; }
     o_flags[i] |= OF_DEAD;
     o_timer[i] = 90;
     o_vx[i] = o_vy[i] = 0;
@@ -92,7 +93,7 @@ static void obj_respawn(u8 i)
     o_x[i] = SUB(o_home_x[i]);
     o_y[i] = SUB(o_home_y[i]);
     o_vx[i] = o_vy[i] = 0;
-    o_state[i] = TS_SLEEP;
+    if (o_type[i] != OT_KING) o_state[i] = TS_SLEEP;   /* le roi garde sa phase */
 }
 
 /* ------------------------------------------------------------------ */
@@ -346,6 +347,13 @@ static void touch_bidule(void)
     case OT_TROU:
         if (o_state[i_] == TS_RUN && b_emote == EM_NONE) bidule_emote(EM_SURPRISE, 30);
         break;
+    case OT_KING:
+        /* le Roi rebondit sur BIDULE : aplati et etourdi (pas de vie perdue) */
+        if (b_emote != EM_SQUASH) {
+            bidule_emote(EM_SQUASH, 45);
+            sfx_play(SFX_SQUASH);
+        }
+        break;
     }
 }
 
@@ -358,6 +366,7 @@ void objects_update(void)
         t_ = o_type[i_];
         if (t_ == OT_NONE) continue;
         if (o_flags[i_] & OF_DEAD) {
+            if (t_ == OT_KING && o_aux[i_]) continue;     /* roi vaincu : il reste au fond */
             if (--o_timer[i_] == 0) obj_respawn(i_);
             continue;
         }
@@ -365,10 +374,11 @@ void objects_update(void)
         if (o_anim[i_]) --o_anim[i_];
         if (t_ != OT_SOCK) {
             if (t_ == OT_TROU) enemy_update(i_);
+            else if (t_ == OT_KING) boss_update(i_);
             /* objet au repos : on ne refait la physique complete que s'il
                recoit une vitesse, si son convoyeur tourne, ou 1 trame sur 8
                (pour detecter un sol qui disparait). */
-            if ((o_flags[i_] & OF_REST) && !o_vx[i_] && !o_vy[i_]
+            if ((o_flags[i_] & OF_REST) && !o_vx[i_] && !o_vy[i_] && t_ != OT_KING
                 && !(o_gnd[i_] == C_CONV && conv_dir) && ((room_timer + i_) & 7)) {
                 if (o_gnd[i_] == C_PLATE) ev_plate_load(o_gcx[i_], o_gcy[i_], p_weight[t_]);
             } else {
@@ -391,6 +401,14 @@ static void draw_obj(u8 i)
     x = PIX(o_x[i]);
     y = PIX(o_y[i]);
     if (o_flags[i] & OF_DEAD) {
+        if (t == OT_KING && o_aux[i]) {
+            /* roi vaincu : sa couronne est restee au bord de la cuve */
+            m_ptr = obj_frames[OF_CROWN];
+            m_x = o_home_x[i]; m_y = 202; m_attr = 2; m_w = 2; m_h = 1;
+            oam_meta();
+            if (room_timer & 16) oam_spr(o_home_x[i] + 4, 194, FX_STAR, 3);
+            return;
+        }
         /* eclaboussures de gelee pendant quelques trames */
         if (o_timer[i] > 70) {
             f = 90 - o_timer[i];
@@ -406,6 +424,13 @@ static void draw_obj(u8 i)
     case OT_SOCK:
         f = OF_SOCK;
         y += ((room_timer >> 3) & 1);
+        break;
+    case OT_KING:
+        f = o_anim[i] ? OF_KING_SQ : (o_state[i] >= 2 ? OF_KING_HURT : OF_KING);
+        if (o_dir[i] < 0) a |= 0x40;
+        m_ptr = obj_frames[OF_CROWN];
+        m_x = x; m_y = (u8)(y - (o_anim[i] ? 2 : 6)); m_attr = 2 | (a & 0x40); m_w = 2; m_h = 1;
+        oam_meta();
         break;
     default: /* OT_TROU */
         switch (o_state[i]) {

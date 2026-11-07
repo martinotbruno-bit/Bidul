@@ -1,22 +1,32 @@
 [ OK ] t01_demarrage_et_titre - La ROM demarre, l'ecran titre s'anime, le menu mene au jeu.
 [ OK ] t02_salle1_premier_tchak - Salle 1-1 : depuis la droite de la balle, TCHAK -> cible -> porte ; echelle -> sortie.
 [ OK ] t03_salle1_geste_reflexe - Salle 1-1 : le TCHAK reflexe (au depart) envoie la balle dans la gelee ; elle reapparait.
-[ OK ] t04_salle2_tchak_au_vol - Salle 1-2 : caisse -> ressort -> TCHAK au vol depuis le rebord -> etagere -> plaque -> porte.
-[ OK ] t05_salle2_mauvais_moment - Salle 1-2 : TCHAK au mauvais moment -> la caisse continue de rebondir, porte fermee.
-[ OK ] t06_salle2_chaussette_du_ressort - Salle 1-2, secret : BIDULE rebondit lui-meme sur le ressort et attrape la chaussette.
-[ OK ] t07_salle3_trouillard_dans_la_gelee - Salle 1-3 : effrayer le Trouillard sans planche -> il fuit dans la gelee (et reapparait).
-[ OK ] t08_salle3_solution_trouillard - Salle 1-3, solution 1 : levier (planche sur la cuve) PUIS effrayer le Trouillard.
-[ OK ] t09_salle3_solution_plateforme - Salle 1-3, solution 2 : planche, puis TCHAK sur la caisse depuis la plate-forme :
+[ OK ] t04_salle2_tchak_au_vol - Salle 1-4 : caisse -> ressort -> TCHAK au vol depuis le rebord -> etagere -> plaque -> porte.
+[ OK ] t05_salle2_mauvais_moment - Salle 1-4 : TCHAK au mauvais moment -> la caisse continue de rebondir, porte fermee.
+[ OK ] t06_salle2_chaussette_du_ressort - Salle 1-4, secret : BIDULE rebondit lui-meme sur le ressort et attrape la chaussette.
+[ OK ] t07_salle3_trouillard_dans_la_gelee - Salle 1-6 : effrayer le Trouillard sans planche -> il fuit dans la gelee (et reapparait).
+[ OK ] t08_salle3_solution_trouillard - Salle 1-6, solution 1 : levier (planche sur la cuve) PUIS effrayer le Trouillard.
+[ OK ] t09_salle3_solution_plateforme - Salle 1-6, solution 2 : planche, puis TCHAK sur la caisse depuis la plate-forme :
 la caisse tombe et le Trouillard (reveille) fuit lui aussi vers la plaque.
 [ OK ] t10_gelee_perd_une_vie - Tomber dans la gelee coute une vie et recommence la salle.
 [ OK ] t11_game_over - Plus de vies : ecran de fin de partie, puis retour au titre.
 [ OK ] t12_pause_et_recommencer - START met en pause (le jeu est fige), SELECT recommence la salle sans perte de vie.
-[ OK ] t13_mot_de_passe - Le mot de passe affiche permet de reprendre a la salle 1-3.
+[ OK ] t13_mot_de_passe - Le mot de passe affiche permet de reprendre a la salle 1-6.
 [ OK ] t14_mot_de_passe_faux - Un mot de passe invalide est refuse.
 [ OK ] t15_determinisme - Memes entrees => memes effets : deux parties identiques donnent la meme RAM.
-[ OK ] t16_fin_du_prototype - Apres la salle 1-3, l'ecran de fin s'affiche.
+[ OK ] t16_fin_du_prototype - Apres le boss (salle 1-8), l'ecran de fin du monde 1 s'affiche.
 [ OK ] t17_performances - Aucune trame perdue (la logique tient dans 1/60 s) pendant une reaction en chaine.
 [ OK ] t18_son - La musique du monde joue sur 4 canaux et le TCHAK declenche son bruitage (carre 2 + bruit).
-[ OK ] t19_joueur_qui_ne_comprend_rien - Aucune salle n'est resolue par un joueur qui appuie au hasard (8 parties de 20 s par salle).
+[ OK ] t19_joueur_qui_ne_comprend_rien - Aucune salle n'est resolue par un joueur qui appuie au hasard (6 parties de 20 s par salle, 8 salles).
+[ OK ] t20_salle2_boing - Salle 1-2 : balle -> puits -> ressort -> cibles -> porte sur la corniche (+ chaussette).
+[ OK ] t21_salle3_tunnel - Salle 1-3 : effraye depuis le toit, le Trouillard fuit dans la gelee ; depuis sa gauche,
+il fonce dans le tunnel (trop bas pour BIDULE) et pousse la caisse sur la plaque.
+[ OK ] t22_salle5_poids_plume - Salle 1-5 : BIDULE seul sur la plaque est trop leger (indice) ; BIDULE + balle = 2 ->
+trappe -> la caisse tombe sur la 2e plaque -> porte.
+[ OK ] t23_salle7_grande_machine - Salle 1-7 : planche (levier) + balle -> ressort -> cibles -> convoyeur -> le Trouillard tombe ;
+l'effrayer depuis sa droite -> plaque -> porte.
+[ OK ] t24_boss_roi_du_rebond - Salle 1-8 : le Roi tombe 3 fois dans la trappe (levier au bon moment) -> porte -> fin.
+[ OK ] t25_boss_attendre_ne_suffit_pas - Salle 1-8 : sans le levier le Roi ne tombe jamais ; s'il rebondit sur BIDULE, celui-ci est
+aplati (sans perte de vie).
 
-19/19 tests reussis en 144.6 s
+25/25 tests reussis en 306.0 s

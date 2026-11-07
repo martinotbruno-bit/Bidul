@@ -68,6 +68,9 @@ s8   s8_scale(s8 v, u8 eighths);
 void enemy_update(u8 i);
 void enemy_scare(u8 i, s8 dir);
 void enemies_wake(s8 dir);
+void boss_update(u8 i);
+void boss_hit(u8 i);
+extern u8 boss_room;
 
 /* ---- BIDULE (bidule.c) ------------------------------------------------ */
 #define BS_NORMAL  0
@@ -101,6 +104,8 @@ void ev_target_hit(u8 cx, u8 cy);
 void ev_plate_load(u8 cx, u8 cy, u8 w);
 u8   ev_lever(u8 cx, u8 cy);
 void act_push(u8 type, u8 x, u8 y);
+void ev_boss(u8 on);
+extern u8 b_on_plate;
 
 /* ---- ecrans (menus.c) ------------------------------------------------- */
 void title_screen(void);

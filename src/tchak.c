@@ -55,6 +55,7 @@ void tchak_fire(void)
             o_vy[i] = -(s8)p_tchak_vy[t];
             o_flags[i] &= ~OF_GROUND;
             o_anim[i] = 8;
+            o_dir[i] = dir;
         }
     }
 }

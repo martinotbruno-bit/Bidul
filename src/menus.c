@@ -93,7 +93,7 @@ static void title_draw_static(void)
     oam_finish();
     screen_clear();
     put_center(10, "LA GRANDE CATASTROPHE");
-    put_center(26, "PROTOTYPE 0.2 - 3 SALLES");
+    put_center(26, "VERSION 0.3 - MONDE 1");
     /* sol de girders pour BIDULE */
     vram_adr(NT_ADR(0, 18));
     for (i_ = 0; i_ < 16; ++i_) { vram_put(mt_tiles[MT_GIRDER][0]); vram_put(mt_tiles[MT_GIRDER][1]); }
@@ -344,12 +344,12 @@ void end_screen(void)
     screen_clear();
     attr_fill(0);
     put_center(4, "BRAVO !");
-    put_center(8, "BIDULE A TRAVERS[ LE D[BUT");
-    put_center(10, "DE LA FABRIQUE DES CHOSES");
-    put_center(12, "MOLLES. LA SUITE ARRIVE...");
+    put_center(8, "LE ROI DU REBOND EST VAINCU.");
+    put_center(10, "LA FABRIQUE DES CHOSES MOLLES");
+    put_center(12, "EST SAUV[E... OU PRESQUE.");
     put_text(9, 22, "CHAUSSETTES :");
     put_num(23, 22, socks);
-    put_center(26, "FIN DU PROTOTYPE");
+    put_center(26, "FIN DU MONDE 1");
     pal_set(pal_title);
     ppu_on();
     music_play(MUS_ENDING);

@@ -98,7 +98,7 @@ static void land_effects(u8 c, u8 cx, u8 cy)
         b_ground = 0;
         return;
     }
-    if (c == C_PLATE) ev_plate_load(cx, cy, 1);
+    if (c == C_PLATE) { ev_plate_load(cx, cy, 1); b_on_plate = 1; }
     if (b_fall > 36) b_land = 10;          /* grosse chute : il s'ecrase un peu */
     b_fall = 0;
 }

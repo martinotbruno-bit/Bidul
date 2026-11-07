@@ -3,11 +3,11 @@
 Jeu de réflexion et de réactions en chaîne pour **Nintendo NES** (8 bits, esthétique 1992).
 Vous êtes BIDULE, une créature qui ne sait pas sauter mais qui sait faire **TCHAK !** : une contraction brutale qui secoue tout autour de lui… et déclenche des catastrophes en cascade.
 
-![Titre](docs/img/02_titre.png) ![Salle 1-2](docs/img/07_caisse_etagere.png)
+![Titre](docs/img/02_titre.png) ![Boss](docs/img/21_boss.png)
 
-## État : prototype 0.2 (phases 1 à 3 du cahier des charges)
+## État : version 0.3 – Monde 1 complet (8 salles + boss)
 
-Conformément au §22 du cahier des charges, le projet commence par l'architecture technique et un **prototype jouable de 3 salles** pour valider la mécanique principale avant de produire les 40 salles.
+Le prototype de 3 salles a validé la mécanique (§22) ; le **Monde 1 – La Fabrique des choses molles** est maintenant complet : 8 salles de difficulté croissante et le boss, le Roi du Rebond.
 
 Ce qui est programmé et testé :
 
@@ -15,12 +15,12 @@ Ce qui est programmé et testé :
 - BIDULE avec ses 13 types d'animation, le TCHAK, échelles, ressorts, convoyeurs, cibles, plaques, leviers, cuves de gelée, portes
 - Système d'objets générique (balle, caisse, chaussette) et un ennemi (le Trouillard)
 - Réactions en chaîne avec délai visible et protection contre les boucles infinies
-- 3 salles du Monde 1 (version 0.2) : dans chacune, le geste évident échoue et la solution demande de comprendre une règle ; une chaussette secrète
+- Monde 1 complet : 8 salles de difficulté croissante (dans chacune, le geste évident échoue et la solution demande de comprendre une règle), 3 chaussettes secrètes, et le **boss : le Roi du Rebond** (3 phases)
 - Écran titre avec logo animé, menu, mot de passe, présentation du monde, pause, fin de partie, écran de fin
-- Moteur son APU : 5 musiques originales, 13 bruitages
-- 19 tests automatiques sous émulateur (tous réussis), dont un « joueur qui appuie au hasard » qui ne doit résoudre aucune salle
+- Moteur son APU : 6 musiques originales (dont le thème du boss), 13 bruitages
+- 25 tests automatiques sous émulateur (tous réussis), dont un « joueur qui appuie au hasard » qui ne résout aucune des 8 salles
 
-Pas encore fait : les 37 autres salles, les 5 boss, les mondes 2 à 5, le passage au mapper MMC1 (voir `docs/ARCHITECTURE.md`).
+Pas encore fait : les mondes 2 à 5 (32 salles, 4 boss) et le passage au mapper MMC1, nécessaire pour la suite (le Monde 1 occupe déjà 28 Ko sur 32).
 
 ## Jouer
 
@@ -32,7 +32,7 @@ Ouvrez `dist/tchak_prototype.nes` dans un émulateur NES. Commandes : croix = ma
 sudo apt-get install cc65        # ca65, cc65, ld65
 pip install pillow cynes         # outils graphiques + émulateur des tests
 make                             # -> build/tchak.nes
-make test                        # 19 tests automatiques
+make test                        # 25 tests automatiques (~5 min)
 make dist                        # copie la ROM dans dist/
 ```
 

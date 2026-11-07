@@ -35,8 +35,54 @@ OBJ BALL 8 10
 TRIG TARGET 0 7 1 4 ON DOOR_OPEN 1 4
 END
 
-ROOM "LA D[GRINGOLADE"
+ROOM "BOING !"
 WORLD 1 NUM 2
+CONV 0
+MAP
+################
+#..............#
+#TTT...........#
+#.......|...|..#
+#....D..|...|..#
+#....d.........#
+#...===........#
+#..............#
+#..............#
+#..............#
+#..............#
+#...######~~~~~#
+#SSS############
+BIDULE 6 10
+OBJ BALL 8 10
+OBJ SOCK 3 4
+TRIG TARGET 1 2 3 1 ON DOOR_OPEN 5 4
+END
+
+ROOM "LE TUNNEL DU TROUILLARD"
+WORLD 1 NUM 3
+CONV 0
+MAP
+################
+#..............#
+#..............#
+#..|.......|...#
+#..|.......|...#
+#..............#
+#..............#
+#.............D#
+#.............d#
+#......H########
+#......H.......#
+#~~###########P#
+################
+BIDULE 11 8
+OBJ TROU 5 10
+OBJ CRATE 11 10
+TRIG PLATE 14 11 1 1 ON DOOR_OPEN 14 7 OFF DOOR_CLOSE 14 7
+END
+
+ROOM "LA D[GRINGOLADE"
+WORLD 1 NUM 4
 CONV 0
 MAP
 ################
@@ -58,8 +104,32 @@ OBJ SOCK 7 1
 TRIG PLATE 1 6 2 1 ON DOOR_OPEN 14 9 OFF DOOR_CLOSE 14 9
 END
 
+ROOM "POIDS PLUME"
+WORLD 1 NUM 5
+CONV 0
+MAP
+################
+#..............#
+#..............#
+#==h==.........#
+#..............#
+#..|.......|...#
+#..|.......|...#
+#..............#
+#..............#
+#.............D#
+#.............d#
+###P###H..H#####
+########PP######
+BIDULE 12 10
+OBJ CRATE 3 2
+OBJ BALL 5 10
+TRIG PLATE 8 12 2 1 ON HATCH_OPEN 3 3 1
+TRIG PLATE 3 11 1 1 ON DOOR_OPEN 14 9 OFF DOOR_CLOSE 14 9
+END
+
 ROOM "TROIS FA^ONS DE SORTIR"
-WORLD 1 NUM 3
+WORLD 1 NUM 6
 CONV 0
 MAP
 ################
@@ -79,5 +149,54 @@ BIDULE 11 10
 OBJ TROU 8 10
 OBJ CRATE 9 5
 TRIG PLATE 2 11 1 1 ON DOOR_OPEN 1 9 OFF DOOR_CLOSE 1 9
-TRIG LEVER 14 5 1 1 ON HATCH_CLOSE 5 11 ON HATCH_CLOSE 6 11
+TRIG LEVER 14 5 1 1 ON HATCH_CLOSE 5 11 2
+END
+ROOM "LA GRANDE MACHINE"
+WORLD 1 NUM 7
+CONV 0
+MAP
+################
+#..............#
+#..............#
+#.>>>>>>>...TTT#
+#..............#
+#..........L...#
+#..........H...#
+#..........H...#
+#..........H...#
+#D.........H...#
+#d.........H...#
+##P##~~#####...#
+############SSS#
+BIDULE 10 10
+OBJ TROU 3 2
+OBJ BALL 8 10
+OBJ SOCK 13 6
+TRIG TARGET 12 3 3 1 ON CONV_RIGHT
+TRIG LEVER 11 5 1 1 ON HATCH_CLOSE 5 11 2
+TRIG PLATE 2 11 1 1 ON DOOR_OPEN 1 9 OFF DOOR_CLOSE 1 9
+END
+
+ROOM "LE ROI DU REBOND"
+WORLD 1 NUM 8
+CONV 0
+MAP
+################
+#..............#
+#..............#
+#..|........|..#
+#..|........|..#
+#L.............#
+#=H............#
+#.H............#
+#.H............#
+#.H...........D#
+#.H..........Ld#
+#######hh#######
+#######~~#######
+BIDULE 11 10
+OBJ KING 7 3
+TRIG LEVER 1 5 1 1 ON HATCH_PULSE 7 11 2
+TRIG LEVER 13 10 1 1 ON HATCH_PULSE 7 11 2
+TRIG BOSS 0 0 1 1 ON HATCH_CLOSE 7 11 2 OFF DOOR_OPEN 14 9
 END

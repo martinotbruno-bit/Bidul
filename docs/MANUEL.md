@@ -1,4 +1,4 @@
-# TCHAK ! – La Grande Catastrophe · Manuel de jeu (prototype)
+# TCHAK ! – La Grande Catastrophe · Manuel de jeu (Monde 1)
 
 ![titre](img/02_titre.png)
 
@@ -40,13 +40,15 @@ Au menu : HAUT/BAS pour choisir, START ou A pour valider.
 
 Il est affiché sur l'écran de présentation de chaque salle (« CODE : »). Au menu, choisissez MOT DE PASSE, puis GAUCHE/DROITE pour changer de case, HAUT/BAS pour changer de lettre, START pour valider.
 
-Codes du prototype : salle 1-1 `BNFR`, salle 1-2 `FNFS`, salle 1-3 `DNFT` (avec la chaussette de la salle 1-2 : `VNKT`).
+Codes (sans chaussette) : 1-1 `BNFR` · 1-2 `FNFS` · 1-3 `DNFT` · 1-4 `SNFV` · 1-5 `RNFL` · 1-6 `VNFM` · 1-7 `TNFN` · 1-8 (boss) `MNFP`. Le code affiché en jeu tient aussi compte des chaussettes trouvées.
 
 ## Conseils
 
 - Si quelque chose tombe dans la gelée, ce n'est pas grave : observez, il reviendra.
 - Le TCHAK part une fraction de seconde après l'appui : anticipez ce qui bouge.
 - Avant d'effrayer quelqu'un, regardez où il va courir.
+- BIDULE est tout maigre : il ne pèse pas assez pour enfoncer une plaque tout seul.
+- Le Roi du Rebond ne se bat pas : il se piège. Observez où il retombe.
 
 ## Où jouer
 

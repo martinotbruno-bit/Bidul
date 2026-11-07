@@ -101,7 +101,7 @@ def t03_salle1_geste_reflexe():
     check(g.obj(0)["x"] == 128, "TCHAK hors de portee : la balle n'aurait pas du bouger")
 
 def room2_on_ledge(g):
-    """Salle 1-2 : caisse sur le ressort, puis BIDULE sur le rebord a droite de la colonne."""
+    """Salle 1-4 : caisse sur le ressort, puis BIDULE sur le rebord a droite de la colonne."""
     g.press(B, 2, 0)
     g.run(30)
     g.until(lambda: g.bx() <= 136, 200, LEFT)
@@ -116,8 +116,8 @@ def crate_level(g):
 
 @test
 def t04_salle2_tchak_au_vol():
-    """Salle 1-2 : caisse -> ressort -> TCHAK au vol depuis le rebord -> etagere -> plaque -> porte."""
-    g = Game(); g.boot_to_room1(); g.skip_room(0)
+    """Salle 1-4 : caisse -> ressort -> TCHAK au vol depuis le rebord -> etagere -> plaque -> porte."""
+    g = Game(); g.goto_room(3)
     room2_on_ledge(g)
     check(g.obj(0)["x"] == 112, "la caisse n'est pas sur le ressort")
     check(g.until(lambda: crate_level(g), 200), "la caisse ne passe pas a hauteur du rebord")
@@ -129,8 +129,8 @@ def t04_salle2_tchak_au_vol():
 
 @test
 def t05_salle2_mauvais_moment():
-    """Salle 1-2 : TCHAK au mauvais moment -> la caisse continue de rebondir, porte fermee."""
-    g = Game(); g.boot_to_room1(); g.skip_room(0)
+    """Salle 1-4 : TCHAK au mauvais moment -> la caisse continue de rebondir, porte fermee."""
+    g = Game(); g.goto_room(3)
     room2_on_ledge(g)
     g.until(lambda: g.obj(0)["y"] > 170 and g.obj(0)["vy"] > 0, 200)   # caisse tout en bas
     g.press(B, 2, 120)
@@ -139,8 +139,8 @@ def t05_salle2_mauvais_moment():
 
 @test
 def t06_salle2_chaussette_du_ressort():
-    """Salle 1-2, secret : BIDULE rebondit lui-meme sur le ressort et attrape la chaussette."""
-    g = Game(); g.boot_to_room1(); g.skip_room(0)
+    """Salle 1-4, secret : BIDULE rebondit lui-meme sur le ressort et attrape la chaussette."""
+    g = Game(); g.goto_room(3)
     g.until(lambda: g.bx() <= 113, 200, LEFT)        # au-dessus du ressort, on lache tout
     check(g.until(lambda: g.u8("socks") == 1, 200), "chaussette non ramassee")
     shot(g, "09_chaussette")
@@ -164,8 +164,8 @@ def door3_open(g):
 
 @test
 def t07_salle3_trouillard_dans_la_gelee():
-    """Salle 1-3 : effrayer le Trouillard sans planche -> il fuit dans la gelee (et reapparait)."""
-    g = Game(); g.boot_to_room1(); g.skip_room(0); g.skip_room(1)
+    """Salle 1-6 : effrayer le Trouillard sans planche -> il fuit dans la gelee (et reapparait)."""
+    g = Game(); g.goto_room(5)
     g.press(B, 2, 0)
     check(g.until(lambda: g.obj(0)["flags"] & 4, 200), "le Trouillard n'est pas tombe dans la cuve")
     check(not door3_open(g), "porte ouverte")
@@ -173,8 +173,8 @@ def t07_salle3_trouillard_dans_la_gelee():
 
 @test
 def t08_salle3_solution_trouillard():
-    """Salle 1-3, solution 1 : levier (planche sur la cuve) PUIS effrayer le Trouillard."""
-    g = Game(); g.boot_to_room1(); g.skip_room(0); g.skip_room(1)
+    """Salle 1-6, solution 1 : levier (planche sur la cuve) PUIS effrayer le Trouillard."""
+    g = Game(); g.goto_room(5)
     room3_bridge(g)
     shot(g, "11_levier_planche")
     g.until(lambda: g.u8("b_ground") and g.by() > 180, 200, DOWN)
@@ -187,9 +187,9 @@ def t08_salle3_solution_trouillard():
 
 @test
 def t09_salle3_solution_plateforme():
-    """Salle 1-3, solution 2 : planche, puis TCHAK sur la caisse depuis la plate-forme :
+    """Salle 1-6, solution 2 : planche, puis TCHAK sur la caisse depuis la plate-forme :
     la caisse tombe et le Trouillard (reveille) fuit lui aussi vers la plaque."""
-    g = Game(); g.boot_to_room1(); g.skip_room(0); g.skip_room(1)
+    g = Game(); g.goto_room(5)
     room3_bridge(g)
     g.until(lambda: g.bx() <= 168, 100, LEFT)
     g.press(B, 2, 0)
@@ -200,18 +200,18 @@ def t09_salle3_solution_plateforme():
 @test
 def t10_gelee_perd_une_vie():
     """Tomber dans la gelee coute une vie et recommence la salle."""
-    g = Game(); g.boot_to_room1(); g.skip_room(0); g.skip_room(1)
+    g = Game(); g.goto_room(5)
     check(g.until(lambda: g.u8("b_state") == 4, 300, LEFT), "BIDULE ne tombe pas dans la cuve")
     g.run(20)
     shot(g, "12_gelee")
-    g.wait_room(2)
+    g.wait_room(5)
     check(g.u8("lives") == 4, "vie non retiree")
     check(g.bx() == 176, "BIDULE n'est pas revenu au depart")
 
 @test
 def t11_game_over():
     """Plus de vies : ecran de fin de partie, puis retour au titre."""
-    g = Game(); g.boot_to_room1(); g.skip_room(0); g.skip_room(1)
+    g = Game(); g.goto_room(5)
     g.poke("lives", 1)
     g.until(lambda: g.u8("b_state") == 4, 300, LEFT)
     check(g.until(lambda: g.u8("game_state") == 7, 400), "pas d'ecran de fin de partie")
@@ -237,14 +237,14 @@ def t12_pause_et_recommencer():
 
 @test
 def t13_mot_de_passe():
-    """Le mot de passe affiche permet de reprendre a la salle 1-3."""
+    """Le mot de passe affiche permet de reprendre a la salle 1-6."""
     g = Game()
     g.run(500)
     g.press(START, 2, 20)
     g.press(DOWN, 2, 4)
     g.press(START, 2, 40)
     check(g.u8("game_state") == 2, "pas d'ecran de mot de passe")
-    code = password(2, 1)
+    code = password(5, 1)
     for slot, ch in enumerate(code):
         for _ in range(ALPHA.index(ch)):
             g.press(UP, 2, 2)
@@ -252,7 +252,7 @@ def t13_mot_de_passe():
             g.press(RIGHT, 2, 2)
     shot(g, "15_mot_de_passe")
     g.press(START, 2, 30)
-    g.wait_room(2)
+    g.wait_room(5)
     check(g.u8("socks") == 1, "chaussettes non restaurees")
 
 @test
@@ -284,7 +284,7 @@ def t15_determinisme():
     """Memes entrees => memes effets : deux parties identiques donnent la meme RAM."""
     traces = []
     for _ in range(2):
-        g = Game(); g.boot_to_room1(); g.skip_room(0)
+        g = Game(); g.goto_room(3)
         g.press(B, 2, 0)
         tr = []
         for f in range(240):
@@ -295,8 +295,8 @@ def t15_determinisme():
 
 @test
 def t16_fin_du_prototype():
-    """Apres la salle 1-3, l'ecran de fin s'affiche."""
-    g = Game(); g.boot_to_room1(); g.skip_room(0); g.skip_room(1)
+    """Apres le boss (salle 1-8), l'ecran de fin du monde 1 s'affiche."""
+    g = Game(); g.goto_room(7)
     g.poke("room_result", 1)
     check(g.until(lambda: g.u8("game_state") == 8, 300), "pas d'ecran de fin")
     g.run(90)
@@ -305,7 +305,7 @@ def t16_fin_du_prototype():
 @test
 def t17_performances():
     """Aucune trame perdue (la logique tient dans 1/60 s) pendant une reaction en chaine."""
-    g = Game(); g.boot_to_room1(); g.skip_room(0); g.skip_room(1)
+    g = Game(); g.goto_room(5)
     room3_bridge(g)
     g.poke("lag_frames", 0)
     g.until(lambda: g.bx() <= 168, 100, LEFT)
@@ -331,15 +331,15 @@ def t18_son():
 
 @test
 def t19_joueur_qui_ne_comprend_rien():
-    """Aucune salle n'est resolue par un joueur qui appuie au hasard (8 parties de 20 s par salle)."""
+    """Aucune salle n'est resolue par un joueur qui appuie au hasard (6 parties de 20 s par salle, 8 salles)."""
     import random
     acts = [0, LEFT, RIGHT, UP, DOWN, B, A, LEFT | B, RIGHT | B, UP | A]
     g = Game(); g.boot_to_room1()
-    for room in range(3):
+    for room in range(8):
         if room:
             g.skip_room(room - 1)
         st = g.nes.save()
-        for seed in range(8):
+        for seed in range(6):
             g.nes.load(st)
             rnd = random.Random(seed * 7 + room)
             for _ in range(200):
@@ -347,6 +347,138 @@ def t19_joueur_qui_ne_comprend_rien():
                 check(g.u8("b_state") != 3 and g.u8("room_idx") == room,
                       "salle %d resolue au hasard (graine %d)" % (room + 1, seed))
         g.nes.load(st)
+
+# ------------------------------------------------------------- nouvelles salles
+@test
+def t20_salle2_boing():
+    """Salle 1-2 : le reflexe envoie la balle dans la gelee ; depuis la droite, balle -> puits ->
+    ressort -> cibles -> porte sur la corniche, atteinte en rebondissant soi-meme."""
+    g = Game(); g.goto_room(1); st = g.nes.save()
+    door = lambda: door_open(g, 5, 4)
+    g.press(B, 2, 0)
+    check(g.until(lambda: g.obj(0)["flags"] & 4, 300), "la balle n'est pas tombee dans la gelee")
+    check(not door(), "porte ouverte par le reflexe")
+    g.nes.load(st)
+    g.until(lambda: g.bx() >= 146, 100, RIGHT)
+    g.run(1, LEFT)
+    g.press(B, 2, 0)
+    check(g.until(door, 300), "la porte ne s'ouvre pas")
+    shot(g, "17_boing")
+    g.until(lambda: g.s8("b_vy") < -50, 400, LEFT)
+    for k in range(200):
+        g.run(1, RIGHT if 7 <= k < 67 else 0)
+        if g.u8("b_state") == 3:
+            break
+    check(g.u8("b_state") == 3, "corniche / sortie non atteinte")
+    check(g.u8("socks") == 1, "chaussette de la corniche non prise")
+
+@test
+def t21_salle3_tunnel():
+    """Salle 1-3 : effraye depuis le toit, le Trouillard fuit dans la gelee ; depuis sa gauche,
+    il fonce dans le tunnel (trop bas pour BIDULE) et pousse la caisse sur la plaque."""
+    g = Game(); g.goto_room(2); st = g.nes.save()
+    door = lambda: door_open(g, 14, 7)
+    g.until(lambda: g.bx() <= 130, 200, LEFT)
+    g.press(B, 2, 0)
+    check(g.until(lambda: g.obj(0)["flags"] & 4, 200), "le Trouillard n'est pas tombe dans la gelee")
+    g.nes.load(st)
+    g.until(lambda: g.u8("b_ground") and g.by() > 180, 300, LEFT)
+    g.until(lambda: g.bx() <= 52, 200, LEFT)
+    g.press(B, 2, 0)
+    check(g.until(door, 400), "porte fermee")
+    shot(g, "18_tunnel")
+    g.until(lambda: g.bx() >= 104, 200, RIGHT)
+    check(g.until(lambda: g.u8("b_state") == 0 and g.by() < 160, 200, UP), "echelle")
+    g.run(4, UP)
+    check(g.until(lambda: g.u8("b_state") == 3, 300, RIGHT), "sortie non atteinte")
+
+@test
+def t22_salle5_poids_plume():
+    """Salle 1-5 : BIDULE seul sur la plaque est trop leger (indice) ; BIDULE + balle = 2 ->
+    trappe -> la caisse tombe sur la 2e plaque -> porte."""
+    g = Game(); g.goto_room(4)
+    door = lambda: door_open(g, 14, 9)
+    g.until(lambda: g.by() >= 195 and g.u8("b_ground"), 200, LEFT)
+    g.run(10)
+    check(g.u8("map", 3 * 16 + 3) != 0, "la trappe ne doit pas s'ouvrir avec BIDULE seul")
+    shot(g, "19_trop_leger")
+    g.until(lambda: g.bx() <= 112, 100, LEFT)
+    check(g.until(lambda: g.u8("b_state") == 0 and g.by() <= 184, 200, UP), "echelle gauche")
+    g.run(3, UP)
+    g.until(lambda: g.bx() <= 60, 300, LEFT)
+    g.run(1, RIGHT)
+    g.press(B, 2, 100)
+    g.until(lambda: g.by() >= 195 and g.u8("b_ground"), 300, RIGHT)
+    check(g.until(door, 200), "porte fermee")
+    g.until(lambda: g.bx() >= 158, 100, RIGHT)
+    check(g.until(lambda: g.u8("b_state") == 0 and g.by() <= 184, 200, UP), "echelle droite")
+    g.run(3, UP)
+    check(g.until(lambda: g.u8("b_state") == 3, 300, RIGHT), "sortie non atteinte")
+
+@test
+def t23_salle7_grande_machine():
+    """Salle 1-7 : planche (levier) + balle -> ressort -> cibles -> convoyeur -> le Trouillard tombe ;
+    l'effrayer depuis sa droite -> plaque -> porte."""
+    g = Game(); g.goto_room(6)
+    door = lambda: door_open(g, 1, 9)
+    g.until(lambda: g.bx() >= 168, 100, RIGHT)
+    check(g.until(lambda: g.u8("b_state") == 0 and g.by() < 110, 200, UP), "echelle")
+    g.run(3, UP)
+    g.press(A, 2, 30)
+    g.until(lambda: g.u8("b_ground") and g.by() > 180, 200, DOWN)
+    g.until(lambda: g.bx() <= 108, 200, LEFT)
+    g.run(1, RIGHT)
+    g.press(B, 2, 0)
+    check(g.until(lambda: g.s8("conv_dir") == 1, 200), "le convoyeur ne demarre pas")
+    check(g.until(lambda: g.obj(0)["y"] == 192, 400), "le Trouillard n'est pas descendu")
+    shot(g, "20_grande_machine")
+    g.until(lambda: g.bx() >= 170, 200, RIGHT)
+    g.run(1, LEFT)
+    g.press(B, 2, 0)
+    check(g.until(door, 300), "porte fermee")
+    check(g.until(lambda: g.u8("b_state") == 3, 500, LEFT), "sortie non atteinte")
+
+def boss_to_lever(g):
+    """Levier du bas, a droite de la trappe (le Roi vient vers BIDULE en phase 3)."""
+    g.until(lambda: g.bx() >= 200, 100, RIGHT)
+
+@test
+def t24_boss_roi_du_rebond():
+    """Salle 1-8 : le Roi tombe 3 fois dans la trappe (levier au bon moment) -> porte -> fin."""
+    g = Game(); g.goto_room(7)
+    check(g.u8("boss_room") == 1 and g.u8("st_active", 0), "musique / salle de boss")
+    shot(g, "21_boss")
+    boss_to_lever(g)
+    for phase in range(3):
+        st = g.nes.save()
+        done = False
+        for d in range(0, 720, 6):
+            g.nes.load(st)
+            g.run(d)
+            g.press(A, 2, 0)
+            if g.until(lambda: g.u8("o_state", 0) > phase, 120):
+                done = True
+                break
+        check(done, "phase %d : le Roi ne tombe jamais" % (phase + 1))
+        if phase < 2:
+            check(g.until(lambda: not (g.u8("o_flags", 0) & 4), 200), "le Roi ne revient pas")
+    check(g.until(lambda: door_open(g, 14, 9), 100), "la porte ne s'ouvre pas")
+    shot(g, "22_boss_vaincu")
+    check(g.until(lambda: g.u8("b_state") == 3, 500, RIGHT), "sortie non atteinte")
+    check(g.until(lambda: g.u8("game_state") == 8, 400), "pas d'ecran de fin")
+
+@test
+def t25_boss_attendre_ne_suffit_pas():
+    """Salle 1-8 : sans le levier le Roi ne tombe jamais ; s'il rebondit sur BIDULE, celui-ci est
+    aplati (sans perte de vie)."""
+    g = Game(); g.goto_room(7)
+    squashed = False
+    for _ in range(1800):
+        g.run(1)
+        squashed |= g.u8("b_emote") == 2
+    check(g.u8("o_state", 0) == 0, "le Roi est tombe sans levier")
+    check(squashed, "le Roi n'a jamais touche BIDULE immobile")
+    check(g.u8("lives") == 5, "vie perdue")
 
 # =================================================================== main
 def main():

@@ -60,11 +60,13 @@ Poids de BIDULE : **1**. Il ne peut donc pas tenir une plaque seul (« BIDULE es
 
 Petite boule verte à grandes oreilles. **Dort** (« Zz ») → un bruit ou un choc l'**effraie** (« ! », petit bond, cri) → il **court** tout droit à l'opposé du bruit à 1,25 px/trame, en poussant tout sur son passage (y compris sur les plaques) → arrêté par un mur ou bloqué, il **s'essouffle** puis se rendort sur place. Il est inoffensif pour BIDULE mais peut tomber dans la gelée (il réapparaît alors endormi chez lui). Comportement prévisible après une observation : c'est un outil autant qu'un obstacle.
 
-## 4. Fiches des 3 salles du prototype (§8)
+## 4. Fiches des 8 salles du Monde 1 (§8)
 
 Dimensions : 16 × 13 cases de 16 px (256 × 208 px) sous un bandeau de 32 px. Échec possible partout : SELECT recommence la salle sans perte de vie.
 
-**Principe de conception (version 0.2)** : dans chaque salle, **le geste évident échoue**, de façon visible et sans bloquer la partie (l'objet tombe dans la gelée et revient, la caisse continue de rebondir…). La solution demande d'avoir compris une règle. C'est vérifié par un test : un « joueur qui appuie au hasard » ne résout aucune salle (8 parties de 20 s par salle, et 0 victoire sur 12 parties de 30 s lors des essais).
+**Principe de conception (version 0.2)** : dans chaque salle, **le geste évident échoue**, de façon visible et sans bloquer la partie (l'objet tombe dans la gelée et revient, la caisse continue de rebondir…). La solution demande d'avoir compris une règle. C'est vérifié par un test : un « joueur qui appuie au hasard » ne résout aucune des 8 salles (6 parties de 20 s par salle).
+
+Progression de la difficulté : 1-1 sens de la poussée → 1-2 ressort vertical → 1-3 fuite du Trouillard → 1-4 TCHAK au vol (timing) → 1-5 poids (BIDULE + balle) → 1-6 ordre des actions, 3 solutions → 1-7 tout combiné en 3 étapes → 1-8 boss.
 
 ### Salle 1-1 « PREMIER TCHAK ! » – introduction : le sens de la poussée
 
@@ -77,9 +79,28 @@ Dimensions : 16 × 13 cases de 16 px (256 × 208 px) sous un bandeau de 32 px. �
 - **Solution** : se placer entre la balle et la cuve, TCHAK → la balle file à gauche et frappe la cible → la porte s'ouvre → échelle → corniche → sortie.
 - **Échec** : marcher dans la cuve (perte d'une vie).
 
-### Salle 1-2 « LA DÉGRINGOLADE » – réaction en chaîne et timing
+### Salle 1-2 « BOING ! » – apprentissage : le ressort renvoie à la verticale
 
-![salle 1-2](img/07_caisse_etagere.png)
+![salle 1-2](img/17_boing.png)
+
+- **Objectif** : ouvrir la porte posée sur une corniche, en haut à gauche.
+- **Disposition** : un puits de 3 ressorts contre le mur de gauche, sous 3 cibles suspendues ; la balle au milieu ; une grande cuve de gelée à droite.
+- **Piège** : TCHAK réflexe (BIDULE est à gauche de la balle) → la balle part dans la gelée.
+- **Solution** : passer à droite de la balle (sans reculer dans la gelée : le recul du TCHAK fait faire un petit pas en arrière !), TCHAK → la balle file contre le mur, tombe dans le puits, le ressort la projette tout droit dans les cibles → la porte s'ouvre. BIDULE saute alors lui-même dans le puits et se dirige pendant le vol pour atterrir sur la corniche.
+- **Secret** : la **chaussette** au-dessus de la corniche, sur la trajectoire du vol.
+
+### Salle 1-3 « LE TUNNEL DU TROUILLARD » – découverte : la fuite du Trouillard
+
+![salle 1-3](img/18_tunnel.png)
+
+- **Objectif** : pousser la caisse au fond d'un tunnel, sur la plaque ; la porte est sur le toit du tunnel.
+- **Disposition** : BIDULE commence sur le toit ; en bas, le Trouillard dort à l'entrée du tunnel ; une cuve à gauche ; le tunnel ne fait que 16 px de haut : **BIDULE n'y entre pas**, le Trouillard si.
+- **Piège** : un TCHAK depuis le toit (à droite du Trouillard) le fait fuir à gauche, dans la gelée.
+- **Solution** : descendre, se glisser entre la cuve et le Trouillard, TCHAK → il fonce dans le tunnel et pousse la caisse jusqu'à la plaque. Remonter par l'échelle jusqu'à la porte.
+
+### Salle 1-4 « LA DÉGRINGOLADE » – réaction en chaîne et timing
+
+![salle 1-4](img/07_caisse_etagere.png)
 
 - **Objectif** : poser la caisse sur la plaque, sur l'étagère en haut à gauche (la porte est en bas à droite).
 - **Disposition** : la caisse au sol, un ressort dans une colonne entre l'étagère (à gauche) et un petit rebord (à droite) desservi par une échelle.
@@ -88,9 +109,18 @@ Dimensions : 16 × 13 cases de 16 px (256 × 208 px) sous un bandeau de 32 px. �
 - **Pièges** : TCHAK trop tôt ou trop tard → rien ne se passe, ou la caisse retombe à côté de la plaque. Si elle s'arrête trop tôt sur l'étagère, BIDULE peut monter par le ressort et la pousser de nouveau.
 - **Secret** : BIDULE se laisse projeter seul par le ressort, tout droit, et attrape la **chaussette** au plafond.
 
-### Salle 1-3 « TROIS FAÇONS DE SORTIR » – ordre des actions, plusieurs solutions
+### Salle 1-5 « POIDS PLUME » – intermédiaire : BIDULE pèse 1
 
-![salle 1-3](img/11_levier_planche.png)
+![salle 1-5](img/19_trop_leger.png)
+
+- **Objectif** : faire tomber la caisse (posée sur une trappe, en haut) sur la plaque qui ouvre la porte.
+- **Disposition** : une cuvette avec deux plaques et deux échelles ; la trappe s'ouvre quand la cuvette porte un poids de 2.
+- **Piège** : BIDULE seul dans la cuvette → rien (message « BIDULE EST TROP LÉGER ! »). BIDULE + balle sur la plaque d'en bas → la porte s'ouvre… et se referme dès qu'il en descend.
+- **Solution** : ressortir par l'échelle de gauche, pousser la balle dans la cuvette, y redescendre : 1 + 1 = 2 → la trappe s'ouvre, la caisse tombe sur l'autre plaque, la porte reste ouverte.
+
+### Salle 1-6 « TROIS FAÇONS DE SORTIR » – ordre des actions, plusieurs solutions
+
+![salle 1-6](img/11_levier_planche.png)
 
 - **Objectif** : tenir enfoncée la plaque devant la porte (à gauche, poids ≥ 2).
 - **Disposition** : BIDULE à droite, un Trouillard endormi au milieu, une cuve de gelée entre lui et la porte ; en haut, une plate-forme avec une caisse, et un levier au sommet de l'échelle de droite (assez loin pour que le Trouillard n'entende rien).
@@ -101,13 +131,36 @@ Dimensions : 16 × 13 cases de 16 px (256 × 208 px) sous un bandeau de 32 px. �
 - **Solution 3** : levier, puis pousser la caisse au sol à coups de TCHAK jusqu'à la plaque (sans s'approcher du Trouillard, ou en l'envoyant d'abord dormir contre la porte).
 - **À observer** : BIDULE seul sur la plaque ne suffit pas (poids 1).
 
+### Salle 1-7 « LA GRANDE MACHINE » – complexe : trois étapes
+
+![salle 1-7](img/20_grande_machine.png)
+
+- **Objectif** : amener le Trouillard, endormi tout en haut sur un convoyeur arrêté, jusqu'à la plaque près de la porte, de l'autre côté d'une cuve.
+- **Étapes** (dans un ordre à trouver) : 1) le levier (en haut de l'échelle) pose une planche sur la cuve ; 2) depuis la gauche de la balle, TCHAK → elle file dans le puits de droite, le ressort la projette dans les cibles → le convoyeur démarre → le Trouillard est emporté et tombe au sol ; 3) l'effrayer **depuis sa droite** → il traverse la planche et s'endort sur la plaque.
+- **Pièges** : la balle poussée vers la gauche ; effrayer le Trouillard avant d'avoir posé la planche (il tombe dans la gelée et réapparaît en haut, sur le convoyeur, qui le ramène).
+- **Secret** : une **chaussette** sur la trajectoire de BIDULE quand il se laisse projeter par le ressort.
+
+### Salle 1-8 « LE ROI DU REBOND » – boss
+
+![boss](img/21_boss.png)
+
+- **Le Roi** : boule rose couronnée, trop lourde pour être arrêtée. Il bondit sans fin ; s'il retombe sur BIDULE, celui-ci est aplati et étourdi (pas de vie perdue, mais il ne peut plus rien faire pendant ¾ s).
+- **La salle** : au centre du sol, une trappe de 2 cases au-dessus d'une cuve. Deux leviers (un sur une corniche à gauche, un au sol à droite) l'ouvrent **pendant 0,8 s seulement**.
+- **Phases** (comportements différents) :
+  1. il bondit d'un mur à l'autre (bonds courts) ;
+  2. il bondit plus haut et plus vite ;
+  3. furieux (il change d'expression), **il vise BIDULE** à chaque bond.
+- **Solution** : observer la trajectoire et actionner le levier juste avant qu'il retombe sur la trappe. En phase 3, se servir de soi-même comme appât depuis le levier de droite : il bondit vers BIDULE et passe au-dessus de la trappe. Le TCHAK peut dévier un bond (il lui donne une nouvelle direction).
+- **Échecs** : attendre ne sert à rien (test : 30 s sans levier, il ne tombe jamais) ; ouvrir trop tôt ou trop tard, la trappe se referme ; tomber soi-même dans la trappe ouverte.
+- **Victoire** : à la 3e chute, il reste au fond (« LE ROI EST DÉGONFLÉ ! »), sa couronne reste au bord de la cuve en scintillant, la trappe se referme et la porte s'ouvre.
+
 ## 5. Plan de la suite (40 salles, 5 boss)
 
-Chaque monde reprendra la répartition du §8 (introduction, apprentissage, découverte, combinaison, intermédiaire, plusieurs solutions, complexe, boss). Les 3 salles du prototype deviendront les salles 1-1, 1-4 et 1-6 du jeu final. Chaque nouvelle salle devra passer le test du « joueur qui ne comprend rien ». Nouvelles mécaniques prévues :
+Chaque monde reprendra la répartition du §8 (introduction, apprentissage, découverte, combinaison, intermédiaire, plusieurs solutions, complexe, boss). Le Monde 1 est terminé. Chaque nouvelle salle devra passer le test du « joueur qui ne comprend rien ». Nouvelles mécaniques prévues :
 
 | Monde | Règle du TCHAK | Nouveaux éléments prévus | Boss (énigme) |
 |---|---|---|---|
-| 1 Fabrique | pousse + rebond | trappes, cuves, tuyaux qui recrachent | **Roi du Rebond** : il rebondit partout ; le faire tomber sur le ressort sous un plafond de pointes molles en orientant ses rebonds avec des caisses |
+| 1 Fabrique | pousse + rebond | **fait** (8 salles + boss) | **Roi du Rebond** : fait (voir ci-dessus) |
 | 2 Maison | effraie / vexe / réveille selon l'humeur | meubles peureux, paresseux, colériques, gourmands | **Madame Armoire** : elle avale ce qui l'approche et le recrache par une autre porte ; lui faire avaler la bonne chose au bon moment |
 | 3 Usine | met en marche / arrête les machines | engrenages, pistons, interrupteurs multiples, ordre des réactions | **Le Grand Dérangé** : il inverse les machines ; retourner ses propres pistons contre lui |
 | 4 Travers | inverse la gravité locale | objets qui montent, convoyeurs inversés, plafonds-planchers | **Le Roi à l'Envers** : son comportement suit la gravité de la zone où il se trouve |

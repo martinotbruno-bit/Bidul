@@ -66,3 +66,55 @@ void enemy_update(u8 i)
         break;
     }
 }
+
+/* =====================================================================
+ *  module 9 : LE ROI DU REBOND (boss du monde 1)
+ *
+ *  Il bondit sans fin d'un mur a l'autre (phase 1), plus haut et plus vite
+ *  (phase 2), puis en visant BIDULE (phase 3). Il est trop lourd pour etre
+ *  arrete : on ne peut que devier ses bonds avec le TCHAK. Le seul moyen de
+ *  le vaincre : le faire retomber dans la trappe ouverte au-dessus de la
+ *  cuve (levier). Chaque chute declenche les actions ON du declencheur BOSS
+ *  (la trappe se referme) ; a la troisieme, l'action OFF (la porte s'ouvre).
+ * ===================================================================== */
+u8 boss_room;
+static const u8 k_hop[3] = { 64, 80, 92 };
+static const u8 k_spd[3] = { 14, 20, 24 };
+
+void boss_update(u8 i)
+{
+    u8 ph = o_state[i];
+    if (ph > 2) ph = 2;
+    if (o_wallhit[i]) {
+        o_dir[i] = -o_dir[i];
+        o_vx[i] = (o_dir[i] < 0) ? -(s8)k_spd[ph] : (s8)k_spd[ph];
+    }
+    if (o_flags[i] & OF_GROUND) {
+        if (ph == 2) o_dir[i] = (PIX(b_x) > PIX(o_x[i])) ? 1 : -1;   /* il vise BIDULE */
+        o_vy[i] = -(s8)k_hop[ph];
+        o_vx[i] = (o_dir[i] < 0) ? -(s8)k_spd[ph] : (s8)k_spd[ph];
+        o_flags[i] &= ~OF_GROUND;
+        o_anim[i] = 6;
+    }
+}
+
+void boss_hit(u8 i)
+{
+    o_flags[i] |= OF_DEAD;
+    o_timer[i] = 120;
+    o_vx[i] = o_vy[i] = 0;
+    shake = 24;
+    sfx_play(SFX_SPLAT);
+    ++o_state[i];
+    if (o_state[i] >= 3) {
+        o_aux[i] = 1;
+        ev_boss(1);                 /* la trappe se referme... */
+        ev_boss(0);                 /* ...et la porte s'ouvre */
+        hud_message("LE ROI EST D[GONFL[ !");
+        music_stop();
+        sfx_play(SFX_DOOR);
+    } else {
+        ev_boss(1);
+        hud_message(o_state[i] == 1 ? "PLOUF ! IL REVIENT..." : "IL EST FURIEUX !");
+    }
+}

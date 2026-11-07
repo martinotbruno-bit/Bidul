@@ -1,6 +1,6 @@
 # TCHAK ! – Document technique (architecture)
 
-Version prototype 0.2. Ce document présente les choix techniques (§14, §15 et §22 du cahier des charges) et l'organisation du code.
+Version 0.3 (Monde 1 complet). Ce document présente les choix techniques (§14, §15 et §22 du cahier des charges) et l'organisation du code.
 
 ## 1. Choix techniques
 
@@ -19,10 +19,10 @@ Pourquoi C + assembleur : la logique de jeu (règles, réactions, états) change
 
 | Ressource | Utilisé | Disponible |
 |---|---|---|
-| PRG (code + données) | ≈ 24,4 Ko | 32 Ko |
-| RAM | 56 o page zéro, 1 037 o BSS/DATA, 256 o OAM, pile C de 128 o | 2 Ko |
+| PRG (code + données) | ≈ 28,1 Ko | 32 Ko |
+| RAM | 56 o page zéro, 1 043 o BSS/DATA, 256 o OAM, pile C de 128 o | 2 Ko |
 | Tuiles de décor | 186 | 256 |
-| Tuiles de sprites | 150 | 256 |
+| Tuiles de sprites | 164 | 256 |
 | Sprites matériels | 6 (BIDULE) + 4 par objet + 4 (onde) + 2 (émotions) ≤ 44 | 64 |
 | CPU par trame | salle au repos : ≈ 14 000 cycles libres ; pic pendant une réaction en chaîne : ≈ 3 000 cycles libres | 29 780 cycles (NTSC) |
 
@@ -63,7 +63,7 @@ PPU $1000    tuiles de sprites
 | 6 | Interactions | `src/objects.c` (chocs objet/objet, objet/BIDULE) |
 | 7 | Réactions en chaîne | `src/events.c` (déclencheurs, file d'actions, garde-fous) |
 | 8 | Ennemis | `src/enemies.c` (le Trouillard) |
-| 9 | Boss | *pas encore* (prévu : `src/boss_w1.c`… un fichier par boss, en banque MMC1) |
+| 9 | Boss | `src/enemies.c` (`boss_update`, `boss_hit`) + déclencheur `BOSS` dans les données de salle |
 | 10 | Salles | `src/room.c`, données `rooms/world1.txt` → `tools/rooms.py` |
 | 11 | Mondes | `src/room.c` (palettes, musique), `src/menus.c` (présentation) |
 | 12 | Collisions | `src/fast.s` (`coll_at`), `src/objects.c`, `src/bidule.c` |
@@ -103,7 +103,7 @@ Optimisation : un objet immobile au sol est « endormi » ; il ne refait sa phys
 ## 5. Réactions en chaîne et garde-fous
 
 - **Déclencheurs** (par salle) : cible murale (touchée par un objet à ≥ 0,75 px/trame), plaque (poids ≥ 2, relâchée après 6 trames sans poids), levier (bouton A). Chacun a jusqu'à 2 actions « ON » et 1 action « OFF ».
-- **Actions** : ouvrir/fermer une porte, démarrer/arrêter/inverser les convoyeurs, ouvrir/fermer une trappe, réveiller les ennemis, faire apparaître un objet.
+- **Actions** : ouvrir/fermer une porte, démarrer/arrêter/inverser les convoyeurs, ouvrir/fermer une rangée de trappes (ou l'ouvrir 0,8 s : `HATCH_PULSE`), réveiller les ennemis, faire apparaître un objet. Un déclencheur `BOSS` lance ses actions ON à chaque coup reçu par le boss et OFF à sa défaite.
 - Les actions passent par une **file avec 8 trames de délai** : le joueur voit l'ordre des conséquences.
 - **Protection contre les boucles infinies** : recharge de 40 trames par déclencheur, file limitée à 8 actions, budget global de 16 actions régénéré d'une unité toutes les 8 trames. Une machine qui s'auto-entretient (la balle sur le ressort de la salle 1-2 tape la cible indéfiniment) ne peut donc jamais saturer le jeu.
 
@@ -115,7 +115,7 @@ Une salle est décrite en texte (`rooms/world1.txt`) : carte 16 × 13 en caract�
 
 6 flux : musique sur carré 1, carré 2, triangle, bruit ; bruitages sur carré 2 et bruit (ils masquent la musique de ce canal le temps de l'effet). Format compact (note+durée, instrument, enveloppe de décroissance, glissement de fréquence, boucle). `tools/music.py` compile une notation texte (`C5.2 E5.2 r.1 …`). Le moteur est appelé dans le NMI : tempo stable même si la logique déborde.
 
-Morceaux du prototype : thème principal (titre), Monde 1, victoire, défaite, fin. Bruitages : TCHAK, ressort, choc, déclic, porte, surprise, plouf, chaussette, menu, validation, écrasement, panique, levier.
+Morceaux : thème principal (titre), Monde 1, boss, victoire, défaite, fin. Bruitages : TCHAK, ressort, choc, déclic, porte, surprise, plouf, chaussette, menu, validation, écrasement, panique, levier.
 
 ## 8. Compilation
 

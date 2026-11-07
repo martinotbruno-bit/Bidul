@@ -1,34 +1,43 @@
-# TCHAK ! – Rapport de tests (prototype 0.2)
+# TCHAK ! – Rapport de tests (version 0.3 – Monde 1)
 
 ## Méthode
 
 Les tests jouent réellement la ROM `build/tchak.nes` dans l'émulateur headless **cynes** : entrées manette scriptées, puis vérification de la RAM (adresses tirées de `build/tchak.labels`). Lancement : `make test` (ou `python3 tests/test_rom.py --shots` pour régénérer les captures de `docs/img/`).
 
-## Résultats : 19 / 19 réussis
+## Résultats : 25 / 25 réussis
 
-| Test | Vérifie | Résultat |
-|---|---|---|
-| t01 | démarrage, logo animé, menu, présentation, entrée en salle 1-1 | OK |
-| t02 | salle 1-1 résolue depuis le bon côté de la balle, échelle, sortie | OK |
-| t03 | salle 1-1 : le TCHAK réflexe envoie la balle dans la gelée, elle revient ; hors de portée rien ne bouge | OK |
-| t04 | salle 1-2 : caisse sur le ressort, TCHAK au vol depuis le rebord, étagère, plaque, porte, sortie | OK |
-| t05 | salle 1-2 : TCHAK au mauvais moment → la caisse continue de rebondir, porte fermée | OK |
-| t06 | salle 1-2 : chaussette secrète en se laissant projeter par le ressort, et BIDULE peut en sortir | OK |
-| t07 | salle 1-3 : sans planche, le Trouillard effrayé tombe dans la gelée et revient endormi | OK |
-| t08 | salle 1-3 : levier puis Trouillard → plaque → porte → sortie | OK |
-| t09 | salle 1-3 : levier puis TCHAK sur la caisse depuis la plate-forme → porte → sortie | OK |
-| t10 | gelée : perte d'une vie et retour au départ | OK |
-| t11 | plus de vies : fin de partie puis retour au titre | OK |
-| t12 | pause qui fige le jeu ; SELECT recommence sans perte de vie | OK |
-| t13 | mot de passe valide → reprise en salle 1-3 avec la chaussette | OK |
-| t14 | mot de passe invalide refusé | OK |
-| t15 | déterminisme : deux parties identiques → même état de jeu trame par trame | OK |
-| t16 | écran de fin après la dernière salle | OK |
-| t17 | aucune trame perdue dans la scène la plus chargée (salle 1-3 : caisse + Trouillard + planche) | OK |
-| t18 | musique active sur 4 canaux, bruitage TCHAK lancé puis terminé | OK |
-| t19 | **joueur qui ne comprend rien** : 8 parties de 20 s d'appuis aléatoires par salle, aucune salle résolue | OK |
+Détail brut : `docs/resultats_tests.txt`. Numérotation des salles : 1-1 à 1-8.
 
-Essai complémentaire (hors suite, plus long) : 12 parties de 30 s d'appuis aléatoires par salle → **0 victoire** dans chacune des 3 salles. Avant la version 0.2, appuyer une seule fois sur B au départ suffisait à résoudre la salle 1-2.
+| Test | Vérifie |
+|---|---|
+| t01 | démarrage, logo animé, menu, présentation, entrée en salle 1-1 |
+| t02, t03 | 1-1 : solution ; le TCHAK réflexe envoie la balle dans la gelée, elle revient ; hors de portée rien ne bouge |
+| t20 | 1-2 : réflexe → gelée ; balle → puits → ressort → cibles → porte sur la corniche, atteinte en rebondissant (+ chaussette) |
+| t21 | 1-3 : depuis le toit, le Trouillard fuit dans la gelée ; depuis sa gauche, il pousse la caisse au fond du tunnel |
+| t04, t05, t06 | 1-4 : TCHAK au vol depuis le rebord ; TCHAK au mauvais moment → échec ; chaussette du ressort |
+| t22 | 1-5 : BIDULE seul trop léger ; BIDULE + balle → trappe → caisse → porte |
+| t07, t08, t09 | 1-6 : sans planche le Trouillard tombe dans la gelée ; solutions Trouillard et caisse |
+| t23 | 1-7 : planche + balle/ressort/cibles/convoyeur + Trouillard effrayé du bon côté |
+| t24 | 1-8 : le Roi tombe 3 fois (levier au bon moment, 3 phases), porte, écran de fin |
+| t25 | 1-8 : sans levier, 30 s d'attente → il ne tombe jamais ; il aplatit BIDULE sans lui coûter de vie |
+| t10, t11 | gelée : perte d'une vie ; plus de vies : fin de partie |
+| t12 | pause / SELECT recommence |
+| t13, t14 | mot de passe valide (salle 1-6) / invalide |
+| t15 | déterminisme |
+| t16 | écran de fin après le boss |
+| t17 | aucune trame perdue dans la scène la plus chargée |
+| t18 | musique et bruitages |
+| t19 | **joueur qui ne comprend rien** : 6 parties de 20 s d'appuis aléatoires dans chacune des 8 salles → aucune salle résolue |
+
+### Équilibrage du boss (mesuré)
+
+Fenêtres de réussite depuis le levier de droite : on part d'un instant donné, on actionne le levier après un délai variable, et on regarde si le Roi tombe.
+
+| Phase | Délais qui réussissent (pas de 6 trames, sur 10 s) |
+|---|---|
+| 1 | 216–246 (une fenêtre d'environ 0,5 s) |
+| 2 | 276–312 (environ 0,6 s) |
+| 3 | 114–120, 234–240, 354–360, 480–486 (4 fenêtres d'environ 0,1 s, une toutes les 2 s : il faut viser) |
 
 ## Problèmes trouvés et corrigés pendant les tests
 
@@ -46,11 +55,14 @@ Essai complémentaire (hors suite, plus long) : 12 parties de 30 s d'appuis alé
 | **v0.2 – salles trop faciles** (retour joueur : « on résout sans rien comprendre ») | les 3 salles refaites : le geste évident échoue, la solution demande une règle (sens de la poussée, ressort vertical + timing, ordre levier → Trouillard) ; test t19 ajouté |
 | Un objet poussé passait par une porte ouverte et s'incrustait dans le mur | une porte ouverte reste un obstacle pour les objets |
 | Le Trouillard qui pousse une caisse bloquée courait sans fin (et ralentissait le jeu) | il s'essouffle s'il n'avance plus depuis 12 trames |
+| v0.3 – salle 1-2 : la balle passait au-dessus d'un puits de 2 cases | puits de 3 cases contre le mur |
+| v0.3 – salle 1-5 : impossible de passer de l'autre côté de la cuvette | deuxième échelle |
+| v0.3 – boss : la trappe restait ouverte, le Roi finissait par tomber tout seul | trappe ouverte 0,8 s seulement ; levier ajouté à droite pour la phase 3 (il vise BIDULE) |
 
 ## Limites connues (honnêtement)
 
 - **Testé uniquement sur émulateur** (cynes ; captures visuellement contrôlées). Pas encore de test sur Mesen/FCEUX ni sur vraie console.
 - Le **son** est vérifié par l'état du moteur (flux actifs, lecture qui avance), pas à l'oreille : l'émulateur de test ne restitue pas l'audio.
 - Le test de déterminisme compare l'état de jeu, pas les minuteries musicales (l'alignement CPU/PPU à l'allumage peut les décaler d'une trame d'une instance d'émulateur à l'autre).
-- Pas encore de boss, ni de musique de boss : ils viendront avec la production des mondes.
+- Mondes 2 à 5 non commencés ; ils demanderont le passage au mapper MMC1.
 - Le pic de calcul dans la scène la plus chargée laisse peu de cycles libres sur 29 780 : les salles plus chargées (8 objets en mouvement) demanderont d'autres optimisations (physique en assembleur).

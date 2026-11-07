@@ -33,6 +33,8 @@ void room_load(u8 idx)
     msg_t = 0;
     for (i = 0; i < 4; ++i) an_t[i] = 0;
     objects_init();
+    boss_room = 0;
+    for (i = 0; i < MAX_OBJ; ++i) if (o_type[i] == OT_KING) boss_room = 1;
     events_init();
     bidule_init(room->bx, room->by);
     tchak_count = 0;

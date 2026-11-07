@@ -10,11 +10,11 @@ import os, sys, glob
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 W, H = 16, 13
 
-OBJ_TYPES = {"BALL": 1, "CRATE": 2, "TROU": 3, "SOCK": 4}
-TRIG_KINDS = {"TARGET": 1, "PLATE": 2, "LEVER": 3}
+OBJ_TYPES = {"BALL": 1, "CRATE": 2, "TROU": 3, "SOCK": 4, "KING": 5}
+TRIG_KINDS = {"TARGET": 1, "PLATE": 2, "LEVER": 3, "BOSS": 4}
 ACTIONS = {"NONE": 0, "DOOR_OPEN": 1, "DOOR_CLOSE": 2, "CONV_RIGHT": 3, "CONV_LEFT": 4,
-           "CONV_STOP": 5, "CONV_REV": 6, "HATCH_OPEN": 7, "HATCH_CLOSE": 8, "WAKE": 9, "REVEAL": 10}
-ACT_ARGS = {"DOOR_OPEN": 2, "DOOR_CLOSE": 2, "HATCH_OPEN": 2, "HATCH_CLOSE": 2, "WAKE": 1, "REVEAL": 1}
+           "CONV_STOP": 5, "CONV_REV": 6, "HATCH_OPEN": 7, "HATCH_CLOSE": 8, "WAKE": 9, "REVEAL": 10, "HATCH_PULSE": 11}
+ACT_ARGS = {"DOOR_OPEN": 2, "DOOR_CLOSE": 2, "HATCH_OPEN": 3, "HATCH_CLOSE": 3, "HATCH_PULSE": 3, "WAKE": 1, "REVEAL": 1}
 
 def load_metatiles():
     table = {}
@@ -61,7 +61,10 @@ def parse(path, mts):
             while i < len(tok):
                 which = tok[i]; act = tok[i + 1]; i += 2
                 n = ACT_ARGS.get(act, 0)
-                args = [int(v) & 0xFF for v in tok[i:i + n]] + [0] * (2 - n); i += n
+                args = [int(v) & 0xFF for v in tok[i:i + n]]; i += n
+                if act.startswith("HATCH"):          # x y largeur -> y | (largeur-1) << 4
+                    args = [args[0], args[1] | ((args[2] - 1) << 4)]
+                args += [0] * (2 - len(args))
                 (on if which == "ON" else off).append([ACTIONS[act]] + args)
             assert len(on) <= 2 and len(off) <= 1, "%s:%d trop d'actions" % (path, ln)
             while len(on) < 2: on.append([0, 0, 0])
@@ -85,7 +88,8 @@ def check(r, mts, path):
         for a, x, y in (t[5:8], t[8:11], t[11:14]):
             if a in (1, 2):
                 assert r["map"][y][x] in "DE", "%s : DOOR (%d,%d) n'est pas une porte" % (r["name"], x, y)
-            if a in (7, 8):
+            if a in (7, 8, 11):
+                y &= 15
                 assert r["map"][y][x] in "h~", "%s : HATCH (%d,%d) n'est pas une trappe" % (r["name"], x, y)
     assert len(r["objs"]) <= 8, r["name"]
     assert len(r["trigs"]) <= 8, r["name"]

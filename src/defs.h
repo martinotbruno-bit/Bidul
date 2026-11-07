@@ -49,7 +49,8 @@ typedef signed int    s16;
 #define OT_CRATE   2   /* caisse : lourde, glisse, se pose          */
 #define OT_TROU    3   /* Trouillard : fuit le bruit, pousse        */
 #define OT_SOCK    4   /* chaussette : bonus a ramasser             */
-#define OT_COUNT   5
+#define OT_KING    5   /* boss : le Roi du Rebond                  */
+#define OT_COUNT   6
 
 /* drapeaux d'objet */
 #define OF_GROUND  0x01
@@ -61,6 +62,7 @@ typedef signed int    s16;
 #define TK_TARGET  1   /* cible murale : touchee par un objet en mouvement */
 #define TK_PLATE   2   /* plaque : enfoncee par un poids >= 2               */
 #define TK_LEVER   3   /* levier : actionne par BIDULE (bouton A)           */
+#define TK_BOSS    4   /* boss : ON a chaque coup recu, OFF a sa defaite    */
 
 #define A_NONE        0
 #define A_DOOR_OPEN   1
@@ -73,6 +75,7 @@ typedef signed int    s16;
 #define A_HATCH_CLOSE 8
 #define A_WAKE        9
 #define A_REVEAL      10
+#define A_HATCH_PULSE 11   /* trappe ouverte 0,8 s puis refermee */
 
 /* ---- etats du jeu ----------------------------------------------------- */
 #define GS_TITLE     0

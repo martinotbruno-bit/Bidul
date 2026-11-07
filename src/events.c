@@ -23,6 +23,8 @@ static u8 t_cool[8], t_on[8], t_load[8], t_rel[8];
 static u8 q_type[QMAX], q_x[QMAX], q_y[QMAX], q_delay[QMAX];
 static u8 q_n;
 static u8 budget;
+static u8 hint_light;
+u8 b_on_plate;
 
 void events_init(void)
 {
@@ -30,6 +32,8 @@ void events_init(void)
     for (i = 0; i < 8; ++i) t_cool[i] = t_on[i] = t_load[i] = t_rel[i] = 0;
     q_n = 0;
     budget = 16;
+    hint_light = 0;
+    b_on_plate = 0;
 }
 
 static u8 trig_find(u8 cx, u8 cy, u8 kind)
@@ -86,7 +90,8 @@ u8 ev_lever(u8 cx, u8 cy)
     u8 t = trig_find(cx, cy, TK_LEVER);
     if (t == 0xFF) return 0;
     t_on[t] ^= 1;
-    fire(t, t_on[t]);
+    /* levier sans action OFF : chaque coup declenche les actions ON */
+    fire(t, TR(t)[11] == A_NONE ? 1 : t_on[t]);
     map_set(cx, cy, t_on[t] ? MT_LEVER_ON : MT_LEVER_OFF);
     sfx_play(SFX_LEVER);
     return 1;
@@ -101,10 +106,20 @@ static void plate_tiles(u8 t, u8 mt)
             map_set(x, y, mt);
 }
 
+void ev_boss(u8 on)
+{
+    u8 t;
+    for (t = 0; t < room->ntrig; ++t)
+        if (TR(t)[0] == TK_BOSS) { fire(t, on); return; }
+}
+
 static void execute(u8 type, u8 x, u8 y)
 {
+    u8 w;
     if (!budget) return;            /* garde-fou : reaction ignoree */
     --budget;
+    w = (y >> 4) + 1;               /* trappes : largeur dans les bits 4-6 de y */
+    y &= 15;
     switch (type) {
     case A_DOOR_OPEN:
         if (mt_coll[map[(y << 4) | x]] != C_EXIT) {
@@ -126,11 +141,16 @@ static void execute(u8 type, u8 x, u8 y)
     case A_CONV_STOP:  conv_dir = 0;  sfx_play(SFX_CLICK); break;
     case A_CONV_REV:   conv_dir = -conv_dir; sfx_play(SFX_CLICK); break;
     case A_HATCH_OPEN:
-        map_set(x, y, MT_EMPTY);
+        while (w--) map_set(x++, y, MT_EMPTY);
+        sfx_play(SFX_LEVER);
+        break;
+    case A_HATCH_PULSE:
+        while (w--) tile_anim(x++, y, MT_EMPTY, MT_HATCH, 48);
         sfx_play(SFX_LEVER);
         break;
     case A_HATCH_CLOSE:
-        map_set(x, y, MT_HATCH);
+        while (w--) map_set(x++, y, MT_HATCH);
+        sfx_play(SFX_LEVER);
         break;
     case A_WAKE:
         enemies_wake((s8)x);
@@ -152,6 +172,11 @@ void events_update(void)
         p = TR(t);
         if (p[0] != TK_PLATE) continue;
         pressed = t_load[t] >= 2;
+        /* indice : BIDULE seul sur une plaque */
+        if (t_load[t] == 1 && b_on_plate && !hint_light) {
+            hint_light = 1;
+            hud_message("BIDULE EST TROP L[GER !");
+        }
         t_load[t] = 0;
         if (pressed) {
             t_rel[t] = 0;
@@ -171,6 +196,7 @@ void events_update(void)
         }
     }
 
+    b_on_plate = 0;
     if ((room_timer & 7) == 0 && budget < 16) ++budget;
 
     /* file d'actions */
