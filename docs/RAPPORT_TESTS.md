@@ -4,7 +4,7 @@
 
 Les tests jouent réellement la ROM `build/tchak.nes` dans l'émulateur headless **cynes** : entrées manette scriptées, puis vérification de la RAM (adresses tirées de `build/tchak.labels`). Lancement : `make test` (ou `python3 tests/test_rom.py --shots` pour régénérer les captures de `docs/img/`).
 
-## Résultats : 52 / 52 réussis (en 18 min d'émulation)
+## Résultats : 62 / 62 réussis (en 24 min d'émulation)
 
 Détail brut : `docs/resultats_tests.txt`. Numérotation des salles : 1-1 à 5-8.
 
@@ -47,8 +47,8 @@ Détail brut : `docs/resultats_tests.txt`. Numérotation des salles : 1-1 à 5-8
 | t51 | 4-2 : ballon poussé au sol (gravité inversée) sous la cheminée, puis retour à la normale |
 | t52 | 4-3 : l'aimant seul ne suffit pas ; par le plafond, oui |
 | t53 | 4-4 : trois serrures (plaque du sol, plaque du plafond, ballon) |
-| t54 | 4-5 : zigzag (levier de l'aimant en haut de l'échelle + deux retournements) |
-| t55 | 4-6 : l'aimant seul fait tomber la caisse dans la cuve ; par le plafond elle passe |
+| t54 | 4-6 : zigzag (levier de l'aimant en haut de l'échelle + deux retournements) |
+| t55 | 4-5 : l'aimant seul fait tomber la caisse dans la cuve ; par le plafond elle passe (levier de la gravité en haut de l'échelle) |
 | t56 | 4-7 : le grand retournement |
 | t57 | 4-8 : le Roi à l'Envers ne tombe pas seul (25 s) ; vaincu par une stratégie automatique |
 | t58 | Monde 4 : 4 parties de 20 s d'appuis aléatoires par salle → aucune salle résolue |
@@ -114,6 +114,7 @@ Fenêtres de réussite depuis le levier de droite : on part d'un instant donné,
 | v1.0 – 5-6 : résolue au hasard (2 parties sur 10 : levier sous les pieds au départ) | levier sur une corniche avec échelle (0 sur 10 ensuite) |
 | v1.0 – 5-8 : une caisse démarrait sur la plaque (serrure gratuite), une autre sous la cible du plafond | caisse placée au milieu, le piston sert de butée ; levier inutile retiré |
 | v1.0 – le dernier écran affichait « FIN DU MONDE 5 » | « FIN DU JEU ! » |
+| v1.0 – 4-5 (après la permutation 4-5/4-6) : résolue au hasard (2 parties sur 10) : leviers sous les pieds, et une caisse poussée fort sautait la cuve de 2 cases | levier de la gravité sur une corniche, cuve de 3 cases, plaque ON/OFF (0 sur 10 ensuite) |
 
 ## Limites connues (honnêtement)
 

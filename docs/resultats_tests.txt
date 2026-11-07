@@ -45,7 +45,8 @@ qu'elle les recrache dans les 3 serrures.
 [ OK ] t42_w3_3_machinal - 3-3 : attendre au bord du trou fait tomber BIDULE ; figer le Machinal sur la plaque -> passerelle.
 [ OK ] t43_w3_4_chaine - 3-4 : la balle sur la cible inverse le convoyeur, la caisse tombe devant le piston, levier -> plaque.
 [ OK ] t44_w3_5_copie_conforme - 3-5 : BIDULE enferme : aller-retour + miroir a chaque demi-tour (cliquet) ; pousser contre le mur ne sert a rien.
-[ OK ] t45_w3_6_deux_facons - 3-6 : deux solutions : le piston (levier en haut de l'echelle) ou pousser la caisse soi-meme.
+[ OK ] t45_w3_6_deux_facons - 3-6 : un trou de 3 cases ; la caisse passe par le piston (levier) ou par la passerelle
+(Machinal fige sur sa plaque) ; dans les deux cas il faut figer le robot pour sortir.
 [ OK ] t46_w3_7_grande_chaine - 3-7 : trois serrures (cible, piston/caisse, Copieur) ; chaque TCHAK fait aussi basculer le Copieur.
 [ OK ] t47_w3_8_grand_derange - 3-8 : le Grand Derange ne tombe jamais seul ; l'etourdir pres du trou quand le convoyeur y va.
 [ OK ] t48_w3_joueur_au_hasard - Monde 3 : un joueur qui appuie au hasard (4 parties de 20 s par salle) ne resout aucune salle.
@@ -54,11 +55,25 @@ d'abord sous la plaque du plafond.
 [ OK ] t51_w4_2_ballon - 4-2 : le ballon tombe vers le haut ; inverser, le pousser au sol sous la cheminee, revenir a la normale.
 [ OK ] t52_w4_3_aimant - 4-3 : l'aimant seul bloque la caisse contre l'obstacle ; inverser, puis revenir -> plaque.
 [ OK ] t53_w4_4_trois_serrures - 4-4 : caisse sur la plaque du sol, puis sous la plaque du plafond, inverser, ballon sous la cheminee, revenir.
-[ OK ] t54_w4_5_zigzag - 4-5 : aimant + deux retournements pour contourner les colonnes du sol puis du plafond.
-[ OK ] t55_w4_6_par_dessus - 4-6 : l'aimant seul fait tomber la caisse dans la cuve ; par le plafond, elle passe.
+[ OK ] t54_w4_5_zigzag - 4-6 : aimant + deux retournements pour contourner les colonnes du sol puis du plafond.
+[ OK ] t55_w4_6_par_dessus - 4-5 : l'aimant seul fait tomber la caisse dans la cuve ; par le plafond, elle passe.
 [ OK ] t56_w4_7_grand_retournement - 4-7 : zigzag, ballon a glisser sous la cheminee entre deux retournements, deux plaques.
 [ OK ] t57_w4_8_roi_a_l_envers - 4-8 : le Roi a l'Envers ne tombe pas seul ; retourner la gravite quand il passe sous le trou
 du plafond (ou au-dessus du trou du sol).
 [ OK ] t58_w4_joueur_au_hasard - Monde 4 : un joueur qui appuie au hasard (4 parties de 20 s par salle) ne resout aucune salle.
+[ OK ] t60_w5_1_fauteuil_en_l_air - 5-1 : sans retournement, le fauteuil ne monte pas ; la tete en bas, il court au plafond
+vers BIDULE et ecrase la plaque ; banque MMC1 5a.
+[ OK ] t61_w5_2_lampe_au_plafond - 5-2 : TCHAK sans retournement : la lampe reste par terre ; la tete en bas, elle va voir.
+[ OK ] t62_w5_3_gouter_a_l_envers - 5-3 : retourner tout de suite : le coffre n'a rien a manger ; biscuit d'abord contre la porte.
+[ OK ] t63_w5_4_grand_demenagement - 5-4 : le fauteuil vient toujours vers BIDULE ; trois serrures (commode, fauteuil au plafond,
+ballon sous la cible).
+[ OK ] t64_w5_5_copieur_tete_en_bas - 5-5 : la tete en bas, aller a droite ne suffit pas ; miroir puis gauche : il tient la plaque.
+[ OK ] t65_w5_6_tapis_du_chaos - 5-6 : retourner au mauvais moment rate la plaque ; au passage de la caisse, oui.
+[ OK ] t66_w5_7_grande_catastrophe - 5-7 : piston avant gravite : la caisse quitte la plaque du plafond (2 serrures) ;
+copieur, gravite, retour, piston : 3 serrures.
+[ OK ] t67_w5_8_maitre_du_chaos - 5-8 : le Maitre du Chaos ne se bat pas seul (20 s) ; balle douce dans les ressorts,
+caisse contre le piston, ballon sous la cible ; puis ecran FIN DU JEU et retour au titre.
+[ OK ] t68_w5_joueur_au_hasard - Monde 5 : un joueur qui appuie au hasard (4 parties de 20 s par salle) ne resout aucune salle.
+[ OK ] t69_w5_mot_de_passe - Le mot de passe de la salle 5-5 reprend dans la banque 5b, avec 5 vies.
 
-52/52 tests reussis en 1080.4 s
+62/62 tests reussis en 1436.4 s

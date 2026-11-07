@@ -219,8 +219,8 @@ Boss mesuré : avec le solveur automatique (on lance un biscuit à des moments d
 | 4-2 Le ballon | inverser pour que le ballon descende, le pousser sous la cheminée, revenir à la normale | — (il est hors de portée au plafond) |
 | 4-3 L'aimant | l'aimant seul bloque la caisse contre l'obstacle : passer par le plafond | allumer l'aimant et attendre |
 | 4-4 Trois serrures à l'envers | plaque du sol, puis plaque du plafond, puis ballon : l'ordre des retournements compte | inverser trop tôt : la caisse et le ballon partent au mauvais endroit |
-| 4-5 Zigzag | deux colonnes, une au sol et une au plafond : aimant (en haut de l'échelle) + deux retournements au bon moment | retourner au hasard |
-| 4-6 Par-dessus le trou | l'aimant seul fait tomber la caisse dans la cuve : passer par le plafond | allumer l'aimant d'abord |
+| 4-5 Par-dessus le trou | l'aimant seul fait tomber la caisse dans la cuve : passer par le plafond (levier de la gravité en haut de l'échelle) | allumer l'aimant d'abord |
+| 4-6 Zigzag | deux colonnes, une au sol et une au plafond : aimant (en haut de l'échelle) + deux retournements au bon moment | retourner au hasard |
 | 4-7 Le grand retournement | zigzag + ballon à glisser sous la cheminée entre deux retournements + deux plaques | — |
 | 4-8 **Le Roi à l'Envers** | il vient vers vous : rester près du levier et retourner la gravité quand il passe sous le trou du plafond, ou au-dessus de celui du sol | attendre : il ne tombe jamais seul |
 
@@ -251,7 +251,7 @@ Chaque salle a été rejouée par un **joueur qui appuie au hasard** (parties de
 | Boss 1-8 (le premier) | trappe ouverte 0,8 s | 80 trames (1,3 s) : le premier boss reste le plus tolérant |
 | Boss 4-8 | Roi à l'Envers plus lent que les autres boss | vitesses 14 / 22 / 28 selon la phase |
 | 3-6 | une seule bonne idée, trouvable par hasard | refaite avec deux solutions qui demandent chacune une règle (plaque du robot ajoutée) |
-| 4-5 / 4-6 | ordre inversé par rapport à la difficulté | permutées (la plus simple d'abord) |
+| 4-5 / 4-6 | ordre inversé par rapport à la difficulté | permutées (la plus simple d'abord) ; 4-5 : levier de la gravité sur une corniche, cuve de 3 cases |
 | Monde 5 | — | salles basses quand un meuble doit entendre du plafond, leviers sur des corniches quand le hasard suffisait |
 
 Fenêtres de réussite des boss (part des instants où l'action décisive réussit, mesurée par balayage) :

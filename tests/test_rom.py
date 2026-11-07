@@ -918,8 +918,16 @@ def t55_w4_6_par_dessus():
     lever_at(g, 34)
     check(g.until(lambda: g.obj(1)["flags"] & 4, 250), "la caisse aurait du tomber dans la cuve")
     g.nes.load(st)
-    lever_at(g, 50); g.run(60); lever_at(g, 34); g.run(200); lever_at(g, 50)
-    check(g.until(lambda: door_open(g, 1, 9), 150), "porte fermee")
+    def corniche():   # le levier de la gravite est en haut de l'echelle
+        g.until(lambda: g.bx() >= 64, 100, RIGHT)
+        g.until(lambda: g.u8("b_state") == 0 and g.by() < 120, 200, UP); g.run(3, UP)
+        g.until(lambda: g.bx() <= 34, 60, LEFT); g.press(A, 2, 0)
+    def descendre():
+        g.until(lambda: g.bx() >= 64, 100, RIGHT)
+        g.until(lambda: g.u8("b_ground") and g.by() > 180, 200, DOWN)
+    corniche(); descendre(); lever_at(g, 34); g.run(200); corniche()
+    check(g.until(lambda: door_open(g, 1, 9), 200), "porte fermee")
+    descendre()
     check(g.until(lambda: g.u8("b_state") == 3, 300, LEFT), "sortie")
 
 @test

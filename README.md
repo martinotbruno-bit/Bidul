@@ -18,7 +18,7 @@ Ce qui est programmé et testé :
 - Monde 1 complet : 8 salles de difficulté croissante (dans chacune, le geste évident échoue et la solution demande de comprendre une règle), 3 chaussettes secrètes, et le **boss : le Roi du Rebond** (3 phases)
 - Écran titre avec logo animé, menu, mot de passe, présentation du monde, pause, fin de partie, écran de fin
 - Moteur son APU : 6 musiques originales (dont le thème du boss), 13 bruitages
-- 25 tests automatiques sous émulateur (tous réussis), dont un « joueur qui appuie au hasard » qui ne résout aucune des 8 salles
+- 62 tests automatiques sous émulateur (tous réussis), dont un « joueur qui appuie au hasard » qui ne résout aucune des 40 salles
 
 - **Monde 2 – La maison qui n'en fait qu'à sa tête** : les meubles ont des humeurs (fauteuil grognon, lampe curieuse, commode paresseuse, coffre gourmand), 8 salles, boss **Madame Armoire**
 
@@ -40,7 +40,7 @@ Ouvrez `dist/tchak.nes` dans un émulateur NES. Commandes : croix = marcher / é
 sudo apt-get install cc65        # ca65, cc65, ld65
 pip install pillow cynes         # outils graphiques + émulateur des tests
 make                             # -> build/tchak.nes
-make test                        # 25 tests automatiques (~5 min)
+make test                        # 62 tests automatiques (~25 min)
 make dist                        # copie la ROM dans dist/
 ```
 

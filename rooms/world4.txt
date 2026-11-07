@@ -116,18 +116,18 @@ MAP
 #..|.......|...#
 #..............#
 #..............#
-#..............#
-#..............#
-#D.............#
-#dLL...........#
-#######~~##P####
+#.L.H..........#
+#===H..........#
+#D..H..........#
+#dL.H..........#
+#######~~~#P####
 ################
 BIDULE 3 10
 OBJ MAGNET 12 10
 OBJ CRATE 5 10
 TRIG LEVER 2 10 1 1 ON WORLD 0
-TRIG LEVER 3 10 1 1 ON WORLD 9
-TRIG PLATE 11 11 1 1 ON DOOR_OPEN 1 9
+TRIG LEVER 2 7 1 1 ON WORLD 9
+TRIG PLATE 11 11 1 1 ON DOOR_OPEN 1 9 OFF DOOR_CLOSE 1 9
 END
 
 ROOM "ZIGZAG"
