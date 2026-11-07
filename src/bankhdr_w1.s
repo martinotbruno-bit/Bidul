@@ -3,7 +3,7 @@
 ;  Le monde 1 n'a pas de code propre : tout est dans le moteur commun.
 ; =====================================================================
         .export _bk_title, _bk_password, _bk_gameover, _bk_end
-        .export _bk_wupdate, _bk_wdraw, _bk_wtchak, _bk_winit
+        .export _bk_wupdate, _bk_wdraw, _bk_wtchak, _bk_waction
 .segment "BANKHDR"
 _bk_title:    rts
               nop
@@ -26,6 +26,6 @@ _bk_wdraw:    rts
 _bk_wtchak:   rts
               nop
               nop
-_bk_winit:    rts
+_bk_waction:    rts
               nop
               nop

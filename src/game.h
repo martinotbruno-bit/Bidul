@@ -132,6 +132,7 @@ void world_bank(void);
 void __fastcall__ bk_wupdate(u8 i);
 void __fastcall__ bk_wdraw(u8 i);
 void __fastcall__ bk_wtchak(u8 i);
+void __fastcall__ bk_waction(u8 x);
 extern s8 tk_dir;
 extern u8 tk_adx, tk_ady;
 extern u8 lock_count;

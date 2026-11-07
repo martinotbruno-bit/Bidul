@@ -11,11 +11,12 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 W, H = 16, 13
 
 OBJ_TYPES = {"BALL": 1, "CRATE": 2, "TROU": 3, "SOCK": 4, "KING": 5, "ARMCHAIR": 6,
-             "LAMP": 7, "DRESSER": 8, "CHEST": 9, "COOKIE": 10, "WARDROBE": 11}
+             "LAMP": 7, "DRESSER": 8, "CHEST": 9, "COOKIE": 10, "WARDROBE": 11, "PISTON": 12,
+             "COPY": 13, "ROBOT": 14, "DERANGE": 15}
 TRIG_KINDS = {"TARGET": 1, "PLATE": 2, "LEVER": 3, "BOSS": 4}
 ACTIONS = {"NONE": 0, "DOOR_OPEN": 1, "DOOR_CLOSE": 2, "CONV_RIGHT": 3, "CONV_LEFT": 4,
-           "CONV_STOP": 5, "CONV_REV": 6, "HATCH_OPEN": 7, "HATCH_CLOSE": 8, "WAKE": 9, "REVEAL": 10, "HATCH_PULSE": 11, "LOCK": 12}
-ACT_ARGS = {"DOOR_OPEN": 2, "DOOR_CLOSE": 2, "HATCH_OPEN": 3, "HATCH_CLOSE": 3, "HATCH_PULSE": 3, "LOCK": 2, "WAKE": 1, "REVEAL": 1}
+           "CONV_STOP": 5, "CONV_REV": 6, "HATCH_OPEN": 7, "HATCH_CLOSE": 8, "WAKE": 9, "REVEAL": 10, "HATCH_PULSE": 11, "LOCK": 12, "WORLD": 13}
+ACT_ARGS = {"DOOR_OPEN": 2, "DOOR_CLOSE": 2, "HATCH_OPEN": 3, "HATCH_CLOSE": 3, "HATCH_PULSE": 3, "LOCK": 2, "WORLD": 1, "WAKE": 1, "REVEAL": 1}
 
 def load_metatiles(world):
     table = {}
@@ -61,7 +62,7 @@ def parse(path, mts):
         elif tok[0] == "BIDULE":
             cur["bidule"] = (int(tok[1]), int(tok[2]))
         elif tok[0] == "OBJ":
-            fl = 2 if "HIDDEN" in tok else 0
+            fl = (2 if "HIDDEN" in tok else 0) | (0x10 if "LEFT" in tok else 0)
             cur["objs"].append((OBJ_TYPES[tok[1]], int(tok[2]), int(tok[3]), fl))
         elif tok[0] == "TRIG":
             kind = TRIG_KINDS[tok[1]]
@@ -99,7 +100,7 @@ def check(r, mts, path):
                 assert r["map"][y][x] in "DE", "%s : DOOR (%d,%d) n'est pas une porte" % (r["name"], x, y)
             if a in (7, 8, 11):
                 y &= 15
-                assert r["map"][y][x] in "h~", "%s : HATCH (%d,%d) n'est pas une trappe" % (r["name"], x, y)
+                assert r["map"][y][x] in "h~.", "%s : HATCH (%d,%d) n'est pas une trappe" % (r["name"], x, y)
     assert len(r["objs"]) <= 8, r["name"]
     assert len(r["trigs"]) <= 8, r["name"]
     # chaque salle doit avoir une sortie

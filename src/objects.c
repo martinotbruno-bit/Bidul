@@ -20,15 +20,15 @@ s8  o_dir[MAX_OBJ];
 u16 o_x[MAX_OBJ], o_y[MAX_OBJ];
 s8  o_vx[MAX_OBJ], o_vy[MAX_OBJ];
 
-/*                     -  BALLE CAISSE TROU CHAUS ROI | FAUT LAMPE COMM COFF BISC ARM. */
-static const u8 p_mass[OT_COUNT]   = { 0, 1, 4, 2, 0, 6,   6, 2, 5, 5, 1, 8 };
-static const u8 p_bounce[OT_COUNT] = { 0, 6, 0, 0, 0, 0,   0, 0, 0, 0, 2, 0 };   /* /8 */
-static const u8 p_fric[OT_COUNT]   = { 0, 1, 4, 4, 0, 0,   4, 4, 4, 4, 3, 4 };
-static const u8 p_body[OT_COUNT]   = { 0, 1, 1, 1, 0, 1,   1, 1, 1, 1, 0, 1 };
-static const u8 p_pal[OT_COUNT]    = { 0, 1, 2, 3, 3, 1,   1, 3, 2, 2, 2, 1 };
-const u8 p_weight[OT_COUNT]        = { 0, 1, 3, 2, 0, 4,   3, 2, 3, 3, 1, 4 };
-const u8 p_tchak_vx[OT_COUNT]      = { 0,40,30,24, 0,28,   0, 0, 0, 0,36, 0 };
-const u8 p_tchak_vy[OT_COUNT]      = { 0,56,24,32, 0,16,   0, 0, 0, 0,40, 0 };
+/*                     -  BALLE CAISSE TROU CHAUS ROI | FAUT LAMPE COMM COFF BISC ARM. | PIST COPI ROBO DERA */
+static const u8 p_mass[OT_COUNT]   = { 0, 1, 4, 2, 0, 6,   6, 2, 5, 5, 1, 8,   9, 2, 3, 6 };
+static const u8 p_bounce[OT_COUNT] = { 0, 6, 0, 0, 0, 0,   0, 0, 0, 0, 2, 0,   0, 0, 0, 0 };   /* /8 */
+static const u8 p_fric[OT_COUNT]   = { 0, 1, 4, 4, 0, 0,   4, 4, 4, 4, 3, 4,   4, 4, 4, 0 };
+static const u8 p_body[OT_COUNT]   = { 0, 1, 1, 1, 0, 1,   1, 1, 1, 1, 0, 1,   1, 1, 1, 1 };
+static const u8 p_pal[OT_COUNT]    = { 0, 1, 2, 3, 3, 1,   1, 3, 2, 2, 2, 1,   2, 3, 3, 1 };
+const u8 p_weight[OT_COUNT]        = { 0, 1, 3, 2, 0, 4,   3, 2, 3, 3, 1, 4,   0, 2, 2, 4 };
+const u8 p_tchak_vx[OT_COUNT]      = { 0,40,30,24, 0,28,   0, 0, 0, 0,36, 0,   0, 0, 0, 0 };
+const u8 p_tchak_vy[OT_COUNT]      = { 0,56,24,32, 0,16,   0, 0, 0, 0,40, 0,   0, 0, 0, 0 };
 
 static u8 bump_cool;
 
@@ -80,7 +80,7 @@ void objects_init(void)
 /* objet tombe dans la gelee (ou sorti de l'ecran) : reapparait plus tard */
 void obj_kill(u8 i)
 {
-    if (o_type[i] == OT_KING) { boss_hit(i); return; }
+    if (o_type[i] == OT_KING || o_type[i] == OT_DERANGE) { boss_hit(i); return; }
     o_flags[i] |= OF_DEAD;
     o_timer[i] = 90;
     o_vx[i] = o_vy[i] = 0;
@@ -93,7 +93,7 @@ static void obj_respawn(u8 i)
     o_x[i] = SUB(o_home_x[i]);
     o_y[i] = SUB(o_home_y[i]);
     o_vx[i] = o_vy[i] = 0;
-    if (o_type[i] != OT_KING) o_state[i] = TS_SLEEP;   /* le roi garde sa phase */
+    if (o_type[i] != OT_KING && o_type[i] != OT_DERANGE) o_state[i] = TS_SLEEP;   /* un boss garde sa phase */
 }
 
 /* ------------------------------------------------------------------ */
@@ -366,7 +366,7 @@ void objects_update(void)
         t_ = o_type[i_];
         if (t_ == OT_NONE) continue;
         if (o_flags[i_] & OF_DEAD) {
-            if (t_ == OT_KING && o_aux[i_]) continue;     /* roi vaincu : il reste au fond */
+            if (o_aux[i_] && (t_ == OT_KING || t_ == OT_DERANGE)) continue;   /* boss vaincu */
             if (--o_timer[i_] == 0) obj_respawn(i_);
             continue;
         }

@@ -146,6 +146,9 @@ static void execute(u8 type, u8 x, u8 y)
         while (w--) map_set(x++, y, MT_EMPTY);
         sfx_play(SFX_LEVER);
         break;
+    case A_WORLD:
+        bk_waction(x);
+        break;
     case A_LOCK:
         /* definitif : annule aussi une animation de tuile en cours sur la case */
         tile_anim(x, y, MT_BLOCK, MT_BLOCK, 1);

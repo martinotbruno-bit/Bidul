@@ -1,0 +1,173 @@
+# =====================================================================
+#  TCHAK ! - Monde 3 : L'USINE DES CATASTROPHES  (voir src/world3.c)
+#   PISTON (LEFT = tourne a gauche) : frappe sur l'action WORLD <n> (n = numero
+#   de l'objet dans la salle, 0 = premier OBJ) ; COPY : le Copieur ;
+#   ROBOT : le Machinal ; DERANGE : le boss.
+# =====================================================================
+PALETTE 0F 00 10 20 0F 06 16 26 0F 19 29 38 0F 27 17 07 0F 0F 24 30 0F 06 16 30 0F 07 17 28 0F 0C 2C 30
+MUSIC 7
+
+ROOM "LE PISTON"
+WORLD 3 NUM 1
+CONV 0
+MAP
+################
+#..............#
+#..............#
+#..|.......|...#
+#D.|...........#
+#d.............#
+#===H..........#
+T...H..........#
+T...H..........#
+T...H..........#
+T...H..........#
+########~~####P#
+################
+BIDULE 5 10
+OBJ PISTON 10 10
+OBJ CRATE 11 10
+OBJ BALL 6 10
+TRIG TARGET 0 7 1 4 ON WORLD 0
+TRIG PLATE 14 11 1 1 ON DOOR_OPEN 1 4
+END
+
+ROOM "LE COPIEUR"
+WORLD 3 NUM 2
+CONV 0
+MAP
+################
+#..............#
+#..............#
+#..|.......|...#
+#..............#
+#..............#
+#..P=======....#
+#..............#
+#..............#
+#.............D#
+#.............d#
+################
+################
+BIDULE 3 10
+OBJ COPY 7 5
+TRIG PLATE 3 6 1 1 ON DOOR_OPEN 14 9
+END
+
+ROOM "LE MACHINAL"
+WORLD 3 NUM 3
+CONV 0
+MAP
+################
+#..............#
+#..............#
+#..|.......|...#
+#..|.......|...#
+#..............#
+#..............#
+#..............#
+#..............#
+#E.............#
+#e.............#
+###...#####P####
+###~~~##########
+BIDULE 8 10
+OBJ ROBOT 10 10
+TRIG PLATE 11 11 1 1 ON HATCH_CLOSE 3 11 3 OFF HATCH_OPEN 3 11 3
+END
+
+ROOM "LA CHAINE DE MONTAGE"
+WORLD 3 NUM 4
+CONV -1
+MAP
+################
+#..............#
+#..............#
+#..|.......|...#
+#..............#
+#..............#
+#.>>>>>>>>>....#
+T..............#
+T..............#
+T.............D#
+T......L......d#
+#~###########P##
+################
+BIDULE 3 10
+OBJ PISTON 9 10
+OBJ CRATE 10 5
+OBJ BALL 4 10
+TRIG TARGET 0 7 1 4 ON CONV_REV
+TRIG LEVER 7 10 1 1 ON WORLD 0
+TRIG PLATE 13 11 1 1 ON DOOR_OPEN 14 9
+END
+
+ROOM "COPIE CONFORME"
+WORLD 3 NUM 5
+CONV 0
+MAP
+################
+#..............#
+#..............#
+#..|.......|...#
+#..............#
+#..............#
+#.=========P...#
+#..............#
+#..............#
+#....#....h...E#
+#....#....h...e#
+################
+################
+BIDULE 7 10
+OBJ COPY 2 5
+TRIG PLATE 11 6 1 1 ON HATCH_OPEN 10 9 1 ON HATCH_OPEN 10 10 1
+END
+
+ROOM "UN PISTON, DEUX ROBOTS"
+WORLD 3 NUM 6
+CONV 0
+MAP
+################
+#..............#
+#..............#
+#..|.......|...#
+#..............#
+#..........L...#
+#..........H...#
+#..........H...#
+#..........H...#
+#D.........H...#
+#d.........H...#
+##P#############
+################
+BIDULE 13 10
+OBJ CRATE 7 10
+OBJ PISTON 8 10 LEFT
+OBJ ROBOT 4 10
+OBJ COPY 13 4
+TRIG LEVER 11 5 1 1 ON WORLD 1
+TRIG PLATE 2 11 1 1 ON DOOR_OPEN 1 9 OFF DOOR_CLOSE 1 9
+END
+
+ROOM "LE GRAND D[RANG["
+WORLD 3 NUM 8
+CONV 0
+MAP
+################
+#..............#
+#..............#
+#..|.......|...#
+#D.........|...#
+#d.............#
+#==H...........#
+#..H...........#
+#..H...........#
+#..H...........#
+#..H...........#
+#~>>>>>>>>>>>>~#
+################
+BIDULE 10 10
+OBJ DERANGE 8 10
+TRIG BOSS 0 0 1 1 OFF DOOR_OPEN 1 4
+END

@@ -57,8 +57,14 @@ typedef signed int    s16;
 #define OT_CHEST   9   /* coffre gourmand : mange les biscuits      */
 #define OT_COOKIE  10  /* biscuit                                   */
 #define OT_WARDROBE 11 /* boss : Madame Armoire                     */
+/* monde 3 : banque du monde 3 (world3.c) */
+#define OT_PISTON  12  /* piston : projette ce qui est devant lui (action WORLD) */
+#define OT_COPY    13  /* le Copieur : imite les pas de BIDULE (TCHAK : miroir) */
+#define OT_ROBOT   14  /* le Machinal : patrouille ; TCHAK : pause puis demi-tour */
+#define OT_DERANGE 15  /* boss : le Grand Derange                   */
 #define OT_WORLD   6   /* types >= OT_WORLD : geres par la banque   */
-#define OT_COUNT   12
+#define OT_COUNT   16
+#define OF_LEFT    0x10   /* (donnees de salle) objet tourne vers la gauche */
 
 /* drapeaux d'objet */
 #define OF_GROUND  0x01
@@ -83,6 +89,7 @@ typedef signed int    s16;
 #define A_HATCH_CLOSE 8
 #define A_WAKE        9
 #define A_REVEAL      10
+#define A_WORLD       13   /* action propre au monde (banque) : parametre x */
 #define A_LOCK        12   /* serrure : la case devient un bloc, compteur +1 */
 #define A_HATCH_PULSE 11   /* trappe ouverte 0,8 s puis refermee */
 
