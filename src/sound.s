@@ -17,6 +17,7 @@
 ; =====================================================================
         .export  sound_init, sound_update
         .export  _music_play, _music_stop, _sfx_play, _music_pause
+        .export  _st_active = st_active, _st_lo = st_lo   ; (pour les tests)
         .import  period_lo, period_hi, song_table, sfx_table
 
 NSTREAM = 6

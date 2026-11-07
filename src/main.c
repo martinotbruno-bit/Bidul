@@ -67,7 +67,7 @@ static void play_room(void)
             room_update();
             ++room_timer;
             if (b_state == BS_WIN && b_timer == 1) hud_message("BRAVO !");
-            if (b_state == BS_DEAD && b_timer == 1) hud_message("A]E ! DANS LA GEL[E !");
+            if (b_state == BS_DEAD && b_timer == 1) hud_message("A%E ! DANS LA GEL[E !");
         }
         play_frame_end();
 

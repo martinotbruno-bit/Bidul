@@ -287,6 +287,19 @@ def t17_performances():
     lag = g.u8("lag_frames")
     check(lag == 0, "%d trames en retard" % lag)
 
+@test
+def t18_son():
+    """La musique du monde joue sur 4 canaux et le TCHAK declenche son bruitage (carre 2 + bruit)."""
+    g = Game(); g.boot_to_room1()
+    check(all(g.u8("st_active", c) for c in range(4)), "musique inactive sur un canal")
+    p0 = [g.u8("st_lo", c) for c in range(4)]
+    g.run(60)
+    check([g.u8("st_lo", c) for c in range(4)] != p0, "la musique n'avance pas")
+    g.press(B, 2, 8)
+    check(g.u8("st_active", 4) and g.u8("st_active", 5), "pas de bruitage TCHAK")
+    g.run(240)   # (la balle rebondit : bruitages de chocs pendant un moment)
+    check(not g.u8("st_active", 4) and not g.u8("st_active", 5), "le bruitage ne s'arrete pas")
+
 # =================================================================== main
 def main():
     ok = 0
