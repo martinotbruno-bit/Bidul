@@ -42,6 +42,12 @@ Il est affiché sur l'écran de présentation de chaque salle (« CODE : »). Au
 
 Codes du prototype : salle 1-1 `BNFR`, salle 1-2 `FNFS`, salle 1-3 `DNFT` (avec la chaussette de la salle 1-2 : `VNKT`).
 
+## Conseils
+
+- Si quelque chose tombe dans la gelée, ce n'est pas grave : observez, il reviendra.
+- Le TCHAK part une fraction de seconde après l'appui : anticipez ce qui bouge.
+- Avant d'effrayer quelqu'un, regardez où il va courir.
+
 ## Où jouer
 
 Ouvrez `dist/tchak_prototype.nes` avec un émulateur NES (Mesen, FCEUX, Nestopia…). La ROM utilise le mapper 0 (NROM-256) et pourra être gravée sur une cartouche NROM ; elle n'a pas encore été essayée sur une vraie console.

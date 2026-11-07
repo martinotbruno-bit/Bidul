@@ -47,10 +47,11 @@ void enemy_update(u8 i)
         }
         break;
     case TS_RUN:
-        /* arrete par un mur, ou immobile depuis 12 trames (objet bloque) */
+        /* arrete par un mur, ou s'il n'avance plus depuis 12 trames
+           (il pousse un objet bloque) : o_aux = position la plus avancee */
         px = PIX(o_x[i]);
-        if (px == o_aux[i]) ++o_timer[i]; else o_timer[i] = 0;
-        o_aux[i] = px;
+        if (o_dir[i] < 0 ? (px < o_aux[i]) : (px > o_aux[i])) { o_aux[i] = px; o_timer[i] = 0; }
+        else ++o_timer[i];
         if (o_wallhit[i] || o_timer[i] > 12) {
             o_state[i] = TS_PANT;
             o_timer[i] = 150;

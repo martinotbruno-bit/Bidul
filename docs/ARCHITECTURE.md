@@ -1,6 +1,6 @@
 # TCHAK ! – Document technique (architecture)
 
-Version prototype 0.1. Ce document présente les choix techniques (§14, §15 et §22 du cahier des charges) et l'organisation du code.
+Version prototype 0.2. Ce document présente les choix techniques (§14, §15 et §22 du cahier des charges) et l'organisation du code.
 
 ## 1. Choix techniques
 

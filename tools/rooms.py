@@ -86,7 +86,7 @@ def check(r, mts, path):
             if a in (1, 2):
                 assert r["map"][y][x] in "DE", "%s : DOOR (%d,%d) n'est pas une porte" % (r["name"], x, y)
             if a in (7, 8):
-                assert r["map"][y][x] == "h", "%s : HATCH (%d,%d) n'est pas une trappe" % (r["name"], x, y)
+                assert r["map"][y][x] in "h~", "%s : HATCH (%d,%d) n'est pas une trappe" % (r["name"], x, y)
     assert len(r["objs"]) <= 8, r["name"]
     assert len(r["trigs"]) <= 8, r["name"]
     # chaque salle doit avoir une sortie

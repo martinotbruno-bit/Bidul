@@ -93,7 +93,7 @@ static void title_draw_static(void)
     oam_finish();
     screen_clear();
     put_center(10, "LA GRANDE CATASTROPHE");
-    put_center(26, "PROTOTYPE 0.1 - 3 SALLES");
+    put_center(26, "PROTOTYPE 0.2 - 3 SALLES");
     /* sol de girders pour BIDULE */
     vram_adr(NT_ADR(0, 18));
     for (i_ = 0; i_ < 16; ++i_) { vram_put(mt_tiles[MT_GIRDER][0]); vram_put(mt_tiles[MT_GIRDER][1]); }

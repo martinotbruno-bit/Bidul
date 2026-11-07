@@ -1,12 +1,13 @@
 [ OK ] t01_demarrage_et_titre - La ROM demarre, l'ecran titre s'anime, le menu mene au jeu.
-[ OK ] t02_salle1_premier_tchak - Salle 1-1 : TCHAK sur la balle -> cible -> porte -> sortie.
-[ OK ] t03_salle1_trop_loin - Salle 1-1 : un TCHAK hors de portee ne fait rien (regle lisible).
-[ OK ] t04_salle2_reaction_en_chaine - Salle 1-2 : balle -> ressort -> cible -> convoyeur -> caisse -> plaque -> porte.
-[ OK ] t05_salle2_solution_echelle - Salle 1-2, solution alternative : monter a l'echelle et pousser la caisse a coups de TCHAK.
-[ OK ] t06_salle2_chaussette_du_puits - Salle 1-2, secret : sauter dans le puits a ressorts rapporte une chaussette.
-[ OK ] t07_salle3_solution_trouillard - Salle 1-3, solution 1 : effrayer le Trouillard depuis la plate-forme.
-[ OK ] t08_salle3_solution_levier - Salle 1-3, solution 2 : le levier demarre le convoyeur, la caisse tombe sur la plaque.
-[ OK ] t09_salle3_solution_ressort - Salle 1-3, solution 3 : ressort -> atterrir sur la caisse -> TCHAK -> la caisse tombe.
+[ OK ] t02_salle1_premier_tchak - Salle 1-1 : depuis la droite de la balle, TCHAK -> cible -> porte ; echelle -> sortie.
+[ OK ] t03_salle1_geste_reflexe - Salle 1-1 : le TCHAK reflexe (au depart) envoie la balle dans la gelee ; elle reapparait.
+[ OK ] t04_salle2_tchak_au_vol - Salle 1-2 : caisse -> ressort -> TCHAK au vol depuis le rebord -> etagere -> plaque -> porte.
+[ OK ] t05_salle2_mauvais_moment - Salle 1-2 : TCHAK au mauvais moment -> la caisse continue de rebondir, porte fermee.
+[ OK ] t06_salle2_chaussette_du_ressort - Salle 1-2, secret : BIDULE rebondit lui-meme sur le ressort et attrape la chaussette.
+[ OK ] t07_salle3_trouillard_dans_la_gelee - Salle 1-3 : effrayer le Trouillard sans planche -> il fuit dans la gelee (et reapparait).
+[ OK ] t08_salle3_solution_trouillard - Salle 1-3, solution 1 : levier (planche sur la cuve) PUIS effrayer le Trouillard.
+[ OK ] t09_salle3_solution_plateforme - Salle 1-3, solution 2 : planche, puis TCHAK sur la caisse depuis la plate-forme :
+la caisse tombe et le Trouillard (reveille) fuit lui aussi vers la plaque.
 [ OK ] t10_gelee_perd_une_vie - Tomber dans la gelee coute une vie et recommence la salle.
 [ OK ] t11_game_over - Plus de vies : ecran de fin de partie, puis retour au titre.
 [ OK ] t12_pause_et_recommencer - START met en pause (le jeu est fige), SELECT recommence la salle sans perte de vie.
@@ -16,5 +17,6 @@
 [ OK ] t16_fin_du_prototype - Apres la salle 1-3, l'ecran de fin s'affiche.
 [ OK ] t17_performances - Aucune trame perdue (la logique tient dans 1/60 s) pendant une reaction en chaine.
 [ OK ] t18_son - La musique du monde joue sur 4 canaux et le TCHAK declenche son bruitage (carre 2 + bruit).
+[ OK ] t19_joueur_qui_ne_comprend_rien - Aucune salle n'est resolue par un joueur qui appuie au hasard (8 parties de 20 s par salle).
 
-18/18 tests reussis en 54.6 s
+19/19 tests reussis en 144.6 s

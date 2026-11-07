@@ -64,42 +64,46 @@ Petite boule verte à grandes oreilles. **Dort** (« Zz ») → un bruit ou un c
 
 Dimensions : 16 × 13 cases de 16 px (256 × 208 px) sous un bandeau de 32 px. Échec possible partout : SELECT recommence la salle sans perte de vie.
 
-### Salle 1-1 « PREMIER TCHAK ! » – salle simple / introduction
+**Principe de conception (version 0.2)** : dans chaque salle, **le geste évident échoue**, de façon visible et sans bloquer la partie (l'objet tombe dans la gelée et revient, la caisse continue de rebondir…). La solution demande d'avoir compris une règle. C'est vérifié par un test : un « joueur qui appuie au hasard » ne résout aucune salle (8 parties de 20 s par salle, et 0 victoire sur 12 parties de 30 s lors des essais).
 
-- **Objectif** : ouvrir la porte (à gauche) et sortir.
-- **Disposition** : BIDULE au centre-gauche, une balle juste à sa droite, un petit bloc rose au sol, une grande cible verte (2 cases) sur le mur de droite, la porte à gauche.
-- **Mécanique** : le TCHAK repousse les objets à l'opposé.
-- **Solution** : TCHAK à côté de la balle → elle saute par-dessus le bloc et percute la cible → la porte s'ouvre (BIDULE sursaute) → marcher à gauche.
-- **Ce que le joueur apprend** : la portée (trop loin = rien), le sens de la poussée (se mettre à droite de la balle l'envoie… dans la porte fermée).
-- **Échec** : aucun ; la balle peut être relancée autant qu'on veut.
+### Salle 1-1 « PREMIER TCHAK ! » – introduction : le sens de la poussée
 
-### Salle 1-2 « LA DÉGRINGOLADE » – réaction en chaîne
+![salle 1-1](img/05_salle1.png)
 
-![chaîne](img/07_chaine_convoyeur.png)
+- **Objectif** : ouvrir la porte, en haut à gauche, sur une corniche accessible par une échelle.
+- **Disposition** : BIDULE part **à gauche** de la balle ; à droite, une cuve de gelée ; sur le mur de gauche, une grande cible verte (4 cases).
+- **Piège** : le TCHAK réflexe envoie la balle à droite… dans la gelée (« plouf », elle revient à sa place).
+- **Règle à comprendre** : le TCHAK repousse **à l'opposé** de BIDULE. Il faut passer de l'autre côté de la balle (attention à la gelée juste derrière) avant de faire TCHAK.
+- **Solution** : se placer entre la balle et la cuve, TCHAK → la balle file à gauche et frappe la cible → la porte s'ouvre → échelle → corniche → sortie.
+- **Échec** : marcher dans la cuve (perte d'une vie).
 
-- **Objectif** : ouvrir la porte de droite.
-- **Disposition** : à gauche un puits à 2 ressorts sous une colonne fermée par deux cibles au plafond ; au centre une échelle mène à un convoyeur (arrêté) qui porte une caisse ; une plaque au pied de la porte ; BIDULE à droite, la balle à sa gauche.
-- **Chaîne principale** : TCHAK → la balle file à gauche, tombe dans le puits → le ressort la projette à la verticale → elle frappe les cibles → le convoyeur démarre → la caisse avance, bute sur le pilier et tombe sur la plaque → la porte s'ouvre et reste ouverte (la caisse pèse 3). La balle continue de rebondir dans le puits : une petite machine perpétuelle (sans danger, voir garde-fous).
-- **Solution alternative** : monter à l'échelle, se placer derrière la caisse et la pousser à coups de TCHAK sur le convoyeur arrêté jusqu'à ce qu'elle tombe.
-- **Secret** : sauter soi-même dans le puits → BIDULE est catapulté dans la colonne et attrape la **chaussette** ; il en ressort en se dirigeant vers la droite pendant un rebond.
-- **Échec** : aucun mortel ; une caisse mal poussée reste sur le convoyeur (on recommence à pousser, ou on relance la balle).
+### Salle 1-2 « LA DÉGRINGOLADE » – réaction en chaîne et timing
 
-### Salle 1-3 « TROIS FAÇONS DE SORTIR » – plusieurs solutions
+![salle 1-2](img/07_caisse_etagere.png)
 
-![trouillard](img/10_trouillard_fuit.png)
+- **Objectif** : poser la caisse sur la plaque, sur l'étagère en haut à gauche (la porte est en bas à droite).
+- **Disposition** : la caisse au sol, un ressort dans une colonne entre l'étagère (à gauche) et un petit rebord (à droite) desservi par une échelle.
+- **Étape 1** : pousser la caisse sur le ressort. Elle rebondit alors indéfiniment… **à la verticale** : le ressort absorbe la vitesse horizontale et recentre l'objet. Elle ne tombera jamais toute seule sur l'étagère.
+- **Étape 2** : monter sur le rebord et faire TCHAK **au moment où la caisse passe devant BIDULE** (fenêtre d'environ 8 trames à la montée comme à la descente ; le TCHAK part 9 trames après l'appui, il faut anticiper). Poussée vers la gauche, elle atterrit sur l'étagère et glisse jusqu'à la plaque.
+- **Pièges** : TCHAK trop tôt ou trop tard → rien ne se passe, ou la caisse retombe à côté de la plaque. Si elle s'arrête trop tôt sur l'étagère, BIDULE peut monter par le ressort et la pousser de nouveau.
+- **Secret** : BIDULE se laisse projeter seul par le ressort, tout droit, et attrape la **chaussette** au plafond.
 
-- **Objectif** : maintenir enfoncée la plaque devant la porte (poids ≥ 2).
-- **Disposition** : cuve de gelée au sol entre BIDULE et le reste de la salle ; échelle à gauche vers une passerelle avec un levier ; un ressort au sol au bout de la passerelle ; un Trouillard endormi à droite ; une étagère-convoyeur avec une caisse au-dessus d'un trou ; une chaussette en hauteur au-dessus du ressort.
-- **Solution 1 (le Trouillard)** : depuis le bout de la passerelle, TCHAK → il entend, fuit vers la droite, bute contre la porte et s'endort… sur la plaque.
-- **Solution 2 (le levier)** : A sur le levier → l'étagère se met en marche → la caisse tombe dans le trou, sur la plaque.
-- **Solution 3 (le ressort)** : descendre de la passerelle sur le ressort, se diriger pendant le vol pour atterrir sur la caisse, TCHAK → elle file, bute contre le pilier et tombe sur la plaque.
-- **Secret** : en rebondissant tout droit sur le ressort, BIDULE attrape la **chaussette**.
-- **Échec** : marcher dans la cuve (perte d'une vie) ; faire TCHAK en étant à droite du Trouillard l'envoie à gauche… dans la gelée (il réapparaît endormi).
+### Salle 1-3 « TROIS FAÇONS DE SORTIR » – ordre des actions, plusieurs solutions
+
+![salle 1-3](img/11_levier_planche.png)
+
+- **Objectif** : tenir enfoncée la plaque devant la porte (à gauche, poids ≥ 2).
+- **Disposition** : BIDULE à droite, un Trouillard endormi au milieu, une cuve de gelée entre lui et la porte ; en haut, une plate-forme avec une caisse, et un levier au sommet de l'échelle de droite (assez loin pour que le Trouillard n'entende rien).
+- **Piège** : le TCHAK réflexe réveille le Trouillard, qui fuit tout droit… dans la cuve (il réapparaît endormi).
+- **Règle à comprendre** : le levier fait tomber une **planche sur la cuve**. Il faut actionner le levier **avant** d'effrayer quoi que ce soit (sans planche, BIDULE lui-même ne peut pas atteindre la porte).
+- **Solution 1** : levier, puis TCHAK près du Trouillard, depuis sa droite → il traverse la planche, bute contre la porte et s'endort sur la plaque.
+- **Solution 2** : levier, puis TCHAK sur la caisse depuis la plate-forme → la caisse tombe ; le Trouillard, effrayé par le bruit (ou par la caisse qui lui tombe dessus), part vers la plaque et la pousse devant lui.
+- **Solution 3** : levier, puis pousser la caisse au sol à coups de TCHAK jusqu'à la plaque (sans s'approcher du Trouillard, ou en l'envoyant d'abord dormir contre la porte).
 - **À observer** : BIDULE seul sur la plaque ne suffit pas (poids 1).
 
 ## 5. Plan de la suite (40 salles, 5 boss)
 
-Chaque monde reprendra la répartition du §8 (introduction, apprentissage, découverte, combinaison, intermédiaire, plusieurs solutions, complexe, boss). Les 3 salles du prototype deviendront les salles 1-1, 1-4 et 1-6 du jeu final ; les nouvelles mécaniques prévues :
+Chaque monde reprendra la répartition du §8 (introduction, apprentissage, découverte, combinaison, intermédiaire, plusieurs solutions, complexe, boss). Les 3 salles du prototype deviendront les salles 1-1, 1-4 et 1-6 du jeu final. Chaque nouvelle salle devra passer le test du « joueur qui ne comprend rien ». Nouvelles mécaniques prévues :
 
 | Monde | Règle du TCHAK | Nouveaux éléments prévus | Boss (énigme) |
 |---|---|---|---|

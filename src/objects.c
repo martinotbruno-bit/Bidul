@@ -9,6 +9,9 @@
 #include "nes.h"
 #include "game.h"
 
+/* pour les objets, une porte ouverte reste un obstacle (ils ne sortent pas) */
+#define OBJ_SOLID(c) (IS_SOLID(c) || (c) == C_EXIT)
+
 u8  o_type[MAX_OBJ], o_flags[MAX_OBJ], o_state[MAX_OBJ], o_timer[MAX_OBJ];
 u8  o_anim[MAX_OBJ], o_gnd[MAX_OBJ], o_home_x[MAX_OBJ], o_home_y[MAX_OBJ];
 u8  o_wallhit[MAX_OBJ], o_aux[MAX_OBJ];
@@ -118,8 +121,8 @@ static void phys(void)
         hy_ = py_ + 1;
         c1_ = coll_at(e_, hy_);
         c2_ = coll_at(e_, (u8)(py_ + 14));
-        if (!IS_SOLID(c1_) || (c2_ == C_TARGET && c1_ != C_TARGET)) { c1_ = c2_; hy_ = py_ + 14; }
-        if (IS_SOLID(c1_)) {
+        if (!OBJ_SOLID(c1_) || (c2_ == C_TARGET && c1_ != C_TARGET)) { c1_ = c2_; hy_ = py_ + 14; }
+        if (OBJ_SOLID(c1_)) {
             if (c1_ == C_TARGET && (vx_ >= 12 || vx_ <= -12))
                 ev_target_hit(e_ >> 4, (u8)(hy_ - PLAY_TOP) >> 4);
             nx_ = (mv_ > 0) ? SUB((e_ & 0xF0) - 16) : SUB((e_ & 0xF0) + 16);
@@ -140,16 +143,17 @@ static void phys(void)
         e_ = py_ + 16;
         c1_ = coll_at((u8)(px_ + 1), e_);
         c2_ = coll_at((u8)(px_ + 14), e_);
-        if (IS_SOLID(c1_) || IS_SOLID(c2_)) {
+        if (OBJ_SOLID(c1_) || OBJ_SOLID(c2_)) {
             ny_ = SUB((e_ & 0xF0) - 16);
             cc_ = coll_at((u8)(px_ + 8), e_);
-            if (!IS_SOLID(cc_)) cc_ = IS_SOLID(c1_) ? c1_ : c2_;
+            if (!OBJ_SOLID(cc_)) cc_ = OBJ_SOLID(c1_) ? c1_ : c2_;
             hit_cx = (u8)(px_ + 8) >> 4;
             hit_cy = (u8)(e_ - PLAY_TOP) >> 4;
             if (cc_ == C_SPRING) {
                 /* le ressort projette a la verticale (vitesse horizontale absorbee) */
                 vy_ = -SPRING_V;
                 vx_ = 0;
+                o_x[i_] = SUB(hit_cx << 4);     /* et recentre l'objet sur le ressort */
                 tile_anim(hit_cx, hit_cy, MT_SPRING_DN, MT_SPRING, 8);
                 sfx_play(SFX_BOING);
                 o_anim[i_] = 8;
@@ -173,7 +177,7 @@ static void phys(void)
         e_ = py_;
         c1_ = coll_at((u8)(px_ + 1), e_);
         c2_ = coll_at((u8)(px_ + 14), e_);
-        if (IS_SOLID(c1_) || IS_SOLID(c2_)) {
+        if (OBJ_SOLID(c1_) || OBJ_SOLID(c2_)) {
             ny_ = SUB((e_ & 0xF0) + 16);
             cc_ = coll_at((u8)(px_ + 8), e_);
             if (cc_ == C_TARGET || c1_ == C_TARGET || c2_ == C_TARGET) {
@@ -203,10 +207,10 @@ static void phys(void)
 /* ------------------------------------------------ boites de 16x16 libres ? */
 static u8 box_free(u8 x, u8 y)
 {
-    if (IS_SOLID(coll_at((u8)(x + 1), (u8)(y + 1)))) return 0;
-    if (IS_SOLID(coll_at((u8)(x + 14), (u8)(y + 1)))) return 0;
-    if (IS_SOLID(coll_at((u8)(x + 1), (u8)(y + 14)))) return 0;
-    if (IS_SOLID(coll_at((u8)(x + 14), (u8)(y + 14)))) return 0;
+    if (OBJ_SOLID(coll_at((u8)(x + 1), (u8)(y + 1)))) return 0;
+    if (OBJ_SOLID(coll_at((u8)(x + 14), (u8)(y + 1)))) return 0;
+    if (OBJ_SOLID(coll_at((u8)(x + 1), (u8)(y + 14)))) return 0;
+    if (OBJ_SOLID(coll_at((u8)(x + 14), (u8)(y + 14)))) return 0;
     return 1;
 }
 
