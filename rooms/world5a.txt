@@ -1,0 +1,104 @@
+# =====================================================================
+#  TCHAK ! - Monde 5 : LE GRAND BAZAR (salles 5-1 a 5-4, banque 5a)
+#  Meubles a humeurs (monde 2) + gravite inversable (monde 4, WORLD 9).
+# =====================================================================
+PALETTE 0C 1C 2C 3C 0C 15 25 35 0C 1A 2A 38 0C 28 18 08 0C 0F 24 30 0C 06 16 30 0C 07 17 28 0C 0F 2A 30
+MUSIC 0
+
+ROOM "LE FAUTEUIL TOMBE EN L'AIR"
+WORLD 5 NUM 1
+CONV 0
+MAP
+############P###
+#............X.#
+#..|.......|...#
+#..............#
+#.............D#
+#.L...........d#
+################
+################
+################
+################
+################
+################
+################
+BIDULE 3 5
+OBJ ARMCHAIR 4 5
+TRIG LEVER 2 5 1 1 ON WORLD 9
+TRIG PLATE 12 0 1 1 ON DOOR_OPEN 14 4
+END
+
+ROOM "LA LAMPE AU PLAFOND"
+WORLD 5 NUM 2
+CONV 0
+MAP
+###P############
+#..............#
+#..|.......|...#
+#..............#
+#D.............#
+#d...........L.#
+################
+################
+################
+################
+################
+################
+################
+BIDULE 12 5
+OBJ LAMP 10 5
+TRIG LEVER 13 5 1 1 ON WORLD 9
+TRIG PLATE 3 0 1 1 ON DOOR_OPEN 1 4
+END
+
+ROOM "LE GOUTER ] L'ENVERS"
+WORLD 5 NUM 3
+CONV 0
+MAP
+############PP##
+#..............#
+#..............#
+#..|.......|...#
+#..........===.#
+#..............#
+#..............#
+#..............#
+#..............#
+#.............D#
+#.L...........d#
+################
+################
+BIDULE 3 10
+OBJ COOKIE 5 10
+OBJ CHEST 12 3
+TRIG LEVER 2 10 1 1 ON WORLD 9
+TRIG PLATE 12 0 2 1 ON DOOR_OPEN 14 9 OFF DOOR_CLOSE 14 9
+END
+
+ROOM "LE GRAND D[M[NAGEMENT"
+WORLD 5 NUM 4
+CONV 0
+MAP
+######TT#####P##
+#..............#
+#..............#
+#..|.......|...#
+#..|.......|...#
+#..............#
+#..............#
+#..............#
+#..............#
+#D.............#
+#d...........L##
+##P#############
+################
+BIDULE 7 10
+OBJ DRESSER 5 10
+OBJ ARMCHAIR 9 10
+OBJ BALLOON 3 1 FLOAT
+TRIG LEVER 13 10 1 1 ON WORLD 9
+TRIG PLATE 2 11 1 1 ON LOCK 2 11
+TRIG PLATE 13 0 1 1 ON LOCK 13 0
+TRIG TARGET 6 0 2 1 ON LOCKW 6 0 2
+TRIG BOSS 0 0 1 1 OFF DOOR_OPEN 1 9
+END

@@ -1,4 +1,4 @@
-# TCHAK ! – Rapport de tests (version 0.6 – Mondes 1 à 4, MMC1 256 Ko)
+# TCHAK ! – Rapport de tests (version 1.0 – jeu complet, Mondes 1 à 5, MMC1 256 Ko)
 
 ## Méthode
 
@@ -6,7 +6,7 @@ Les tests jouent réellement la ROM `build/tchak.nes` dans l'émulateur headless
 
 ## Résultats : 52 / 52 réussis (en 18 min d'émulation)
 
-Détail brut : `docs/resultats_tests.txt`. Numérotation des salles : 1-1 à 4-8.
+Détail brut : `docs/resultats_tests.txt`. Numérotation des salles : 1-1 à 5-8.
 
 | Test | Vérifie |
 |---|---|
@@ -52,6 +52,16 @@ Détail brut : `docs/resultats_tests.txt`. Numérotation des salles : 1-1 à 4-8
 | t56 | 4-7 : le grand retournement |
 | t57 | 4-8 : le Roi à l'Envers ne tombe pas seul (25 s) ; vaincu par une stratégie automatique |
 | t58 | Monde 4 : 4 parties de 20 s d'appuis aléatoires par salle → aucune salle résolue |
+| t60 | 5-1 : TCHAK sans retournement → porte fermée ; la tête en bas, le fauteuil écrase la plaque du plafond ; banque MMC1 5a |
+| t61 | 5-2 : la lampe ne monte voir le TCHAK qu'avec la gravité retournée |
+| t62 | 5-3 : retourner sans biscuit → rien ; biscuit contre la porte puis retournement → le coffre tient la plaque |
+| t63 | 5-4 : le réflexe attire le fauteuil à gauche ; trois serrures (commode, fauteuil au plafond, ballon) |
+| t64 | 5-5 : au plafond, aller à droite ne suffit pas ; miroir + marche vers la porte → le Copieur reste sur la plaque |
+| t65 | 5-6 : retourner au mauvais moment rate la plaque ; au passage de la caisse, la porte s'ouvre |
+| t66 | 5-7 : le piston avant la gravité ne donne que 2 serrures ; copieur → gravité → retour → piston : 3 |
+| t67 | 5-8 : le Maître du Chaos ne ferme rien et ne coûte aucune vie en 20 s ; vaincu par une stratégie automatique ; écran « FIN DU JEU ! » puis retour au titre |
+| t68 | Monde 5 : 4 parties de 20 s d'appuis aléatoires par salle → aucune salle résolue (10 parties pendant la mise au point : 0 victoire) |
+| t69 | mot de passe de la salle 5-5 : banque 5b, chaussettes restaurées |
 
 ### Équilibrage du boss (mesuré)
 
@@ -96,13 +106,21 @@ Fenêtres de réussite depuis le levier de droite : on part d'un instant donné,
 | v0.6 – 4-5 : la caisse passait sous l'obstacle du plafond en montant | obstacles en colonnes |
 | v0.6 – 4-4 : plaque du plafond trop étroite pour la précision du TCHAK (bonds de ~45 px) | plaque de 2 cases |
 | v0.6 – boss 4-8 : BIDULE devait traverser un trou pour atteindre un levier | un seul levier, trous du sol et du plafond décalés |
+| v1.0 – banque 5b : variables de banque trop grandes de 5 octets | zone de banque portée à 80 octets ($0740-$078F) |
+| v1.0 – 5-1 : le fauteuil au plafond n'entendait pas BIDULE | salle basse + portée verticale d'écoute du fauteuil portée à 96 px |
+| v1.0 – 5-3 : la porte s'ouvrait au simple passage du coffre | plaque ON/OFF au-dessus de la porte, le biscuit bute contre la porte |
+| v1.0 – 5-4 : le fauteuil ne pouvait pas atteindre la plaque du plafond | butée au sol, plaque déplacée, BIDULE démarre entre la commode et le fauteuil |
+| v1.0 – 5-5 : le Copieur était trop loin pour entendre le miroir depuis le plafond | salle basse, levier et Copieur rapprochés : aller à droite ne suffit plus, il faut le miroir |
+| v1.0 – 5-6 : résolue au hasard (2 parties sur 10 : levier sous les pieds au départ) | levier sur une corniche avec échelle (0 sur 10 ensuite) |
+| v1.0 – 5-8 : une caisse démarrait sur la plaque (serrure gratuite), une autre sous la cible du plafond | caisse placée au milieu, le piston sert de butée ; levier inutile retiré |
+| v1.0 – le dernier écran affichait « FIN DU MONDE 5 » | « FIN DU JEU ! » |
 
 ## Limites connues (honnêtement)
 
 - **Testé uniquement sur émulateur** (cynes ; captures visuellement contrôlées). Pas encore de test sur Mesen/FCEUX ni sur vraie console.
 - Le **son** est vérifié par l'état du moteur (flux actifs, lecture qui avance), pas à l'oreille : l'émulateur de test ne restitue pas l'audio.
 - Le test de déterminisme compare l'état de jeu, pas les minuteries musicales (l'alignement CPU/PPU à l'allumage peut les décaler d'une trame d'une instance d'émulateur à l'autre).
-- Monde 5 non commencé (la ROM a déjà la place : banque 5 libre).
+- Le sort « convoyeurs inversés » du Maître du Chaos n'a pas d'effet dans sa salle (pas de convoyeur) : il n'est là que pour le bruit… et la fausse alerte.
 - Le message de victoire du boss du Monde 3 est devenu un « BOSS VAINCU ! » générique (place libérée dans le moteur).
 - Le boss 3-8 est exigeant : rester immobile fait perdre toutes ses vies en environ 25 s (le convoyeur emporte BIDULE).
 - Le pic de calcul dans la scène la plus chargée laisse peu de cycles libres sur 29 780 : les salles plus chargées (8 objets en mouvement) demanderont d'autres optimisations (physique en assembleur).

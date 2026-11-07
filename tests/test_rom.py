@@ -984,6 +984,192 @@ def t58_w4_joueur_au_hasard():
                       "salle 4-%d resolue au hasard (graine %d)" % (room - 23, seed))
         g.nes.load(st)
 
+# ================================================================ Monde 5
+def w5(g, n):
+    g.goto_room(31 + n)
+
+def lever_far(g, x):
+    """Comme lever_at, mais pour les longues traversees."""
+    if g.bx() > x: g.until(lambda: g.bx() <= x, 400, LEFT)
+    else: g.until(lambda: g.bx() >= x, 400, RIGHT)
+    g.press(A, 2, 0)
+
+@test
+def t60_w5_1_fauteuil_en_l_air():
+    """5-1 : sans retournement, le fauteuil ne monte pas ; la tete en bas, il court au plafond
+    vers BIDULE et ecrase la plaque ; banque MMC1 5a."""
+    g = Game(); w5(g, 1); st = g.nes.save()
+    check(g.u8("cur_bank") == 5, "banque 5a non selectionnee")
+    g.until(lambda: g.bx() >= 170, 200, RIGHT); g.press(B, 2, 150)
+    check(not door_open(g, 14, 4), "porte ouverte sans retournement")
+    g.nes.load(st)
+    lever_at(g, 34); g.run(80)
+    check(g.u8("grav_up") == 1, "gravite non inversee")
+    g.until(lambda: g.bx() >= 170, 200, RIGHT); g.press(B, 2, 150)
+    check(door_open(g, 14, 4), "porte fermee")
+    shot(g, "60_w5_fauteuil")
+    check(g.until(lambda: g.u8("b_state") == 3, 300, RIGHT), "sortie")
+
+@test
+def t61_w5_2_lampe_au_plafond():
+    """5-2 : TCHAK sans retournement : la lampe reste par terre ; la tete en bas, elle va voir."""
+    g = Game(); w5(g, 2); st = g.nes.save()
+    g.until(lambda: g.bx() <= 48, 300, LEFT); g.press(B, 2, 250)
+    check(not door_open(g, 1, 4), "porte ouverte sans retournement")
+    g.nes.load(st)
+    lever_at(g, 210); g.run(80)
+    g.until(lambda: g.bx() <= 48, 300, LEFT); g.press(B, 2, 250)
+    check(door_open(g, 1, 4), "porte fermee")
+    check(g.until(lambda: g.u8("b_state") == 3, 300, LEFT), "sortie")
+
+@test
+def t62_w5_3_gouter_a_l_envers():
+    """5-3 : retourner tout de suite : le coffre n'a rien a manger ; biscuit d'abord contre la porte."""
+    g = Game(); w5(g, 3); st = g.nes.save()
+    lever_at(g, 34); g.run(300)
+    check(not door_open(g, 14, 9), "porte ouverte sans biscuit")
+    g.nes.load(st)
+    check(push_to(g, 0, 200, 210), "biscuit non place")
+    lever_at(g, 34); g.run(300)
+    check(door_open(g, 14, 9), "porte fermee")
+    shot(g, "61_w5_gouter")
+    check(g.until(lambda: g.u8("b_state") == 3, 300, RIGHT), "sortie")
+
+@test
+def t63_w5_4_grand_demenagement():
+    """5-4 : le fauteuil vient toujours vers BIDULE ; trois serrures (commode, fauteuil au plafond,
+    ballon sous la cible)."""
+    g = Game(); w5(g, 4); st = g.nes.save()
+    g.press(B, 2, 120)
+    check(g.u8("lock_count") == 0 and g.obj(1)["x"] < 100, "le reflexe doit attirer le fauteuil a gauche")
+    g.nes.load(st)
+    g.until(lambda: g.bx() >= 104, 200, RIGHT); g.run(1, LEFT)
+    for _ in range(3): g.press(B, 2, 26)
+    g.run(150)
+    check(g.u8("lock_count") == 1, "commode : serrure 1")
+    g.until(lambda: g.bx() >= 168, 300, RIGHT); g.press(B, 2, 150)
+    lever_at(g, 210); g.run(100)
+    check(g.u8("lock_count") == 2, "fauteuil au plafond : serrure 2")
+    check(push_to(g, 2, 96, 112), "ballon non place")
+    lever_far(g, 210); g.run(120)
+    check(g.u8("lock_count") == 3, "ballon : serrure 3")
+    check(g.until(lambda: g.u8("b_state") == 3, 400, LEFT), "sortie")
+
+@test
+def t64_w5_5_copieur_tete_en_bas():
+    """5-5 : la tete en bas, aller a droite ne suffit pas ; miroir puis gauche : il tient la plaque."""
+    g = Game(); w5(g, 5)
+    lever_at(g, 112); g.run(90)
+    check(g.obj(0)["y"] == 144, "le Copieur doit etre au plafond")
+    g.run(100, RIGHT)
+    check(not door_open(g, 1, 9), "porte ouverte sans miroir")
+    g.press(B, 2, 30)
+    check(g.until(lambda: g.u8("b_state") == 3, 400, LEFT), "sortie")
+    check(g.obj(0)["x"] == 224, "le Copieur doit rester sur la plaque")
+
+@test
+def t65_w5_6_tapis_du_chaos():
+    """5-6 : retourner au mauvais moment rate la plaque ; au passage de la caisse, oui."""
+    g = Game(); w5(g, 6)
+    g.until(lambda: g.bx() >= 64, 100, RIGHT)
+    g.until(lambda: g.u8("b_state") == 0 and g.by() < 120, 200, UP)
+    g.run(3, UP); g.until(lambda: g.bx() <= 34, 60, LEFT)
+    st = g.nes.save()
+    g.press(A, 2, 100)
+    check(not door_open(g, 1, 9), "porte ouverte au mauvais moment")
+    g.nes.load(st)
+    g.run(130); g.press(A, 2, 60)
+    check(door_open(g, 1, 9), "porte fermee")
+    g.until(lambda: g.bx() >= 64, 100, RIGHT)
+    g.until(lambda: g.u8("b_ground") and g.by() > 180, 200, DOWN)
+    check(g.until(lambda: g.u8("b_state") == 3, 400, LEFT), "sortie")
+
+@test
+def t66_w5_7_grande_catastrophe():
+    """5-7 : piston avant gravite : la caisse quitte la plaque du plafond (2 serrures) ;
+    copieur, gravite, retour, piston : 3 serrures."""
+    g = Game(); w5(g, 7); st = g.nes.save()
+    g.until(lambda: g.obj(3)["x"] >= 200, 200, RIGHT); g.run(60)
+    check(g.u8("lock_count") == 1, "copieur : serrure 1")
+    st1 = g.nes.save()
+    lever_far(g, 210); g.run(150); lever_far(g, 34); g.run(100)
+    check(g.u8("lock_count") == 2, "le mauvais ordre ne doit donner que 2 serrures")
+    g.nes.load(st1)
+    lever_far(g, 34); g.run(100); g.press(A, 2, 100)
+    check(g.u8("lock_count") == 2, "gravite : serrure 2")
+    lever_far(g, 210); g.run(100)
+    check(g.u8("lock_count") == 3 and door_open(g, 14, 9), "porte fermee")
+    shot(g, "62_w5_catastrophe")
+    check(g.until(lambda: g.u8("b_state") == 3, 400, RIGHT), "sortie")
+
+@test
+def t67_w5_8_maitre_du_chaos():
+    """5-8 : le Maitre du Chaos ne se bat pas seul (20 s) ; balle douce dans les ressorts,
+    caisse contre le piston, ballon sous la cible ; puis ecran FIN DU JEU et retour au titre."""
+    g = Game(); w5(g, 8); st0 = g.nes.save()
+    check(g.u8("boss_room") == 1, "musique de boss")
+    shot(g, "63_w5_maitre")
+    g.run(1200)
+    check(g.u8("lock_count") == 0 and g.u8("lives") == 5, "il se bat tout seul")
+    g.nes.load(st0)
+    g.until(lambda: g.bx() >= 116, 100, RIGHT); g.run(1, LEFT); g.press(B, 2, 0)
+    check(g.until(lambda: g.u8("lock_count") == 1, 200), "balle : cible de gauche")
+    check(push_to(g, 4, 204, 215), "caisse non placee")
+    for _ in range(6):
+        if g.u8("lock_count") >= 3: break
+        if g.u8("grav_up") == 0:
+            lever_at(g, 98); g.run(60)
+        push_to(g, 2, 148, 160)
+        if g.u8("grav_up") == 1: lever_at(g, 98)
+        g.run(90)
+    check(g.u8("lock_count") >= 3, "maitre non vaincu")
+    check(g.until(lambda: door_open(g, 14, 9), 200), "porte fermee")
+    shot(g, "64_w5_maitre_vaincu")
+    check(g.until(lambda: g.u8("b_state") == 3, 400, RIGHT), "sortie")
+    check(g.until(lambda: g.u8("game_state") == 8, 400), "pas d'ecran de fin du jeu")
+    g.run(150)
+    shot(g, "65_fin_du_jeu")
+    g.press(START, 2, 60)
+    check(g.u8("game_state") == 0, "pas de retour au titre")
+
+@test
+def t68_w5_joueur_au_hasard():
+    """Monde 5 : un joueur qui appuie au hasard (4 parties de 20 s par salle) ne resout aucune salle."""
+    import random
+    acts = [0, LEFT, RIGHT, UP, DOWN, B, A, LEFT | B, RIGHT | B, UP | A]
+    g = Game(); g.goto_room(32)
+    for room in range(32, 40):
+        if room > 32:
+            g.skip_room(room - 1)
+        st = g.nes.save()
+        for seed in range(4):
+            g.nes.load(st)
+            rnd = random.Random(seed * 19 + room)
+            for _ in range(200):
+                g.run(6, rnd.choice(acts))
+                check(g.u8("b_state") != 3 and g.u8("room_idx") == room,
+                      "salle 5-%d resolue au hasard (graine %d)" % (room - 31, seed))
+        g.nes.load(st)
+
+@test
+def t69_w5_mot_de_passe():
+    """Le mot de passe de la salle 5-5 reprend dans la banque 5b, avec 5 vies."""
+    g = Game()
+    g.run(500)
+    g.press(START, 2, 20)
+    g.press(DOWN, 2, 4)
+    g.press(START, 2, 40)
+    code = password(36, 3)
+    for slot, ch in enumerate(code):
+        for _ in range(ALPHA.index(ch)):
+            g.press(UP, 2, 2)
+        if slot < 3:
+            g.press(RIGHT, 2, 2)
+    g.press(START, 2, 30)
+    g.wait_room(36)
+    check(g.u8("cur_bank") == 6, "banque 5b non selectionnee")
+    check(g.u8("socks") == 3, "chaussettes non restaurees")
+
 # =================================================================== main
 def main():
     ok = 0

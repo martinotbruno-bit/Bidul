@@ -91,7 +91,8 @@ static void play_room(void)
 void world_bank(void)
 {
     u8 w = room_idx >> 3;
-    bank_set(1 + w);
+    /* le monde 5 occupe deux banques : salles 5-1..5-4 et 5-5..5-8 */
+    bank_set(1 + w + (room_idx >= 36));
     chr_set(w);
 }
 

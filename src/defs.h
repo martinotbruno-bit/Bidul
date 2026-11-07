@@ -66,8 +66,9 @@ typedef signed int    s16;
 #define OT_BALLOON 16  /* ballon : tombe vers le haut               */
 #define OT_MAGNET  17  /* aimant : attire les caisses (action WORLD) */
 #define OT_ENVERS  18  /* boss : le Roi a l'Envers                  */
+#define OT_MASTER  19  /* boss final : le Maitre du Chaos           */
 #define OT_WORLD   6   /* types >= OT_WORLD : geres par la banque   */
-#define OT_COUNT   19
+#define OT_COUNT   20
 #define OF_LEFT    0x10   /* (donnees de salle) objet tourne vers la gauche */
 #define OF_FLOAT   0x20   /* objet qui tombe vers le haut (ballon) */
 

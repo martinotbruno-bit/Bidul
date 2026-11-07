@@ -224,7 +224,49 @@ Boss mesuré : avec le solveur automatique (on lance un biscuit à des moments d
 | 4-7 Le grand retournement | zigzag + ballon à glisser sous la cheminée entre deux retournements + deux plaques | — |
 | 4-8 **Le Roi à l'Envers** | il vient vers vous : rester près du levier et retourner la gravité quand il passe sous le trou du plafond, ou au-dessus de celui du sol | attendre : il ne tombe jamais seul |
 
-## 8. Plan de la suite (40 salles, 5 boss)
+## 8. Monde 5 – Le Grand Bazar
+
+**Règle du monde** : la combinaison. Les salles 5-1 à 5-4 (banque 5a) mélangent les **meubles à humeurs** du Monde 2 et la **gravité** du Monde 4 ; les salles 5-5 à 5-8 (banque 5b) mélangent les **machines** du Monde 3 et la gravité. Le monde occupe deux banques MMC1 (le code des deux mondes d'origine ne tient pas dans 8 Ko).
+
+| Salle | Ce qu'il faut comprendre | Le réflexe qui échoue |
+|---|---|---|
+| 5-1 Le fauteuil tombe en l'air | retourner la gravité **puis** faire TCHAK : le fauteuil court au plafond vers BIDULE et écrase la plaque | TCHAK sans retournement : il fonce au sol |
+| 5-2 La lampe au plafond | la tête en bas, la lampe vient voir là où on a fait TCHAK… sur la plaque du plafond | TCHAK au sol : elle reste par terre |
+| 5-3 Le goûter à l'envers | placer le biscuit contre la porte, **puis** retourner : le coffre court au plafond, sur la plaque | retourner tout de suite : le coffre n'a rien à manger |
+| 5-4 Le grand déménagement | trois serrures : commode (3 TCHAK du bon côté), fauteuil (il vient toujours vers BIDULE : l'attirer contre la butée de droite avant d'inverser), ballon sous la cible du plafond | TCHAK au départ : le fauteuil part à gauche, contre la commode |
+| 5-5 Le Copieur tête en bas | au plafond, le Copieur copie vos pas, mais vous n'avez pas la place d'aller assez loin : **miroir**, puis marcher vers la porte (il recule jusqu'au mur et tient la plaque) | aller à droite : il s'arrête avant la plaque ; miroir au sol : il file dans la cuve |
+| 5-6 Le tapis du chaos | le convoyeur emporte la caisse vers la cuve : grimper au levier et retourner la gravité **quand elle passe sous la plaque** (fenêtre de 0,4 s) | retourner tout de suite : la caisse se colle au plafond trop tôt |
+| 5-7 La grande catastrophe | trois serrures dans le bon ordre : Copieur sur son étagère, gravité (la caisse du bas monte sur la plaque du plafond), retour, **puis** piston | le piston d'abord : il chasse la caisse de sous la plaque du plafond |
+| 5-8 **Le Maître du Chaos** | trois serrures au milieu du désordre : balle poussée **doucement** dans le puits à ressorts (cible de gauche), caisse contre le piston (plaque), ballon glissé sous la cible du plafond pendant une inversion | TCHAK de près : la balle survole le puits et revient |
+
+**Le Maître du Chaos** (boss final) flotte en haut de l'écran et lance un sort toutes les 5,5 s (4 s après une serrure, 2,8 s après deux), annoncé 1 s à l'avance par un « ! » : gravité retournée, caisses qui flottent (« LES CAISSES PERDENT LA TÊTE ! »), convoyeurs inversés. Il ne touche jamais BIDULE et ne ferme aucune serrure tout seul (mesuré sur 20 s). Vaincu, il rend la gravité normale ; l'écran final affiche « FIN DU JEU ! ».
+
+## 9. Cohérence de la difficulté (audit de la version 1.0)
+
+Chaque salle a été rejouée par un **joueur qui appuie au hasard** (parties de 20 s, 4 graines dans la suite de tests, 10 pendant la mise au point) : aucune des 40 salles n'est résolue ainsi. Les réglages suivants alignent la progression d'un monde à l'autre :
+
+| Réglage | Avant | Après |
+|---|---|---|
+| Vies | 5 au départ, jamais rendues | au moins 5 vies au début de chaque monde (un monde difficile ne ruine plus la suite) |
+| Boss 1-8 (le premier) | trappe ouverte 0,8 s | 80 trames (1,3 s) : le premier boss reste le plus tolérant |
+| Boss 4-8 | Roi à l'Envers plus lent que les autres boss | vitesses 14 / 22 / 28 selon la phase |
+| 3-6 | une seule bonne idée, trouvable par hasard | refaite avec deux solutions qui demandent chacune une règle (plaque du robot ajoutée) |
+| 4-5 / 4-6 | ordre inversé par rapport à la difficulté | permutées (la plus simple d'abord) |
+| Monde 5 | — | salles basses quand un meuble doit entendre du plafond, leviers sur des corniches quand le hasard suffisait |
+
+Fenêtres de réussite des boss (part des instants où l'action décisive réussit, mesurée par balayage) :
+
+| Boss | Phase 1 | Phase 2 | Phase 3 |
+|---|---|---|---|
+| 1-8 Roi du Rebond | 7 % | 16 % | 25 % (le levier de droite vise BIDULE) |
+| 2-8 Madame Armoire (par lancer) | 62 % | 20 % | 15 % |
+| 3-8 Grand Dérangé | il faut l'étourdir près d'un trou quand le convoyeur y va | | |
+| 4-8 Roi à l'Envers | 4 % | 8 % | 7 % |
+| 5-8 Maître du Chaos | trois actions précises, sorts de plus en plus rapprochés (5,5 s → 4 s → 2,8 s) | | |
+
+Le principe reste celui du §2 : dans chaque salle, **le geste évident échoue**, et la solution demande d'avoir compris une règle. Le Monde 5 demande d'en combiner deux.
+
+## 10. Bilan (40 salles, 5 boss)
 
 Chaque monde reprendra la répartition du §8 (introduction, apprentissage, découverte, combinaison, intermédiaire, plusieurs solutions, complexe, boss). Le Monde 1 est terminé. Chaque nouvelle salle devra passer le test du « joueur qui ne comprend rien ». Nouvelles mécaniques prévues :
 
@@ -234,4 +276,4 @@ Chaque monde reprendra la répartition du §8 (introduction, apprentissage, déc
 | 2 Maison | réactions selon l'humeur | **fait** (8 salles + boss) | **Madame Armoire** : fait (voir ci-dessus) |
 | 3 Usine | ordre des réactions | **fait** (8 salles + boss) | **Le Grand Dérangé** : fait (voir ci-dessus) |
 | 4 Travers | gravité des objets inversable | **fait** (8 salles + boss) | **Le Roi à l'Envers** : fait (voir ci-dessus) |
-| 5 Bazar | combinaison | toutes les règles, zones de règles différentes dans une même salle | **Le Maître du Chaos** : il change les propriétés des objets ; grande énigme en plusieurs tableaux |
+| 5 Bazar | combinaison | **fait** (8 salles + boss, deux banques) | **Le Maître du Chaos** : fait (voir ci-dessus) |

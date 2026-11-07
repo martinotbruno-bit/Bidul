@@ -193,7 +193,7 @@ void __fastcall__ w2_tchak(u8 i)
 {
     switch (o_type[i]) {
     case OT_ARMCHAIR:
-        if (tk_adx < 112 && tk_ady < 64 && o_state[i] != ST_GO) {
+        if (tk_adx < 112 && tk_ady < 96 && o_state[i] != ST_GO) {
             o_dir[i] = -tk_dir;               /* VERS BIDULE */
             start_go(i);
             o_vy[i] = -24;

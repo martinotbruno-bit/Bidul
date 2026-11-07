@@ -1,6 +1,6 @@
 # TCHAK ! – Document technique (architecture)
 
-Version 0.6 (Mondes 1 à 4, MMC1 256 Ko). Ce document présente les choix techniques (§14, §15 et §22 du cahier des charges) et l'organisation du code.
+Version 1.0 (jeu complet : Mondes 1 à 5, MMC1 256 Ko). Ce document présente les choix techniques (§14, §15 et §22 du cahier des charges) et l'organisation du code.
 
 ## 1. Choix techniques
 
@@ -24,18 +24,21 @@ Le moteur fait environ 23 Ko : il ne tient pas dans la banque fixe de 16 Ko du m
 | 2 | Monde 2 : métatuiles, 8 salles, palette, **code des meubles à humeurs et du boss** (`world2.c`) |
 | 3 | Monde 3 : métatuiles, 8 salles, palette, **pistons, Copieur, Machinal, Grand Dérangé** (`world3.c`) |
 | 4 | Monde 4 : métatuiles, 8 salles, palette, **ballons, aimants, gravité, Roi à l'Envers** (`world4.c`) |
+| 5 | Monde 5a (salles 5-1 à 5-4) : code des meubles (`world2.c`) + gravité (`world4.c`) + aiguillage (`world5.c`, `-DBANK_5A`) |
+| 6 | Monde 5b (salles 5-5 à 5-8) : machines (`world3.c`) + gravité (`world4.c`) + **Maître du Chaos** (`world5.c`) |
+| 7 | libre |
 
 Changer de banque ne déplace pas le code en cours d'exécution, puisque le moteur est identique partout. Les parties propres commencent toutes par la même **table de sauts** (`bk_title`, `bk_wupdate`, `bk_wdraw`, `bk_wtchak`, `bk_waction`), puis par les tables du monde : métatuiles, **cadres des sprites d'objets** (chaque monde a son propre jeu de sprites), salles, palette, et les **pointeurs du thème musical du monde** (la musique de chaque monde est dans sa banque). Ces tables sont aux mêmes adresses dans chaque banque. Le moteur appelle donc « le code du monde courant » sans savoir quelle banque est en place. `tools/make_rom.py` lie chaque banque séparément et **vérifie octet par octet** que le moteur et les vecteurs sont identiques dans toutes les banques. Une routine de la bibliothèque cc65 utilisée par une seule banque casserait cette identité ; `src/libforce.s` les force toutes dans le moteur.
 
-### Utilisation des ressources (mesurée, version 0.4)
+### Utilisation des ressources (mesurée, version 1.0)
 
 | Ressource | Utilisé | Disponible |
 |---|---|---|
-| Moteur commun | 23 734 octets (libéré : cadres de sprites, logo et thèmes musicaux passés dans les banques) | 24 576 (dans chaque banque) |
-| Banque des menus / Monde 1 / 2 / 3 | libre : 2 866 / 5 715 / 2 128 / 3 086 octets | 8 186 chacune |
-| RAM | moteur $0300-$073F, variables de banque $0740-$077F, pile C $0780-$07FF | 2 Ko |
+| Moteur commun | 23 782 octets (libéré : cadres de sprites, logo et thèmes musicaux passés dans les banques) | 24 576 (dans chaque banque) |
+| Banque des menus / Monde 1 / 2 / 3 / 4 / 5a / 5b | libre : 2 041 / 5 232 / 1 798 / 2 586 / 3 570 / 988 / 908 octets | 8 186 chacune |
+| RAM | moteur $0300-$073F, variables de banque $0740-$078F, pile C $0790-$07FF | 2 Ko |
 | Tuiles de décor | 186 / 190 / 190 / 191 | 256 par monde |
-| Tuiles de sprites | un jeu par monde : 164 / 138 / 118 / 108 (dont un socle commun : BIDULE, effets, balle, caisse, chaussette) | 256 par monde |
+| Tuiles de sprites | un jeu par monde : 164 / 138 / 118 / 108 / 207 (dont un socle commun : BIDULE, effets, balle, caisse, chaussette) | 256 par monde |
 | CPU par trame | aucune trame perdue dans les scènes testées (t17) | 29 780 cycles (NTSC) |
 
 ### Respect des contraintes NES
@@ -54,8 +57,8 @@ $0000-$00FF  page zéro : registres cc65, variables NMI/manette, paramètres mé
 $0100-$01FF  pile 6502
 $0200-$02FF  copie OAM (DMA $4014 à chaque NMI)
 $0300-$073F  variables du moteur (BSS/DATA), file VRAM (128 o), palette (32 o), carte de salle (208 o)
-$0740-$077F  variables de la banque en place (ex. : compteurs des meubles du monde 2)
-$0780-$07FF  pile logicielle cc65 (les variables locales sont statiques : option -Cl)
+$0740-$078F  variables de la banque en place (ex. : compteurs des meubles du monde 2)
+$0790-$07FF  pile logicielle cc65 (les variables locales sont statiques : option -Cl)
 $8000-$DFFF  moteur commun (identique dans toutes les banques MMC1)
 $E000-$FFF9  partie propre à la banque : table de sauts, métatuiles, salles, palette, code du monde
 $FFFA-$FFFF  vecteurs NMI / RESET / IRQ (identiques)
@@ -86,6 +89,7 @@ PPU $1000    tuiles de sprites (communes)
 | – | Monde 2 | `src/world2.c` (banque 2) : fauteuil, lampe, commode, coffre, biscuit, Madame Armoire |
 | – | Monde 3 | `src/world3.c` (banque 3) : piston (action `WORLD n`), Copieur, Machinal, Grand Dérangé |
 | – | Monde 4 | `src/world4.c` (banque 4) ; gravité inversable des objets dans `src/objects.c` (`grav_up`, `OF_FLOAT`) |
+| – | Monde 5 | `src/world5.c` (banques 5 et 6) : aiguille vers le code des mondes 2/3/4 et contient le Maître du Chaos ; `main.c` choisit la banque 5a ou 5b selon la salle |
 | – | Banques | `src/bankhdr_*.s`, `cfg/mmc1.cfg`, `tools/make_rom.py`, `src/libforce.s` |
 
 ### Machine à états du jeu

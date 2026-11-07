@@ -48,6 +48,10 @@ Monde 3 : 3-1 `BNDR` · 3-2 `FNDS` · 3-3 `DNDT` · 3-4 `SNDV` · 3-5 `RNDL` · 
 
 Monde 4 : 4-1 `LNDG` · 4-2 `PNDH` · 4-3 `NNDJ` · 4-4 `HNDK` · 4-5 `GNDB` · 4-6 `KNDC` · 4-7 `JNDD` · 4-8 `CNDF`.
 
+Monde 5 : 5-1 `BNCR` · 5-2 `FNCS` · 5-3 `DNCT` · 5-4 `SNCV` · 5-5 `RNCL` · 5-6 `VNCM` · 5-7 `TNCN` · 5-8 `MNCP`.
+
+Au début de chaque monde, BIDULE a au moins 5 vies.
+
 ## Conseils
 
 - Si quelque chose tombe dans la gelée, ce n'est pas grave : observez, il reviendra.
@@ -80,6 +84,16 @@ Dans la maison, le TCHAK ne pousse pas les meubles : il les vexe, les intrigue o
 - **Le ballon** tombe toujours à l'envers du reste du monde. Un TCHAK l'éloigne de son « sol ».
 - **L'aimant**, une fois allumé, attire les caisses vers lui, au sol comme au plafond. Quand un obstacle bloque la route en bas, il est peut-être libre en haut…
 - **Le Roi à l'Envers** marche vers vous, au sol ou au plafond, et ne met jamais le pied dans un trou. Retournez la gravité au bon moment !
+
+## Le Grand Bazar (Monde 5)
+
+Toutes les règles se mélangent : les meubles du Monde 2 et les machines du Monde 3 vivent maintenant dans un monde dont la gravité se retourne.
+
+- Un meuble au plafond entend toujours vos TCHAK… s'il n'est pas trop loin : certaines salles sont basses exprès.
+- **Le Copieur au plafond** copie toujours vos pas. Quand vous n'avez plus la place d'avancer, pensez au miroir.
+- Un convoyeur emporte la caisse : c'est à vous de choisir **quand** elle s'envole.
+- Dans « La grande catastrophe », l'**ordre** des trois serrures compte.
+- **Le Maître du Chaos** lance un sort toutes les quelques secondes (gravité retournée, caisses qui flottent, convoyeurs inversés). Un « ! » prévient juste avant. Plus vous fermez de serrures, plus il s'énerve. Il ne vous attaque pas : c'est le désordre qui est dangereux.
 
 ## Où jouer
 

@@ -5,7 +5,7 @@ Vous êtes BIDULE, une créature qui ne sait pas sauter mais qui sait faire **TC
 
 ![Titre](docs/img/02_titre.png) ![Boss](docs/img/21_boss.png)
 
-## État : version 0.6 – Mondes 1 à 4 complets (32 salles + 4 boss), cartouche MMC1 de 256 Ko
+## État : version 1.0 – le jeu complet : 5 mondes, 40 salles, 5 boss, cartouche MMC1 de 256 Ko
 
 Le prototype de 3 salles a validé la mécanique (§22) ; le **Monde 1 – La Fabrique des choses molles** est maintenant complet : 8 salles de difficulté croissante et le boss, le Roi du Rebond.
 
@@ -26,7 +26,9 @@ Ce qui est programmé et testé :
 
 - **Monde 4 – Le monde qui marche de travers** : la gravité des objets s'inverse (caisses au plafond, plaques et cibles au plafond), ballons qui tombent vers le haut, aimants ; 8 salles, boss **le Roi à l'Envers**
 
-Pas encore fait : le monde 5, Le Grand Bazar (8 salles, boss final).
+- **Monde 5 – Le Grand Bazar** : toutes les règles mélangées (meubles à humeurs et machines la tête en bas, Copieur au plafond, convoyeur + gravité), 8 salles, boss final **le Maître du Chaos** (il change les propriétés des objets : gravité, caisses qui flottent, convoyeurs). Écran « FIN DU JEU ».
+
+La difficulté a été revue sur l'ensemble du jeu (voir [GAME_DESIGN §9](docs/GAME_DESIGN.md)) : chaque monde est un peu plus exigeant que le précédent, et un joueur qui appuie au hasard ne résout aucune des 40 salles.
 
 ## Jouer
 

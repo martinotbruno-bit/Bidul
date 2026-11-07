@@ -20,15 +20,15 @@ s8  o_dir[MAX_OBJ];
 u16 o_x[MAX_OBJ], o_y[MAX_OBJ];
 s8  o_vx[MAX_OBJ], o_vy[MAX_OBJ];
 
-/*                     -  BALLE CAISSE TROU CHAUS ROI | FAUT LAMPE COMM COFF BISC ARM. | PIST COPI ROBO DERA | BALL AIMA ENVE */
-static const u8 p_mass[OT_COUNT]   = { 0, 1, 4, 2, 0, 6,   6, 2, 5, 5, 1, 8,   9, 2, 3, 6,   1, 9, 6 };
-static const u8 p_bounce[OT_COUNT] = { 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 1, 0, 0 };   /* /8 */
-static const u8 p_fric[OT_COUNT]   = { 0, 1, 4, 4, 0, 0, 4, 4, 4, 4, 3, 4, 4, 4, 4, 0, 4, 4, 0 };
-static const u8 p_body[OT_COUNT]   = { 0, 1, 1, 1, 0, 1,   1, 1, 1, 1, 0, 1,   1, 1, 1, 1,   1, 1, 1 };
-static const u8 p_pal[OT_COUNT]    = { 0, 1, 2, 3, 3, 1,   1, 3, 2, 2, 2, 1,   2, 3, 3, 1,   1, 1, 2 };
-const u8 p_weight[OT_COUNT]        = { 0, 1, 3, 2, 0, 4,   3, 2, 3, 3, 1, 4,   0, 2, 2, 4,   1, 0, 4 };
-const u8 p_tchak_vx[OT_COUNT]      = { 0, 40, 30, 24, 0, 28, 0, 0, 0, 0, 36, 0, 0, 0, 0, 0, 6, 0, 0 };
-const u8 p_tchak_vy[OT_COUNT]      = { 0,56,24,32, 0,16,   0, 0, 0, 0,40, 0,   0, 0, 0, 0,   40, 0, 0 };
+/*                     -  BALLE CAISSE TROU CHAUS ROI | FAUT LAMPE COMM COFF BISC ARM. | PIST COPI ROBO DERA | BALL AIMA ENVE MAIT */
+static const u8 p_mass[OT_COUNT]   = { 0, 1, 4, 2, 0, 6,   6, 2, 5, 5, 1, 8,   9, 2, 3, 6,   1, 9, 6, 9 };
+static const u8 p_bounce[OT_COUNT] = { 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 1, 0, 0, 0 };   /* /8 */
+static const u8 p_fric[OT_COUNT]   = { 0, 1, 4, 4, 0, 0, 4, 4, 4, 4, 3, 4, 4, 4, 4, 0, 4, 4, 0, 0 };
+static const u8 p_body[OT_COUNT]   = { 0, 1, 1, 1, 0, 1,   1, 1, 1, 1, 0, 1,   1, 1, 1, 1,   1, 1, 1, 0 };
+static const u8 p_pal[OT_COUNT]    = { 0, 1, 2, 3, 3, 1,   1, 3, 2, 2, 2, 1,   2, 3, 3, 1,   1, 1, 2, 3 };
+const u8 p_weight[OT_COUNT]        = { 0, 1, 3, 2, 0, 4,   3, 2, 3, 3, 1, 4,   0, 2, 2, 4,   1, 0, 4, 0 };
+const u8 p_tchak_vx[OT_COUNT]      = { 0, 40, 30, 24, 0, 28, 0, 0, 0, 0, 36, 0, 0, 0, 0, 0, 6, 0, 0, 0 };
+const u8 p_tchak_vy[OT_COUNT]      = { 0,56,24,32, 0,16,   0, 0, 0, 0,40, 0,   0, 0, 0, 0,   40, 0, 0, 0 };
 
 static u8 bump_cool;
 

@@ -249,6 +249,7 @@ static const char *const end_txt[NWORLDS * 3] = {
     "MADAME ARMOIRE A TOUT RECRACH[.", "LES MEUBLES SE SONT CALM[S...", "POUR CETTE NUIT.",
     "LE GRAND D[RANG[ EST RANG[.", "L'USINE TOURNE ROND...", "ENFIN, PRESQUE ROND.",
     "LE ROI ] L'ENVERS EST REMIS", "] L'ENDROIT. LE MONDE MARCHE", "DROIT... LA T&TE EN BAS.",
+    "LE MAITRE DU CHAOS EST VAINCU.", "BIDULE A TOUT CASS[... MAIS", "TOUT MARCHE. C'EST G[NIAL !",
 };
 
 void __fastcall__ end_screen(u8 world)
@@ -266,9 +267,12 @@ void __fastcall__ end_screen(u8 world)
     put_center(12, end_txt[(world - 1) * 3 + 2]);
     put_text(9, 22, "CHAUSSETTES :");
     put_num(23, 22, socks);
-    put_text(10, 26, "FIN DU MONDE");
-    vram_adr(NT_ADR(23, 26));
-    vram_put('0' + world);
+    if (world >= 5) put_text(11, 26, "FIN DU JEU !");
+    else {
+        put_text(10, 26, "FIN DU MONDE");
+        vram_adr(NT_ADR(23, 26));
+        vram_put('0' + world);
+    }
     pal_set(pal_title);
     ppu_on();
     music_play(MUS_ENDING);

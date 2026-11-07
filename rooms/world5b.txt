@@ -1,0 +1,113 @@
+# =====================================================================
+#  TCHAK ! - Monde 5 : LE GRAND BAZAR (salles 5-5 a 5-8, banque 5b)
+#  Machines (monde 3 : PISTON = WORLD n) + gravite (monde 4, WORLD 9)
+#  + le MAITRE DU CHAOS.
+# =====================================================================
+PALETTE 0C 1C 2C 3C 0C 15 25 35 0C 1A 2A 38 0C 28 18 08 0C 0F 24 30 0C 06 16 30 0C 07 17 28 0C 0F 2A 30
+MUSIC 0
+
+ROOM "LE COPIEUR T&TE EN BAS"
+WORLD 5 NUM 5
+CONV 0
+MAP
+################
+################
+################
+################
+################
+################
+#############PP#
+#..............#
+#.......#......#
+#D......#......#
+#d.....L#......#
+############~~##
+################
+BIDULE 5 10
+OBJ COPY 9 10
+TRIG LEVER 7 10 1 1 ON WORLD 9
+TRIG PLATE 13 6 2 1 ON DOOR_OPEN 1 9 OFF DOOR_CLOSE 1 9
+END
+
+ROOM "LE TAPIS DU CHAOS"
+WORLD 5 NUM 6
+CONV 1
+MAP
+########P#######
+#..............#
+#..............#
+#..|.......|...#
+#..|.......|...#
+#..............#
+#..............#
+#.L.H..........#
+#===H..........#
+#D..H..........#
+#d..H..........#
+###>>>>>>>>>~~##
+################
+BIDULE 2 10
+OBJ CRATE 3 10
+TRIG LEVER 2 7 1 1 ON WORLD 9
+TRIG PLATE 8 0 1 1 ON DOOR_OPEN 1 9 OFF DOOR_CLOSE 1 9
+END
+
+ROOM "LA GRANDE CATASTROPHE"
+WORLD 5 NUM 7
+CONV 0
+MAP
+###P############
+#..............#
+#..............#
+#..|.......|...#
+#..|...........#
+#..............#
+#.......====P..#
+#..............#
+#..............#
+#.............D#
+#.L..........L.#
+######PP########
+################
+BIDULE 6 10
+OBJ PISTON 12 10 LEFT
+OBJ CRATE 11 10
+OBJ CRATE 3 10
+OBJ COPY 8 5
+TRIG LEVER 13 10 1 1 ON WORLD 0
+TRIG LEVER 2 10 1 1 ON WORLD 9
+TRIG PLATE 6 11 2 1 ON LOCK 6 11
+TRIG PLATE 3 0 1 1 ON LOCK 3 0
+TRIG PLATE 12 6 1 1 ON LOCK 12 6
+TRIG BOSS 0 0 1 1 OFF DOOR_OPEN 14 9
+END
+
+ROOM "LE MAITRE DU CHAOS"
+WORLD 5 NUM 8
+CONV 0
+MAP
+#########TT#####
+#..............#
+#TTT...........#
+#..............#
+#..|.......|...#
+#..............#
+#..............#
+#..............#
+#..............#
+#.............D#
+#.....L........#
+#...########PP##
+#SSS############
+BIDULE 7 10
+OBJ MASTER 7 1
+OBJ BALL 5 10
+OBJ BALLOON 4 1 FLOAT
+OBJ PISTON 14 10 LEFT
+OBJ CRATE 11 10
+TRIG TARGET 1 2 3 1 ON LOCKW 1 2 3
+TRIG TARGET 9 0 2 1 ON LOCKW 9 0 2
+TRIG PLATE 12 11 2 1 ON LOCKW 12 11 2
+TRIG LEVER 6 10 1 1 ON WORLD 9
+TRIG BOSS 0 0 1 1 OFF DOOR_OPEN 14 9
+END
