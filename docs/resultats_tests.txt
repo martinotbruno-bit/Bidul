@@ -40,5 +40,14 @@ il fonce jusqu'a la porte et s'arrete sur la plaque.
 [ OK ] t37_w2_8_madame_armoire - 2-8 : Madame Armoire ne se bat pas seule (30 s) ; il faut lui LANCER des biscuits pour
 qu'elle les recrache dans les 3 serrures.
 [ OK ] t38_w2_joueur_au_hasard - Monde 2 : un joueur qui appuie au hasard (4 parties de 20 s par salle) ne resout aucune salle.
+[ OK ] t40_w3_1_piston - 3-1 : reflexe -> la balle part dans la gelee ; du bon cote : balle -> cible -> piston -> caisse -> plaque.
+[ OK ] t41_w3_2_copieur - 3-2 : marcher droit fait tomber le Copieur de son etage ; TCHAK (miroir) d'abord -> il va sur la plaque.
+[ OK ] t42_w3_3_machinal - 3-3 : attendre au bord du trou fait tomber BIDULE ; figer le Machinal sur la plaque -> passerelle.
+[ OK ] t43_w3_4_chaine - 3-4 : la balle sur la cible inverse le convoyeur, la caisse tombe devant le piston, levier -> plaque.
+[ OK ] t44_w3_5_copie_conforme - 3-5 : BIDULE enferme : aller-retour + miroir a chaque demi-tour (cliquet) ; pousser contre le mur ne sert a rien.
+[ OK ] t45_w3_6_deux_facons - 3-6 : deux solutions : le piston (levier en haut de l'echelle) ou pousser la caisse soi-meme.
+[ OK ] t46_w3_7_grande_chaine - 3-7 : trois serrures (cible, piston/caisse, Copieur) ; chaque TCHAK fait aussi basculer le Copieur.
+[ OK ] t47_w3_8_grand_derange - 3-8 : le Grand Derange ne tombe jamais seul ; l'etourdir pres du trou quand le convoyeur y va.
+[ OK ] t48_w3_joueur_au_hasard - Monde 3 : un joueur qui appuie au hasard (4 parties de 20 s par salle) ne resout aucune salle.
 
-34/34 tests reussis en 532.3 s
+43/43 tests reussis en 802.1 s

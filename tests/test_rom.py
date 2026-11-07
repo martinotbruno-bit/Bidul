@@ -622,6 +622,8 @@ def t37_w2_8_madame_armoire():
     shot(g, "36_w2_armoire_vaincue")
     check(g.until(lambda: g.u8("b_state") == 3, 500, RIGHT), "sortie")
     check(g.until(lambda: g.u8("game_state") == 8, 400), "pas d'ecran de fin du monde 2")
+    g.run(90)
+    shot(g, "37_w2_fin")
 
 @test
 def t38_w2_joueur_au_hasard():
@@ -640,6 +642,169 @@ def t38_w2_joueur_au_hasard():
                 g.run(6, rnd.choice(acts))
                 check(g.u8("b_state") != 3 and g.u8("room_idx") == room,
                       "salle 2-%d resolue au hasard (graine %d)" % (room - 7, seed))
+        g.nes.load(st)
+
+# ============================================================== MONDE 3
+def w3(g, n):
+    g.goto_room(15 + n)
+
+@test
+def t40_w3_1_piston():
+    """3-1 : reflexe -> la balle part dans la gelee ; du bon cote : balle -> cible -> piston -> caisse -> plaque."""
+    g = Game(); w3(g, 1); st = g.nes.save()
+    check(g.u8("cur_bank") == 3, "banque du monde 3 non selectionnee")
+    shot(g, "40_w3_piston")
+    g.press(B, 2, 200)
+    check(not door_open(g, 1, 4), "porte ouverte par le reflexe")
+    g.nes.load(st)
+    g.until(lambda: g.bx() >= 112, 100, RIGHT); g.run(1, LEFT)
+    g.press(B, 2, 0)
+    check(g.until(lambda: door_open(g, 1, 4), 300), "porte fermee")
+    g.until(lambda: g.bx() <= 64, 300, LEFT)
+    check(g.until(lambda: g.u8("b_state") == 0 and g.by() < 120, 200, UP), "echelle")
+    g.run(4, UP)
+    check(g.until(lambda: g.u8("b_state") == 3, 300, LEFT), "sortie")
+
+@test
+def t41_w3_2_copieur():
+    """3-2 : marcher droit fait tomber le Copieur de son etage ; TCHAK (miroir) d'abord -> il va sur la plaque."""
+    g = Game(); w3(g, 2); st = g.nes.save()
+    g.until(lambda: g.u8("b_state") == 3, 400, RIGHT)
+    check(not door_open(g, 14, 9), "porte ouverte sans miroir")
+    g.nes.load(st)
+    g.press(B, 2, 30)
+    check(g.obj(0)["state"] == 1, "pas de mode miroir")
+    shot(g, "41_w3_copieur")
+    check(g.until(lambda: g.u8("b_state") == 3, 400, RIGHT), "sortie")
+
+@test
+def t42_w3_3_machinal():
+    """3-3 : attendre au bord du trou fait tomber BIDULE ; figer le Machinal sur la plaque -> passerelle."""
+    g = Game(); w3(g, 3); st = g.nes.save()
+    bridge = lambda: g.u8("map", 11 * 16 + 3) == 17
+    g.until(lambda: g.bx() <= 97, 200, LEFT)
+    for _ in range(1200):
+        g.run(1, LEFT if bridge() else 0)
+        if g.u8("b_state") in (3, 4):
+            break
+    check(g.u8("b_state") != 3, "on a pu passer sans figer le robot")
+    g.nes.load(st)
+    g.until(lambda: g.bx() >= 120, 100, RIGHT)
+    g.until(lambda: 160 <= g.obj(0)["x"] <= 172 and g.s8("o_vx", 0) > 0, 900)
+    g.press(B, 2, 20)
+    check(g.obj(0)["state"] == 1 and bridge(), "robot non fige sur la plaque")
+    shot(g, "42_w3_machinal")
+    check(g.until(lambda: g.u8("b_state") == 3, 250, LEFT), "sortie")
+
+@test
+def t43_w3_4_chaine():
+    """3-4 : la balle sur la cible inverse le convoyeur, la caisse tombe devant le piston, levier -> plaque."""
+    g = Game(); w3(g, 4)
+    g.until(lambda: g.bx() >= 74, 100, RIGHT); g.run(1, LEFT)
+    g.press(B, 2, 0)
+    check(g.until(lambda: g.s8("conv_dir") == 1, 120), "convoyeur non inverse")
+    check(g.until(lambda: g.obj(1)["y"] == 192, 600), "la caisse n'est pas descendue")
+    g.until(lambda: g.bx() >= 110, 100, RIGHT)
+    g.press(A, 2, 100)
+    shot(g, "43_w3_chaine")
+    check(g.until(lambda: g.u8("b_state") == 3, 400, RIGHT), "sortie")
+
+@test
+def t44_w3_5_copie_conforme():
+    """3-5 : BIDULE enferme : aller-retour + miroir a chaque demi-tour (cliquet) ; pousser contre le mur ne sert a rien."""
+    g = Game(); w3(g, 5); st = g.nes.save()
+    g.run(150, RIGHT)
+    check(g.obj(0)["x"] < 100, "pousser contre le mur fait avancer le Copieur")
+    g.nes.load(st)
+    cage = lambda: g.u8("map", 9 * 16 + 10) != 17
+    for _ in range(8):
+        g.until(lambda: g.bx() >= 140, 80, RIGHT); g.press(B, 2, 26)
+        g.until(lambda: g.bx() <= 98, 80, LEFT); g.press(B, 2, 26)
+        if cage():
+            break
+    check(cage(), "la cage ne s'ouvre pas")
+    check(g.until(lambda: g.u8("b_state") == 3, 300, RIGHT), "sortie")
+
+@test
+def t45_w3_6_deux_facons():
+    """3-6 : deux solutions : le piston (levier en haut de l'echelle) ou pousser la caisse soi-meme."""
+    g = Game(); w3(g, 6); st = g.nes.save()
+    g.until(lambda: g.bx() <= 170, 100, LEFT)
+    g.until(lambda: g.u8("b_state") == 0 and g.by() < 110, 200, UP); g.run(3, UP)
+    g.press(A, 2, 120)
+    check(door_open(g, 1, 9), "solution piston")
+    g.until(lambda: g.u8("b_ground") and g.by() > 180, 200, DOWN)
+    check(g.until(lambda: g.u8("b_state") == 3, 600, LEFT), "sortie")
+    g.nes.load(st)
+    for _ in range(5):
+        cx = g.obj(0)["x"]
+        if g.bx() < cx + 10: g.until(lambda: g.bx() >= cx + 12, 200, RIGHT)
+        else: g.until(lambda: g.bx() <= cx + 16, 200, LEFT)
+        g.run(1, LEFT); g.press(B, 2, 40)
+        if door_open(g, 1, 9):
+            break
+    check(door_open(g, 1, 9), "solution TCHAK")
+
+@test
+def t46_w3_7_grande_chaine():
+    """3-7 : trois serrures (cible, piston/caisse, Copieur) ; chaque TCHAK fait aussi basculer le Copieur."""
+    g = Game(); w3(g, 7)
+    g.press(B, 2, 30)
+    g.until(lambda: g.bx() <= 150, 100, LEFT)
+    g.press(B, 2, 80)
+    g.until(lambda: g.bx() <= 112, 100, LEFT)
+    g.press(A, 2, 100)
+    check(g.u8("lock_count") >= 2, "serrures cible + caisse")
+    check(g.until(lambda: g.u8("b_state") == 3, 400, RIGHT), "sortie")
+    check(g.u8("lock_count") == 3, "serrure du Copieur")
+
+@test
+def t47_w3_8_grand_derange():
+    """3-8 : le Grand Derange ne tombe jamais seul ; l'etourdir pres du trou quand le convoyeur y va."""
+    g = Game(); w3(g, 8); st0 = g.nes.save()
+    check(g.u8("boss_room") == 1, "musique de boss")
+    shot(g, "44_w3_derange")
+    for _ in range(1200):
+        g.run(1)
+        check(g.obj(0)["state"] == 0, "il est tombe tout seul")
+    g.nes.load(st0)
+    cool = 0
+    for _ in range(9000):
+        c = g.s8("conv_dir"); k = g.obj(0); bx = g.bx()
+        btn = 0
+        if not (k["flags"] & 4) and c != 0:
+            t = max(40, min(184, k["x"] - 40 * c))
+            btn = RIGHT if bx < t - 4 else (LEFT if bx > t + 4 else 0)
+            near = (k["x"] >= 176) if c > 0 else (k["x"] <= 48)
+            if near and abs(k["x"] - bx) < 56 and cool == 0:
+                btn = B; cool = 40
+        else:
+            btn = RIGHT if bx < 110 else (LEFT if bx > 130 else 0)
+        if cool: cool -= 1
+        g.run(1, btn)
+        if g.u8("o_aux", 0):
+            break
+    check(g.u8("o_aux", 0) == 1, "boss non vaincu")
+    check(g.until(lambda: door_open(g, 1, 4), 100), "porte fermee")
+    shot(g, "45_w3_derange_vaincu")
+
+@test
+def t48_w3_joueur_au_hasard():
+    """Monde 3 : un joueur qui appuie au hasard (4 parties de 20 s par salle) ne resout aucune salle."""
+    import random
+    acts = [0, LEFT, RIGHT, UP, DOWN, B, A, LEFT | B, RIGHT | B, UP | A]
+    g = Game(); g.goto_room(16)
+    for room in range(16, 24):
+        if room > 16:
+            g.skip_room(room - 1)
+        st = g.nes.save()
+        for seed in range(4):
+            g.nes.load(st)
+            rnd = random.Random(seed * 17 + room)
+            for _ in range(200):
+                g.run(6, rnd.choice(acts))
+                check(g.u8("b_state") != 3 and g.u8("room_idx") == room,
+                      "salle 3-%d resolue au hasard (graine %d)" % (room - 15, seed))
         g.nes.load(st)
 
 # =================================================================== main

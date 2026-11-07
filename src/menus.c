@@ -246,6 +246,8 @@ void gameover_screen(void)
 /* ======================================================= FIN DE MONDE */
 static const char *const end_txt[NWORLDS * 3] = {
     "LE ROI DU REBOND EST VAINCU.", "LA FABRIQUE DES CHOSES MOLLES", "EST SAUV[E... OU PRESQUE.",
+    "MADAME ARMOIRE A TOUT RECRACH[.", "LES MEUBLES SE SONT CALM[S...", "POUR CETTE NUIT.",
+    "LE GRAND D[RANG[ EST RANG[.", "L'USINE TOURNE ROND...", "ENFIN, PRESQUE ROND.",
 };
 
 void __fastcall__ end_screen(u8 world)

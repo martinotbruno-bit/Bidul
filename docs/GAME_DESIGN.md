@@ -181,7 +181,29 @@ Progression de la difficulté : 1-1 sens de la poussée → 1-2 ressort vertical
 
 Boss mesuré : avec le solveur automatique (on lance un biscuit à des moments différents), 62 % des lancers ouvrent la 1re serrure, 20 % la 2e, 15 % la 3e. Sans intervention, 0 serrure en 30 s.
 
-## 6. Plan de la suite (40 salles, 5 boss)
+## 6. Monde 3 – L'usine des catastrophes
+
+**Règle du monde** : les réactions en chaîne à plusieurs étages ; il faut comprendre **l'ordre** des événements.
+
+| Élément | Comportement |
+|---|---|
+| Piston | fixe (les objets butent dessus) ; une action `WORLD n` (cible, plaque, levier) le fait frapper : ce qui est juste devant lui est projeté |
+| Le Copieur | reproduit le **déplacement réel** de BIDULE (pousser contre un mur ne le fait pas avancer) ; un TCHAK (96 px) le passe en **miroir** et inversement |
+| Le Machinal | patrouille, fait demi-tour aux murs et au bord des trous, appuie sur les plaques au passage ; un TCHAK le fige 2,5 s puis il repart dans l'autre sens |
+| Le Grand Dérangé (boss) | patrouille sans jamais tomber, **inverse les convoyeurs** toutes les 4 s / 3 s / 2,3 s selon la phase, aplatit BIDULE ; un TCHAK proche l'étourdit (1,5 s → 0,9 s) et le convoyeur l'emporte |
+
+| Salle | Ce qu'il faut comprendre | Le réflexe qui échoue |
+|---|---|---|
+| 3-1 Le piston | balle → cible → piston → caisse → plaque | la balle poussée du mauvais côté finit dans la gelée |
+| 3-2 Le Copieur | il copie vos pas : le mettre en miroir **avant** de marcher vers la porte | marcher tout droit : il tombe de son étage |
+| 3-3 Le Machinal | la plaque ne pose la passerelle que pendant qu'on appuie : le figer **sur** la plaque | attendre son passage : la passerelle disparaît sous vos pieds |
+| 3-4 La chaîne de montage | la balle inverse le convoyeur (chaque coup l'inverse à nouveau !), la caisse tombe devant le piston, **puis** le levier | levier trop tôt : le piston frappe dans le vide |
+| 3-5 Copie conforme | enfermé dans une cage : aller-retour + miroir à chaque demi-tour (cliquet) | pousser contre le mur : le Copieur ne bouge pas |
+| 3-6 Deux façons de pousser | le piston (levier en haut) ou se glisser contre le piston et pousser soi-même | — |
+| 3-7 La grande chaîne | trois serrures (cible, piston/caisse, Copieur) ; chaque TCHAK fait aussi basculer le Copieur | TCHAK à tort et à travers : le Copieur part dans le mauvais sens |
+| 3-8 **Le Grand Dérangé** | l'étourdir près d'un trou **quand le convoyeur y va** ; 3 chutes | rester immobile : le convoyeur vous emporte dans la gelée |
+
+## 7. Plan de la suite (40 salles, 5 boss)
 
 Chaque monde reprendra la répartition du §8 (introduction, apprentissage, découverte, combinaison, intermédiaire, plusieurs solutions, complexe, boss). Le Monde 1 est terminé. Chaque nouvelle salle devra passer le test du « joueur qui ne comprend rien ». Nouvelles mécaniques prévues :
 
@@ -189,6 +211,6 @@ Chaque monde reprendra la répartition du §8 (introduction, apprentissage, déc
 |---|---|---|---|
 | 1 Fabrique | pousse + rebond | **fait** (8 salles + boss) | **Roi du Rebond** : fait (voir ci-dessus) |
 | 2 Maison | réactions selon l'humeur | **fait** (8 salles + boss) | **Madame Armoire** : fait (voir ci-dessus) |
-| 3 Usine | met en marche / arrête les machines | engrenages, pistons, interrupteurs multiples, ordre des réactions | **Le Grand Dérangé** : il inverse les machines ; retourner ses propres pistons contre lui |
+| 3 Usine | ordre des réactions | **fait** (8 salles + boss) | **Le Grand Dérangé** : fait (voir ci-dessus) |
 | 4 Travers | inverse la gravité locale | objets qui montent, convoyeurs inversés, plafonds-planchers | **Le Roi à l'Envers** : son comportement suit la gravité de la zone où il se trouve |
 | 5 Bazar | combinaison | toutes les règles, zones de règles différentes dans une même salle | **Le Maître du Chaos** : il change les propriétés des objets ; grande énigme en plusieurs tableaux |

@@ -1,4 +1,4 @@
-# TCHAK ! – La Grande Catastrophe · Manuel de jeu (Mondes 1 et 2)
+# TCHAK ! – La Grande Catastrophe · Manuel de jeu (Mondes 1 à 3)
 
 ![titre](img/02_titre.png)
 
@@ -44,6 +44,8 @@ Codes (sans chaussette) : 1-1 `BNFR` · 1-2 `FNFS` · 1-3 `DNFT` · 1-4 `SNFV` �
 
 Monde 2 : 2-1 `LNFG` · 2-2 `PNFH` · 2-3 `NNFJ` · 2-4 `HNFK` · 2-5 `GNFB` · 2-6 `KNFC` · 2-7 `JNFD` · 2-8 `CNFF`.
 
+Monde 3 : 3-1 `BNDR` · 3-2 `FNDS` · 3-3 `DNDT` · 3-4 `SNDV` · 3-5 `RNDL` · 3-6 `VNDM` · 3-7 `TNDN` · 3-8 `MNDP`.
+
 ## Conseils
 
 - Si quelque chose tombe dans la gelée, ce n'est pas grave : observez, il reviendra.
@@ -62,6 +64,13 @@ Dans la maison, le TCHAK ne pousse pas les meubles : il les vexe, les intrigue o
 - **Le coffre gourmand** ne s'intéresse qu'aux biscuits : il va les manger là où ils tombent.
 - Certaines portes ont **trois serrures** : chaque plaque ou cible ne compte qu'une fois.
 - **Madame Armoire** avale ce qu'on lui lance et le recrache par-dessus elle, vers l'arrière. Un TCHAK tout près la fait se retourner.
+
+## L'usine des catastrophes (Monde 3)
+
+- Les **pistons** frappent quand un mécanisme les déclenche : tout ce qui est juste devant eux est projeté. Pensez à mettre quelque chose devant **avant**.
+- **Le Copieur** fait exactement les mêmes pas que vous (s'il est bloqué, il reste bloqué). Un TCHAK le fait passer en **miroir** : il fait l'inverse. Et inversement.
+- **Le Machinal** patrouille et appuie sur tout ce qu'il croise. Un TCHAK le fige un moment, puis il repart dans l'autre sens.
+- **Le Grand Dérangé** inverse les convoyeurs quand ça lui chante et ne tombe jamais tout seul. Étourdi par un TCHAK, il se laisse emporter… Attention à ne pas vous laisser emporter vous-même !
 
 ## Où jouer
 

@@ -1,12 +1,12 @@
-# TCHAK ! – Rapport de tests (version 0.4 – Mondes 1 et 2, MMC1)
+# TCHAK ! – Rapport de tests (version 0.5 – Mondes 1 à 3, MMC1)
 
 ## Méthode
 
 Les tests jouent réellement la ROM `build/tchak.nes` dans l'émulateur headless **cynes** : entrées manette scriptées, puis vérification de la RAM (adresses tirées de `build/tchak.labels`). Lancement : `make test` (ou `python3 tests/test_rom.py --shots` pour régénérer les captures de `docs/img/`).
 
-## Résultats : 34 / 34 réussis (en 9 min d'émulation)
+## Résultats : 43 / 43 réussis (en 13 min d'émulation)
 
-Détail brut : `docs/resultats_tests.txt`. Numérotation des salles : 1-1 à 2-8.
+Détail brut : `docs/resultats_tests.txt`. Numérotation des salles : 1-1 à 3-8.
 
 | Test | Vérifie |
 |---|---|
@@ -34,6 +34,15 @@ Détail brut : `docs/resultats_tests.txt`. Numérotation des salles : 1-1 à 2-8
 | t36 | 2-7 : lampe + fauteuil d'un seul TCHAK, planche, commode |
 | t37 | 2-8 : Madame Armoire ne se bat pas seule (30 s) ; solveur : 3 lancers visés → porte → écran de fin du monde 2 |
 | t38 | Monde 2 : 4 parties de 20 s d'appuis aléatoires par salle → aucune salle résolue |
+| t40 | 3-1 : réflexe → gelée ; balle → cible → piston → caisse → plaque ; banque MMC1 du monde 3 |
+| t41 | 3-2 : sans miroir le Copieur tombe ; avec miroir il va sur la plaque |
+| t42 | 3-3 : attendre le passage du Machinal ne permet pas de traverser ; le figer sur la plaque, oui |
+| t43 | 3-4 : balle → inversion du convoyeur → caisse devant le piston → levier |
+| t44 | 3-5 : pousser contre le mur ne fait pas avancer le Copieur ; le cliquet miroir ouvre la cage |
+| t45 | 3-6 : deux solutions vérifiées (piston / TCHAK) |
+| t46 | 3-7 : trois serrures |
+| t47 | 3-8 : le Grand Dérangé ne tombe pas seul (20 s) ; vaincu par une stratégie automatique |
+| t48 | Monde 3 : 4 parties de 20 s d'appuis aléatoires par salle → aucune salle résolue |
 
 ### Équilibrage du boss (mesuré)
 
@@ -69,11 +78,16 @@ Fenêtres de réussite depuis le levier de droite : on part d'un instant donné,
 | v0.4 – une serrure se comptait plusieurs fois (la plaque verrouillée était « relâchée » puis redessinée) | plaque verrouillée ignorée ; animation de tuile annulée |
 | v0.4 – le fauteuil poussait la commode contre la porte sans fin | son compteur de blocage partageait un champ avec l'animation d'écrasement : variables propres en RAM de banque |
 | v0.4 – Madame Armoire se battait toute seule en 20 s (balle élastique, objets avalés en marchant) | elle n'avale que ce qu'on lui lance ; biscuits au lieu de la balle ; demi-tour quand elle est bloquée |
+| v0.5 – l'écran de fin du Monde 2 affichait n'importe quoi (texte manquant, bogue de la v0.4) | textes de fin des mondes 2 et 3 |
+| v0.5 – 3-3 : attendre devant la porte suffisait (le robot passe tout seul sur la plaque) | la plaque pose une passerelle temporaire sur un trou de 3 cases |
+| v0.5 – le Copieur avançait quand BIDULE poussait contre un mur | il copie le déplacement réel, pas la commande |
+| v0.5 – une cible de 2 cases comptait 2 serrures | cibles-serrures d'une seule case |
 
 ## Limites connues (honnêtement)
 
 - **Testé uniquement sur émulateur** (cynes ; captures visuellement contrôlées). Pas encore de test sur Mesen/FCEUX ni sur vraie console.
 - Le **son** est vérifié par l'état du moteur (flux actifs, lecture qui avance), pas à l'oreille : l'émulateur de test ne restitue pas l'audio.
 - Le test de déterminisme compare l'état de jeu, pas les minuteries musicales (l'alignement CPU/PPU à l'allumage peut les décaler d'une trame d'une instance d'émulateur à l'autre).
-- Mondes 3 à 5 non commencés. Le moteur commun n'a plus que ~600 octets de libre : le code des prochains mondes ira dans leur banque (comme `world2.c`).
+- Mondes 4 et 5 non commencés. Le moteur commun n'a plus que 128 octets libres et les tuiles de sprites 16 : la suite demandera des banques de sprites par monde (CHR) et le passage à 256 Ko de PRG.
+- Le boss 3-8 est exigeant : rester immobile fait perdre toutes ses vies en environ 25 s (le convoyeur emporte BIDULE).
 - Le pic de calcul dans la scène la plus chargée laisse peu de cycles libres sur 29 780 : les salles plus chargées (8 objets en mouvement) demanderont d'autres optimisations (physique en assembleur).

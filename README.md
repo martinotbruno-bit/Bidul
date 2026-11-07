@@ -5,7 +5,7 @@ Vous êtes BIDULE, une créature qui ne sait pas sauter mais qui sait faire **TC
 
 ![Titre](docs/img/02_titre.png) ![Boss](docs/img/21_boss.png)
 
-## État : version 0.4 – Mondes 1 et 2 complets (16 salles + 2 boss), cartouche MMC1
+## État : version 0.5 – Mondes 1 à 3 complets (24 salles + 3 boss), cartouche MMC1
 
 Le prototype de 3 salles a validé la mécanique (§22) ; le **Monde 1 – La Fabrique des choses molles** est maintenant complet : 8 salles de difficulté croissante et le boss, le Roi du Rebond.
 
@@ -22,7 +22,9 @@ Ce qui est programmé et testé :
 
 - **Monde 2 – La maison qui n'en fait qu'à sa tête** : les meubles ont des humeurs (fauteuil grognon, lampe curieuse, commode paresseuse, coffre gourmand), 8 salles, boss **Madame Armoire**
 
-Pas encore fait : les mondes 3 à 5 (24 salles, 3 boss).
+- **Monde 3 – L'usine des catastrophes** : pistons, le Copieur (qui imite BIDULE, ou fait l'inverse), le Machinal (qui déclenche tout sans le vouloir), 8 salles, boss **le Grand Dérangé**
+
+Pas encore fait : les mondes 4 et 5 (16 salles, 2 boss).
 
 ## Jouer
 

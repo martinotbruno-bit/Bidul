@@ -124,7 +124,7 @@ OBJ COPY 2 5
 TRIG PLATE 11 6 1 1 ON HATCH_OPEN 10 9 1 ON HATCH_OPEN 10 10 1
 END
 
-ROOM "UN PISTON, DEUX ROBOTS"
+ROOM "DEUX FA^ONS DE POUSSER"
 WORLD 3 NUM 6
 CONV 0
 MAP
@@ -139,15 +139,42 @@ MAP
 #..........H...#
 #D.........H...#
 #d.........H...#
-##P#############
+##PP############
 ################
 BIDULE 13 10
-OBJ CRATE 7 10
-OBJ PISTON 8 10 LEFT
-OBJ ROBOT 4 10
-OBJ COPY 13 4
+OBJ CRATE 9 10
+OBJ PISTON 10 10 LEFT
 TRIG LEVER 11 5 1 1 ON WORLD 1
-TRIG PLATE 2 11 1 1 ON DOOR_OPEN 1 9 OFF DOOR_CLOSE 1 9
+TRIG PLATE 2 11 2 1 ON DOOR_OPEN 1 9 OFF DOOR_CLOSE 1 9
+END
+
+ROOM "LA GRANDE CHAINE"
+WORLD 3 NUM 7
+CONV 0
+MAP
+################
+#..............#
+#..............#
+#..|.......|...#
+#..............#
+#..............#
+#.=========P...#
+#..............#
+#..............#
+#....T........D#
+#....#.L......d#
+######PP########
+################
+BIDULE 12 10
+OBJ COPY 8 5
+OBJ BALL 8 10
+OBJ CRATE 10 10
+OBJ PISTON 11 10 LEFT
+TRIG TARGET 5 9 1 1 ON LOCK 5 9
+TRIG PLATE 6 11 2 1 ON LOCK 6 11
+TRIG PLATE 11 6 1 1 ON LOCK 11 6
+TRIG LEVER 7 10 1 1 ON WORLD 3
+TRIG BOSS 0 0 1 1 OFF DOOR_OPEN 14 9
 END
 
 ROOM "LE GRAND D[RANG["
