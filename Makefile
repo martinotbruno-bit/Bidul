@@ -8,6 +8,7 @@ PYTHON  = python3
 CFLAGS  = -t none --cpu 6502 -Ors -Cl -I src
 BFLAGS  = $(CFLAGS) --code-name BANKCODE --rodata-name BANKDATA --bss-name BANKBSS --data-name BANKDATA
 BUILD   = build
+$(shell mkdir -p $(BUILD) src/gen)
 ROM     = $(BUILD)/tchak.nes
 
 # moteur commun (identique dans toutes les banques)
